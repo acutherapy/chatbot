@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简单 AI 测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            min-height: 50px;
+        }
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .loading {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 AI 聊天机器人测试</h1>
+        
+        <div class="test-section">
+            <h3>1. 健康检查</h3>
+            <button class="test-button" onclick="testHealth()">测试健康状态</button>
+            <div id="healthResult" class="result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>2. AI 聊天测试</h3>
+            <input type="text" id="testMessage" placeholder="输入测试消息..." value="你好，我想预约服务">
+            <button class="test-button" onclick="testChat()">发送消息</button>
+            <div id="chatResult" class="result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>3. 快速测试</h3>
+            <button class="test-button" onclick="quickTest()">快速测试所有功能</button>
+            <div id="quickResult" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        const baseUrl = window.location.origin;
+        
+        function showResult(elementId, message, type = 'success') {
+            const element = document.getElementById(elementId);
+            element.className = `result ${type}`;
+            element.innerHTML = message;
+        }
+        
+        function showLoading(elementId) {
+            const element = document.getElementById(elementId);
+            element.className = 'result loading';
+            element.innerHTML = '⏳ 测试中...';
+        }
+        
+        async function testHealth() {
+            showLoading('healthResult');
+            
+            try {
+                const response = await fetch(`${baseUrl}/health`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showResult('healthResult', `
+                        ✅ 健康检查通过<br>
+                        状态: ${data.status}<br>
+                        运行时间: ${Math.round(data.uptime)} 秒<br>
+                        服务状态: ${JSON.stringify(data.services, null, 2)}
+                    `, 'success');
+                } else {
+                    showResult('healthResult', `❌ 健康检查失败: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                showResult('healthResult', `❌ 请求失败: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testChat() {
+            const message = document.getElementById('testMessage').value;
+            if (!message.trim()) {
+                showResult('chatResult', '❌ 请输入测试消息', 'error');
+                return;
+            }
+            
+            showLoading('chatResult');
+            
+            try {
+                const response = await fetch(`${baseUrl}/chat/message`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        userId: 'test_user_' + Date.now(),
+                        sessionId: 'test_session_' + Date.now()
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    showResult('chatResult', `
+                        ✅ AI 回复成功<br>
+                        用户消息: "${message}"<br>
+                        AI 回复: "${data.response}"<br>
+                        响应时间: ${data.responseTime || 'N/A'}ms
+                    `, 'success');
+                } else {
+                    showResult('chatResult', `❌ AI 回复失败: ${data.error || '未知错误'}`, 'error');
+                }
+            } catch (error) {
+                showResult('chatResult', `❌ 请求失败: ${error.message}`, 'error');
+            }
+        }
+        
+        async function quickTest() {
+            showLoading('quickResult');
+            
+            const tests = [
+                { name: '健康检查', test: testHealth },
+                { name: 'AI 聊天', test: () => testChat() }
+            ];
+            
+            let results = [];
+            
+            for (const test of tests) {
+                try {
+                    await test.test();
+                    results.push(`✅ ${test.name}: 通过`);
+                } catch (error) {
+                    results.push(`❌ ${test.name}: 失败 - ${error.message}`);
+                }
+            }
+            
+            showResult('quickResult', results.join('<br>'), 'success');
+        }
+        
+        // 页面加载时自动运行健康检查
+        window.onload = function() {
+            testHealth();
+        };
+    </script>
+</body>
+</html>
