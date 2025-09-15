@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>内联聊天机器人</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #1e293b;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .demo-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+        }
+
+        .demo-section h2 {
+            color: #4F46E5;
+            margin-bottom: 15px;
+        }
+
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        .code-block code {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 14px;
+        }
+
+        .demo-button {
+            background: linear-gradient(135deg, #4F46E5, #7C3AED);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: transform 0.2s ease;
+        }
+
+        .demo-button:hover {
+            transform: translateY(-2px);
+        }
+
+        /* 聊天机器人样式 */
+        .chatbot-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4F46E5, #7C3AED);
+            color: white;
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            font-size: 24px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chatbot-button:hover {
+            transform: scale(1.1);
+        }
+
+        .chatbot-window {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 350px;
+            height: 500px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            display: none;
+            z-index: 1000;
+            background: white;
+            overflow: hidden;
+        }
+
+        .chatbot-header {
+            background: linear-gradient(135deg, #4F46E5, #7C3AED);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-header h3 {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .chatbot-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .chatbot-messages {
+            height: calc(100% - 120px);
+            padding: 15px;
+            overflow-y: auto;
+            background: #f8fafc;
+        }
+
+        .message {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .message-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .bot-message .message-avatar {
+            background: linear-gradient(135deg, #4F46E5, #7C3AED);
+            color: white;
+        }
+
+        .user-message {
+            flex-direction: row-reverse;
+        }
+
+        .user-message .message-avatar {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+            margin-right: 0;
+            margin-left: 10px;
+        }
+
+        .message-content {
+            max-width: 80%;
+        }
+
+        .message-bubble {
+            background: white;
+            padding: 12px 15px;
+            border-radius: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .user-message .message-bubble {
+            background: linear-gradient(135deg, #4F46E5, #7C3AED);
+            color: white;
+        }
+
+        .message-time {
+            font-size: 10px;
+            color: #64748b;
+            margin-top: 4px;
+            text-align: right;
+        }
+
+        .user-message .message-time {
+            text-align: left;
+        }
+
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .quick-reply-btn {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 6px 12px;
+            font-size: 12px;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quick-reply-btn:hover {
+            border-color: #4F46E5;
+            color: #4F46E5;
+        }
+
+        .chatbot-input {
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 10px 15px;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: #4F46E5;
+        }
+
+        #chatbotInput {
+            flex: 1;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 14px;
+            resize: none;
+            max-height: 60px;
+        }
+
+        #chatbotInput::placeholder {
+            color: #94a3b8;
+        }
+
+        .send-btn {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #4F46E5, #7C3AED);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .send-btn:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+        }
+
+        .char-count {
+            font-size: 11px;
+            color: #64748b;
+            text-align: right;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 内联聊天机器人演示</h1>
+        
+        <div class="demo-section">
+            <h2>方法 1: 直接复制代码到你的网站</h2>
+            <p>将以下代码直接添加到你的网站 HTML 中：</p>
+            
+            <div class="code-block">
+                <code>&lt;!-- 聊天按钮 --&gt;
+&lt;button id="chatbotToggle" style="
+  position: fixed; bottom: 20px; right: 20px; 
+  width: 60px; height: 60px; border-radius: 50%; 
+  background: linear-gradient(135deg, #4F46E5, #7C3AED); 
+  color: white; border: none; cursor: pointer; 
+  z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  font-size: 24px; transition: all 0.3s ease;
+"&gt;💬&lt;/button&gt;
+
+&lt;!-- 聊天窗口 --&gt;
+&lt;div id="chatbotWindow" style="
+  position: fixed; bottom: 90px; right: 20px; 
+  width: 350px; height: 500px; 
+  border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); 
+  display: none; z-index: 1000; background: white; overflow: hidden;
+"&gt;
+  &lt;div style="background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;"&gt;
+    &lt;h3 style="margin: 0; font-size: 16px;"&gt;诊所客服助手&lt;/h3&gt;
+    &lt;button id="chatbotClose" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;"&gt;×&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div id="chatbotMessages" style="height: calc(100% - 120px); padding: 15px; overflow-y: auto; background: #f8fafc;"&gt;
+    &lt;div style="display: flex; margin-bottom: 15px;"&gt;
+      &lt;div style="width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; margin-right: 10px;"&gt;🤖&lt;/div&gt;
+      &lt;div style="max-width: 80%;"&gt;
+        &lt;div style="background: white; padding: 12px 15px; border-radius: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); font-size: 14px;"&gt;
+          👋 欢迎来到我们的诊所！我是您的专属客服助手，可以为您提供：📋 服务咨询、📅 预约安排、🏥 诊所信息、💡 健康建议。请告诉我您需要什么帮助？
+        &lt;/div&gt;
+        &lt;div style="font-size: 10px; color: #64748b; margin-top: 4px;"&gt;刚刚&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div id="quickReplies" style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px;"&gt;
+      &lt;button onclick="sendQuickReply('预约服务')" style="background: white; border: 1px solid #e2e8f0; border-radius: 15px; padding: 6px 12px; font-size: 12px; color: #475569; cursor: pointer;"&gt;📅 预约服务&lt;/button&gt;
+      &lt;button onclick="sendQuickReply('查看服务')" style="background: white; border: 1px solid #e2e8f0; border-radius: 15px; padding: 6px 12px; font-size: 12px; color: #475569; cursor: pointer;"&gt;📋 查看服务&lt;/button&gt;
+      &lt;button onclick="sendQuickReply('诊所信息')" style="background: white; border: 1px solid #e2e8f0; border-radius: 15px; padding: 6px 12px; font-size: 12px; color: #475569; cursor: pointer;"&gt;📍 诊所信息&lt;/button&gt;
+      &lt;button onclick="sendQuickReply('其他咨询')" style="background: white; border: 1px solid #e2e8f0; border-radius: 15px; padding: 6px 12px; font-size: 12px; color: #475569; cursor: pointer;"&gt;💬 其他咨询&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div style="padding: 15px; background: white; border-top: 1px solid #e2e8f0;"&gt;
+    &lt;div style="display: flex; align-items: center; gap: 10px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px; padding: 10px 15px;"&gt;
+      &lt;textarea id="chatbotInput" placeholder="请输入您的问题..." style="flex: 1; border: none; background: transparent; outline: none; font-size: 14px; resize: none; max-height: 60px;"&gt;&lt;/textarea&gt;
+      &lt;button onclick="sendMessage()" style="width: 32px; height: 32px; background: linear-gradient(135deg, #4F46E5, #7C3AED); border: none; border-radius: 50%; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px;"&gt;📤&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div style="font-size: 11px; color: #64748b; text-align: right; margin-top: 6px;"&gt;&lt;span id="charCount"&gt;0/500&lt;/span&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+// 聊天机器人功能
+let chatbotOpen = false;
+
+function toggleChatbot() {
+  const window = document.getElementById('chatbotWindow');
+  const button = document.getElementById('chatbotToggle');
+  
+  chatbotOpen = !chatbotOpen;
+  window.style.display = chatbotOpen ? 'block' : 'none';
+  button.style.transform = chatbotOpen ? 'scale(1.1)' : 'scale(1)';
+}
+
+function closeChatbot() {
+  const window = document.getElementById('chatbotWindow');
+  const button = document.getElementById('chatbotToggle');
+  
+  chatbotOpen = false;
+  window.style.display = 'none';
+  button.style.transform = 'scale(1)';
+}
+
+function sendMessage() {
+  const input = document.getElementById('chatbotInput');
+  const message = input.value.trim();
+  
+  if (!message) return;
+  
+  addMessage(message, 'user');
+  input.value = '';
+  document.getElementById('charCount').textContent = '0/500';
+  
+  // 隐藏快速回复
+  document.getElementById('quickReplies').style.display = 'none';
+  
+  // 模拟回复
+  setTimeout(() => {
+    const responses = [
+      '感谢您的消息！我们的客服团队会尽快回复您。',
+      '您好！我是诊所客服助手，有什么可以帮助您的吗？',
+      '请稍等，我正在为您查询相关信息...',
+      '感谢您的咨询，我们会为您提供专业的医疗服务。'
+    ];
+    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+    addMessage(randomResponse, 'bot');
+  }, 1000);
+}
+
+function sendQuickReply(text) {
+  document.getElementById('chatbotInput').value = text;
+  sendMessage();
+}
+
+function addMessage(text, sender) {
+  const messagesContainer = document.getElementById('chatbotMessages');
+  const messageDiv = document.createElement('div');
+  
+  messageDiv.style.cssText = 'display: flex; margin-bottom: 15px;';
+  if (sender === 'user') messageDiv.style.flexDirection = 'row-reverse';
+  
+  const avatar = document.createElement('div');
+  avatar.style.cssText = 'width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; margin-right: 10px; flex-shrink: 0;';
+  if (sender === 'bot') {
+    avatar.style.background = 'linear-gradient(135deg, #4F46E5, #7C3AED)';
+    avatar.style.color = 'white';
+    avatar.textContent = '🤖';
+  } else {
+    avatar.style.background = 'linear-gradient(135deg, #10B981, #059669)';
+    avatar.style.color = 'white';
+    avatar.style.marginRight = '0';
+    avatar.style.marginLeft = '10px';
+    avatar.textContent = '👤';
+  }
+  
+  const content = document.createElement('div');
+  content.style.cssText = 'max-width: 80%;';
+  
+  const bubble = document.createElement('div');
+  bubble.style.cssText = 'background: white; padding: 12px 15px; border-radius: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); font-size: 14px; line-height: 1.4;';
+  if (sender === 'user') {
+    bubble.style.background = 'linear-gradient(135deg, #4F46E5, #7C3AED)';
+    bubble.style.color = 'white';
+  }
+  bubble.textContent = text;
+  
+  const time = document.createElement('div');
+  time.style.cssText = 'font-size: 10px; color: #64748b; margin-top: 4px; text-align: right;';
+  if (sender === 'user') time.style.textAlign = 'left';
+  time.textContent = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+  
+  content.appendChild(bubble);
+  content.appendChild(time);
+  messageDiv.appendChild(avatar);
+  messageDiv.appendChild(content);
+  
+  messagesContainer.appendChild(messageDiv);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+// 事件监听
+document.getElementById('chatbotToggle').addEventListener('click', toggleChatbot);
+document.getElementById('chatbotClose').addEventListener('click', closeChatbot);
+
+document.getElementById('chatbotInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+});
+
+document.getElementById('chatbotInput').addEventListener('input', function() {
+  const count = this.value.length;
+  document.getElementById('charCount').textContent = count + '/500';
+});
+
+// 点击外部关闭
+document.addEventListener('click', function(e) {
+  if (chatbotOpen && 
+      !document.getElementById('chatbotWindow').contains(e.target) && 
+      !document.getElementById('chatbotToggle').contains(e.target)) {
+    closeChatbot();
+  }
+});
+&lt;/script&gt;</code>
+            </div>
+            
+            <button class="demo-button" onclick="showDemo()">查看演示效果</button>
+        </div>
+    </div>
+
+    <!-- 演示用的聊天机器人 -->
+    <button id="chatbotToggle" class="chatbot-button">💬</button>
+    
+    <div id="chatbotWindow" class="chatbot-window">
+        <div class="chatbot-header">
+            <h3>诊所客服助手</h3>
+            <button id="chatbotClose" class="chatbot-close">×</button>
+        </div>
+        
+        <div id="chatbotMessages" class="chatbot-messages">
+            <div class="message bot-message">
+                <div class="message-avatar">🤖</div>
+                <div class="message-content">
+                    <div class="message-bubble">
+                        👋 欢迎来到我们的诊所！我是您的专属客服助手，可以为您提供：📋 服务咨询、📅 预约安排、🏥 诊所信息、💡 健康建议。请告诉我您需要什么帮助？
+                    </div>
+                    <div class="message-time">刚刚</div>
+                </div>
+            </div>
+            
+            <div id="quickReplies" class="quick-replies">
+                <button class="quick-reply-btn" onclick="sendQuickReply('预约服务')">📅 预约服务</button>
+                <button class="quick-reply-btn" onclick="sendQuickReply('查看服务')">📋 查看服务</button>
+                <button class="quick-reply-btn" onclick="sendQuickReply('诊所信息')">📍 诊所信息</button>
+                <button class="quick-reply-btn" onclick="sendQuickReply('其他咨询')">💬 其他咨询</button>
+            </div>
+        </div>
+        
+        <div class="chatbot-input">
+            <div class="input-wrapper">
+                <textarea id="chatbotInput" placeholder="请输入您的问题..." rows="1"></textarea>
+                <button class="send-btn" onclick="sendMessage()">📤</button>
+            </div>
+            <div class="char-count"><span id="charCount">0/500</span></div>
+        </div>
+    </div>
+
+    <script>
+        let chatbotOpen = false;
+
+        function toggleChatbot() {
+            const window = document.getElementById('chatbotWindow');
+            const button = document.getElementById('chatbotToggle');
+            
+            chatbotOpen = !chatbotOpen;
+            window.style.display = chatbotOpen ? 'block' : 'none';
+            button.style.transform = chatbotOpen ? 'scale(1.1)' : 'scale(1)';
+        }
+
+        function closeChatbot() {
+            const window = document.getElementById('chatbotWindow');
+            const button = document.getElementById('chatbotToggle');
+            
+            chatbotOpen = false;
+            window.style.display = 'none';
+            button.style.transform = 'scale(1)';
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatbotInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            addMessage(message, 'user');
+            input.value = '';
+            document.getElementById('charCount').textContent = '0/500';
+            
+            // 隐藏快速回复
+            document.getElementById('quickReplies').style.display = 'none';
+            
+            // 模拟回复
+            setTimeout(() => {
+                const responses = [
+                    '感谢您的消息！我们的客服团队会尽快回复您。',
+                    '您好！我是诊所客服助手，有什么可以帮助您的吗？',
+                    '请稍等，我正在为您查询相关信息...',
+                    '感谢您的咨询，我们会为您提供专业的医疗服务。',
+                    '我已经收到您的消息，请稍等片刻...'
+                ];
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                addMessage(randomResponse, 'bot');
+            }, 1000);
+        }
+
+        function sendQuickReply(text) {
+            document.getElementById('chatbotInput').value = text;
+            sendMessage();
+        }
+
+        function addMessage(text, sender) {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = sender === 'bot' ? '🤖' : '👤';
+            
+            const content = document.createElement('div');
+            content.className = 'message-content';
+            
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+            bubble.textContent = text;
+            
+            const time = document.createElement('div');
+            time.className = 'message-time';
+            time.textContent = new Date().toLocaleTimeString('zh-CN', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+            
+            content.appendChild(bubble);
+            content.appendChild(time);
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(content);
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function showDemo() {
+            toggleChatbot();
+        }
+
+        // 事件监听
+        document.getElementById('chatbotToggle').addEventListener('click', toggleChatbot);
+        document.getElementById('chatbotClose').addEventListener('click', closeChatbot);
+
+        document.getElementById('chatbotInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        document.getElementById('chatbotInput').addEventListener('input', function() {
+            const count = this.value.length;
+            document.getElementById('charCount').textContent = count + '/500';
+            
+            // 自动调整高度
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 60) + 'px';
+        });
+
+        // 点击外部关闭
+        document.addEventListener('click', function(e) {
+            if (chatbotOpen && 
+                !document.getElementById('chatbotWindow').contains(e.target) && 
+                !document.getElementById('chatbotToggle').contains(e.target)) {
+                closeChatbot();
+            }
+        });
+    </script>
+</body>
+</html>
