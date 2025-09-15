@@ -7,7 +7,13 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest",
+    "test:unit": "vitest run tests/unit",
+    "test:integration": "vitest run tests/integration",
+    "test:e2e": "vitest run tests/e2e",
+    "test:performance": "vitest run tests/performance",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
     "setup": "node scripts/setup-env.js",
     "setup-local": "node setup-local-env.js",
     "test-ai": "node scripts/test-ai.js",
@@ -32,7 +38,10 @@
     "node-fetch": "^3.3.2"
   },
   "devDependencies": {
-    "nodemon": "^3.0.2"
+    "nodemon": "^3.0.2",
+    "vitest": "^1.0.0",
+    "playwright": "^1.40.0",
+    "@vitest/ui": "^1.0.0"
   },
   "engines": {
     "node": ">=18.0.0"
