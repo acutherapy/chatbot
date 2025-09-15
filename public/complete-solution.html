@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>完整聊天机器人解决方案</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #1e293b;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .solution-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .solution-card {
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .solution-card:hover {
+            border-color: #4F46E5;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.1);
+        }
+
+        .solution-card.recommended {
+            border-color: #10B981;
+            background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+        }
+
+        .solution-card.recommended:hover {
+            border-color: #059669;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.1);
+        }
+
+        .solution-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .solution-icon {
+            font-size: 32px;
+            margin-right: 15px;
+        }
+
+        .solution-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .recommended-badge {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-left: 10px;
+        }
+
+        .solution-features {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .solution-features li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            color: #475569;
+        }
+
+        .solution-features li::before {
+            content: "✅";
+            margin-right: 8px;
+        }
+
+        .solution-features li.disabled::before {
+            content: "❌";
+        }
+
+        .solution-features li.disabled {
+            color: #94a3b8;
+        }
+
+        .solution-button {
+            width: 100%;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .solution-button.primary {
+            background: linear-gradient(135deg, #4F46E5, #7C3AED);
+            color: white;
+        }
+
+        .solution-button.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        }
+
+        .solution-button.secondary {
+            background: #f8fafc;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+        }
+
+        .solution-button.secondary:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .code-section {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .code-section code {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .setup-steps {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .setup-steps h3 {
+            color: #1e293b;
+            margin-bottom: 15px;
+        }
+
+        .setup-steps ol {
+            color: #475569;
+            line-height: 1.6;
+        }
+
+        .setup-steps li {
+            margin-bottom: 8px;
+        }
+
+        .demo-section {
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border-radius: 12px;
+            border: 1px solid #bae6fd;
+        }
+
+        .demo-section h2 {
+            color: #0369a1;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .demo-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .demo-button {
+            background: linear-gradient(135deg, #0369a1, #0284c7);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(3, 105, 161, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .solution-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .demo-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 完整聊天机器人解决方案</h1>
+        
+        <div class="solution-grid">
+            <!-- 完整 AI 系统 -->
+            <div class="solution-card recommended">
+                <div class="solution-header">
+                    <div class="solution-icon">🧠</div>
+                    <div>
+                        <div class="solution-title">完整 AI 系统</div>
+                        <span class="recommended-badge">推荐</span>
+                    </div>
+                </div>
+                
+                <ul class="solution-features">
+                    <li>真正的 AI 对话 (OpenAI GPT)</li>
+                    <li>知识库检索 (FAQ 数据库)</li>
+                    <li>会话记忆和上下文</li>
+                    <li>多平台支持 (Web/Messenger/Instagram)</li>
+                    <li>专业医疗咨询</li>
+                    <li>预约服务集成</li>
+                    <li>错误处理和重试</li>
+                    <li>完整的后端服务</li>
+                </ul>
+                
+                <button class="solution-button primary" onclick="showAISetup()">
+                    🚀 配置完整系统
+                </button>
+                
+                <button class="solution-button secondary" onclick="showAICode()">
+                    📋 查看集成代码
+                </button>
+            </div>
+            
+            <!-- 简单内联版本 -->
+            <div class="solution-card">
+                <div class="solution-header">
+                    <div class="solution-icon">⚡</div>
+                    <div class="solution-title">简单内联版本</div>
+                </div>
+                
+                <ul class="solution-features">
+                    <li>即插即用，无需配置</li>
+                    <li>纯前端实现</li>
+                    <li>美观的聊天界面</li>
+                    <li>快速回复功能</li>
+                    <li>响应式设计</li>
+                    <li>模拟 AI 回复</li>
+                    <li class="disabled">无真实 AI 功能</li>
+                    <li class="disabled">无后端服务</li>
+                </ul>
+                
+                <button class="solution-button primary" onclick="showSimpleCode()">
+                    📋 复制简单代码
+                </button>
+                
+                <button class="solution-button secondary" onclick="showSimpleDemo()">
+                    👀 查看演示
+                </button>
+            </div>
+        </div>
+        
+        <!-- 完整 AI 系统配置 -->
+        <div id="aiSetup" class="setup-steps" style="display: none;">
+            <h3>🧠 完整 AI 系统配置步骤</h3>
+            <ol>
+                <li><strong>配置环境变量</strong>：在 Vercel 项目设置中添加以下环境变量：
+                    <div class="code-section">
+                        <code>OPENAI_API_KEY=your_openai_api_key_here
+META_PAGE_ACCESS_TOKEN=your_meta_page_access_token_here
+META_VERIFY_TOKEN=your_meta_verify_token_here
+META_APP_SECRET=your_meta_app_secret_here</code>
+                    </div>
+                </li>
+                <li><strong>获取 OpenAI API Key</strong>：访问 <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI Platform</a> 创建 API Key</li>
+                <li><strong>配置 Meta 平台</strong>：在 <a href="https://developers.facebook.com/" target="_blank">Meta for Developers</a> 创建应用</li>
+                <li><strong>重新部署</strong>：配置完成后重新部署到 Vercel</li>
+                <li><strong>测试功能</strong>：使用下面的集成代码测试 AI 功能</li>
+            </ol>
+        </div>
+        
+        <!-- 完整 AI 系统集成代码 -->
+        <div id="aiCode" class="code-section" style="display: none;">
+            <code>&lt;!-- 完整 AI 聊天机器人 --&gt;
+&lt;button id="aiChatbotToggle" style="
+  position: fixed; bottom: 20px; right: 20px; 
+  width: 60px; height: 60px; border-radius: 50%; 
+  background: linear-gradient(135deg, #4F46E5, #7C3AED); 
+  color: white; border: none; cursor: pointer; 
+  z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  font-size: 24px; transition: all 0.3s ease;
+"&gt;🤖&lt;/button&gt;
+
+&lt;div id="aiChatbotWindow" style="
+  position: fixed; bottom: 90px; right: 20px; 
+  width: 350px; height: 500px; 
+  border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); 
+  display: none; z-index: 1000; background: white; overflow: hidden;
+"&gt;
+  &lt;div style="background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;"&gt;
+    &lt;h3 style="margin: 0; font-size: 16px; display: flex; align-items: center;"&gt;
+      &lt;span style="width: 8px; height: 8px; background: #10B981; border-radius: 50%; margin-right: 8px;"&gt;&lt;/span&gt;
+      AI 客服助手
+    &lt;/h3&gt;
+    &lt;button id="aiChatbotClose" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;"&gt;×&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div id="aiChatbotMessages" style="height: calc(100% - 120px); padding: 15px; overflow-y: auto; background: #f8fafc;"&gt;
+    &lt;div style="display: flex; margin-bottom: 15px;"&gt;
+      &lt;div style="width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; margin-right: 10px;"&gt;🤖&lt;/div&gt;
+      &lt;div style="max-width: 80%;"&gt;
+        &lt;div style="background: white; padding: 12px 15px; border-radius: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); font-size: 14px;"&gt;
+          👋 您好！我是您的 AI 客服助手，基于先进的 GPT 技术。我可以为您提供专业的医疗咨询、预约服务、诊所信息等帮助。请告诉我您需要什么？
+        &lt;/div&gt;
+        &lt;div style="font-size: 10px; color: #64748b; margin-top: 4px;"&gt;刚刚&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div id="aiQuickReplies" style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px;"&gt;
+      &lt;button onclick="sendAIQuickReply('我想预约服务')" style="background: white; border: 1px solid #e2e8f0; border-radius: 15px; padding: 6px 12px; font-size: 12px; color: #475569; cursor: pointer;"&gt;📅 预约服务&lt;/button&gt;
+      &lt;button onclick="sendAIQuickReply('查看诊所服务')" style="background: white; border: 1px solid #e2e8f0; border-radius: 15px; padding: 6px 12px; font-size: 12px; color: #475569; cursor: pointer;"&gt;🏥 诊所服务&lt;/button&gt;
+      &lt;button onclick="sendAIQuickReply('医生信息')" style="background: white; border: 1px solid #e2e8f0; border-radius: 15px; padding: 6px 12px; font-size: 12px; color: #475569; cursor: pointer;"&gt;👨‍⚕️ 医生信息&lt;/button&gt;
+      &lt;button onclick="sendAIQuickReply('健康咨询')" style="background: white; border: 1px solid #e2e8f0; border-radius: 15px; padding: 6px 12px; font-size: 12px; color: #475569; cursor: pointer;"&gt;💡 健康咨询&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div style="padding: 15px; background: white; border-top: 1px solid #e2e8f0;"&gt;
+    &lt;div style="display: flex; align-items: center; gap: 10px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px; padding: 10px 15px;"&gt;
+      &lt;textarea id="aiChatbotInput" placeholder="请输入您的问题..." style="flex: 1; border: none; background: transparent; outline: none; font-size: 14px; resize: none; max-height: 60px;"&gt;&lt;/textarea&gt;
+      &lt;button onclick="sendAIMessage()" id="aiSendBtn" style="width: 32px; height: 32px; background: linear-gradient(135deg, #4F46E5, #7C3AED); border: none; border-radius: 50%; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px;"&gt;📤&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div style="font-size: 11px; color: #64748b; text-align: right; margin-top: 6px;"&gt;&lt;span id="aiCharCount"&gt;0/500&lt;/span&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+// AI 聊天机器人配置
+const AI_CHATBOT_CONFIG = {
+  apiUrl: 'https://y-b0nr6n92f-david-cais-projects-ae09bbdf.vercel.app',
+  userId: 'user_' + Math.random().toString(36).substr(2, 9),
+  sessionId: 'session_' + Math.random().toString(36).substr(2, 9)
+};
+
+let aiChatbotOpen = false;
+let isTyping = false;
+
+// 切换聊天窗口
+function toggleAIChatbot() {
+  const window = document.getElementById('aiChatbotWindow');
+  const button = document.getElementById('aiChatbotToggle');
+  
+  aiChatbotOpen = !aiChatbotOpen;
+  window.style.display = aiChatbotOpen ? 'block' : 'none';
+  button.style.transform = aiChatbotOpen ? 'scale(1.1)' : 'scale(1)';
+}
+
+// 关闭聊天窗口
+function closeAIChatbot() {
+  const window = document.getElementById('aiChatbotWindow');
+  const button = document.getElementById('aiChatbotToggle');
+  
+  aiChatbotOpen = false;
+  window.style.display = 'none';
+  button.style.transform = 'scale(1)';
+}
+
+// 发送消息到 AI 后端
+async function sendAIMessage() {
+  const input = document.getElementById('aiChatbotInput');
+  const message = input.value.trim();
+  
+  if (!message || isTyping) return;
+  
+  // 添加用户消息
+  addAIMessage(message, 'user');
+  input.value = '';
+  document.getElementById('aiCharCount').textContent = '0/500';
+  
+  // 隐藏快速回复
+  document.getElementById('aiQuickReplies').style.display = 'none';
+  
+  // 显示打字指示器
+  showTypingIndicator();
+  
+  try {
+    // 调用 AI API
+    const response = await fetch(`${AI_CHATBOT_CONFIG.apiUrl}/chat/message`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        message: message,
+        userId: AI_CHATBOT_CONFIG.userId,
+        sessionId: AI_CHATBOT_CONFIG.sessionId
+      })
+    });
+    
+    const data = await response.json();
+    
+    // 隐藏打字指示器
+    hideTypingIndicator();
+    
+    if (data.success) {
+      // 添加 AI 回复
+      addAIMessage(data.response, 'bot');
+    } else {
+      // 显示错误消息
+      addAIMessage('抱歉，我暂时无法回复您的消息。请稍后再试。', 'bot');
+    }
+  } catch (error) {
+    console.error('AI API 调用失败:', error);
+    hideTypingIndicator();
+    addAIMessage('网络连接出现问题，请检查网络后重试。', 'bot');
+  }
+}
+
+// 发送快速回复
+function sendAIQuickReply(text) {
+  document.getElementById('aiChatbotInput').value = text;
+  sendAIMessage();
+}
+
+// 添加消息到聊天界面
+function addAIMessage(text, sender) {
+  const messagesContainer = document.getElementById('aiChatbotMessages');
+  const messageDiv = document.createElement('div');
+  
+  messageDiv.style.cssText = 'display: flex; margin-bottom: 15px;';
+  if (sender === 'user') messageDiv.style.flexDirection = 'row-reverse';
+  
+  const avatar = document.createElement('div');
+  avatar.style.cssText = 'width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; margin-right: 10px; flex-shrink: 0;';
+  if (sender === 'bot') {
+    avatar.style.background = 'linear-gradient(135deg, #4F46E5, #7C3AED)';
+    avatar.style.color = 'white';
+    avatar.textContent = '🤖';
+  } else {
+    avatar.style.background = 'linear-gradient(135deg, #10B981, #059669)';
+    avatar.style.color = 'white';
+    avatar.style.marginRight = '0';
+    avatar.style.marginLeft = '10px';
+    avatar.textContent = '👤';
+  }
+  
+  const content = document.createElement('div');
+  content.style.cssText = 'max-width: 80%;';
+  
+  const bubble = document.createElement('div');
+  bubble.style.cssText = 'background: white; padding: 12px 15px; border-radius: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); font-size: 14px; line-height: 1.4;';
+  if (sender === 'user') {
+    bubble.style.background = 'linear-gradient(135deg, #4F46E5, #7C3AED)';
+    bubble.style.color = 'white';
+  }
+  bubble.textContent = text;
+  
+  const time = document.createElement('div');
+  time.style.cssText = 'font-size: 10px; color: #64748b; margin-top: 4px; text-align: right;';
+  if (sender === 'user') time.style.textAlign = 'left';
+  time.textContent = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+  
+  content.appendChild(bubble);
+  content.appendChild(time);
+  messageDiv.appendChild(avatar);
+  messageDiv.appendChild(content);
+  
+  messagesContainer.appendChild(messageDiv);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+// 显示打字指示器
+function showTypingIndicator() {
+  isTyping = true;
+  const messagesContainer = document.getElementById('aiChatbotMessages');
+  const typingDiv = document.createElement('div');
+  typingDiv.id = 'typingIndicator';
+  typingDiv.style.cssText = 'display: flex; align-items: center; margin-bottom: 15px;';
+  
+  const avatar = document.createElement('div');
+  avatar.style.cssText = 'width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; margin-right: 10px;';
+  avatar.textContent = '🤖';
+  
+  const dots = document.createElement('div');
+  dots.style.cssText = 'display: flex; gap: 4px;';
+  for (let i = 0; i < 3; i++) {
+    const dot = document.createElement('div');
+    dot.style.cssText = 'width: 6px; height: 6px; border-radius: 50%; background: #94a3b8; animation: typing 1.4s infinite ease-in-out;';
+    if (i === 0) dot.style.animationDelay = '-0.32s';
+    if (i === 1) dot.style.animationDelay = '-0.16s';
+    dots.appendChild(dot);
+  }
+  
+  typingDiv.appendChild(avatar);
+  typingDiv.appendChild(dots);
+  messagesContainer.appendChild(typingDiv);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+// 隐藏打字指示器
+function hideTypingIndicator() {
+  isTyping = false;
+  const typingIndicator = document.getElementById('typingIndicator');
+  if (typingIndicator) {
+    typingIndicator.remove();
+  }
+}
+
+// 事件监听
+document.getElementById('aiChatbotToggle').addEventListener('click', toggleAIChatbot);
+document.getElementById('aiChatbotClose').addEventListener('click', closeAIChatbot);
+
+document.getElementById('aiChatbotInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendAIMessage();
+  }
+});
+
+document.getElementById('aiChatbotInput').addEventListener('input', function() {
+  const count = this.value.length;
+  document.getElementById('aiCharCount').textContent = count + '/500';
+});
+
+// 点击外部关闭
+document.addEventListener('click', function(e) {
+  if (aiChatbotOpen && 
+      !document.getElementById('aiChatbotWindow').contains(e.target) && 
+      !document.getElementById('aiChatbotToggle').contains(e.target)) {
+    closeAIChatbot();
+  }
+});
+
+// 添加 CSS 动画
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes typing {
+    0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+    40% { transform: scale(1); opacity: 1; }
+  }
+`;
+document.head.appendChild(style);
+&lt;/script&gt;</code>
+        </div>
+        
+        <!-- 简单版本集成代码 -->
+        <div id="simpleCode" class="code-section" style="display: none;">
+            <code>&lt;!-- 简单聊天机器人 - 即插即用 --&gt;
+&lt;button id="simpleChatbotToggle" style="
+  position: fixed; bottom: 20px; right: 20px; 
+  width: 60px; height: 60px; border-radius: 50%; 
+  background: linear-gradient(135deg, #4F46E5, #7C3AED); 
+  color: white; border: none; cursor: pointer; 
+  z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  font-size: 24px; transition: all 0.3s ease;
+"&gt;💬&lt;/button&gt;
+
+&lt;div id="simpleChatbotWindow" style="
+  position: fixed; bottom: 90px; right: 20px; 
+  width: 350px; height: 500px; 
+  border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); 
+  display: none; z-index: 1000; background: white; overflow: hidden;
+"&gt;
+  &lt;div style="background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;"&gt;
+    &lt;h3 style="margin: 0; font-size: 16px;"&gt;诊所客服助手&lt;/h3&gt;
+    &lt;button id="simpleChatbotClose" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;"&gt;×&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div id="simpleChatbotMessages" style="height: calc(100% - 120px); padding: 15px; overflow-y: auto; background: #f8fafc;"&gt;
+    &lt;div style="display: flex; margin-bottom: 15px;"&gt;
+      &lt;div style="width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; margin-right: 10px;"&gt;🤖&lt;/div&gt;
+      &lt;div style="max-width: 80%;"&gt;
+        &lt;div style="background: white; padding: 12px 15px; border-radius: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); font-size: 14px;"&gt;
+          👋 欢迎来到我们的诊所！我是您的专属客服助手，可以为您提供：📋 服务咨询、📅 预约安排、🏥 诊所信息、💡 健康建议。请告诉我您需要什么帮助？
+        &lt;/div&gt;
+        &lt;div style="font-size: 10px; color: #64748b; margin-top: 4px;"&gt;刚刚&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div id="simpleQuickReplies" style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px;"&gt;
+      &lt;button onclick="sendSimpleQuickReply('预约服务')" style="background: white; border: 1px solid #e2e8f0; border-radius: 15px; padding: 6px 12px; font-size: 12px; color: #475569; cursor: pointer;"&gt;📅 预约服务&lt;/button&gt;
+      &lt;button onclick="sendSimpleQuickReply('查看服务')" style="background: white; border: 1px solid #e2e8f0; border-radius: 15px; padding: 6px 12px; font-size: 12px; color: #475569; cursor: pointer;"&gt;📋 查看服务&lt;/button&gt;
+      &lt;button onclick="sendSimpleQuickReply('诊所信息')" style="background: white; border: 1px solid #e2e8f0; border-radius: 15px; padding: 6px 12px; font-size: 12px; color: #475569; cursor: pointer;"&gt;📍 诊所信息&lt;/button&gt;
+      &lt;button onclick="sendSimpleQuickReply('其他咨询')" style="background: white; border: 1px solid #e2e8f0; border-radius: 15px; padding: 6px 12px; font-size: 12px; color: #475569; cursor: pointer;"&gt;💬 其他咨询&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div style="padding: 15px; background: white; border-top: 1px solid #e2e8f0;"&gt;
+    &lt;div style="display: flex; align-items: center; gap: 10px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px; padding: 10px 15px;"&gt;
+      &lt;textarea id="simpleChatbotInput" placeholder="请输入您的问题..." style="flex: 1; border: none; background: transparent; outline: none; font-size: 14px; resize: none; max-height: 60px;"&gt;&lt;/textarea&gt;
+      &lt;button onclick="sendSimpleMessage()" style="width: 32px; height: 32px; background: linear-gradient(135deg, #4F46E5, #7C3AED); border: none; border-radius: 50%; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px;"&gt;📤&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div style="font-size: 11px; color: #64748b; text-align: right; margin-top: 6px;"&gt;&lt;span id="simpleCharCount"&gt;0/500&lt;/span&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+// 简单聊天机器人功能
+let simpleChatbotOpen = false;
+
+function toggleSimpleChatbot() {
+  const window = document.getElementById('simpleChatbotWindow');
+  const button = document.getElementById('simpleChatbotToggle');
+  
+  simpleChatbotOpen = !simpleChatbotOpen;
+  window.style.display = simpleChatbotOpen ? 'block' : 'none';
+  button.style.transform = simpleChatbotOpen ? 'scale(1.1)' : 'scale(1)';
+}
+
+function closeSimpleChatbot() {
+  const window = document.getElementById('simpleChatbotWindow');
+  const button = document.getElementById('simpleChatbotToggle');
+  
+  simpleChatbotOpen = false;
+  window.style.display = 'none';
+  button.style.transform = 'scale(1)';
+}
+
+function sendSimpleMessage() {
+  const input = document.getElementById('simpleChatbotInput');
+  const message = input.value.trim();
+  
+  if (!message) return;
+  
+  addSimpleMessage(message, 'user');
+  input.value = '';
+  document.getElementById('simpleCharCount').textContent = '0/500';
+  
+  // 隐藏快速回复
+  document.getElementById('simpleQuickReplies').style.display = 'none';
+  
+  // 模拟回复
+  setTimeout(() => {
+    const responses = [
+      '感谢您的消息！我们的客服团队会尽快回复您。',
+      '您好！我是诊所客服助手，有什么可以帮助您的吗？',
+      '请稍等，我正在为您查询相关信息...',
+      '感谢您的咨询，我们会为您提供专业的医疗服务。',
+      '我已经收到您的消息，请稍等片刻...'
+    ];
+    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+    addSimpleMessage(randomResponse, 'bot');
+  }, 1000);
+}
+
+function sendSimpleQuickReply(text) {
+  document.getElementById('simpleChatbotInput').value = text;
+  sendSimpleMessage();
+}
+
+function addSimpleMessage(text, sender) {
+  const messagesContainer = document.getElementById('simpleChatbotMessages');
+  const messageDiv = document.createElement('div');
+  
+  messageDiv.style.cssText = 'display: flex; margin-bottom: 15px;';
+  if (sender === 'user') messageDiv.style.flexDirection = 'row-reverse';
+  
+  const avatar = document.createElement('div');
+  avatar.style.cssText = 'width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; margin-right: 10px; flex-shrink: 0;';
+  if (sender === 'bot') {
+    avatar.style.background = 'linear-gradient(135deg, #4F46E5, #7C3AED)';
+    avatar.style.color = 'white';
+    avatar.textContent = '🤖';
+  } else {
+    avatar.style.background = 'linear-gradient(135deg, #10B981, #059669)';
+    avatar.style.color = 'white';
+    avatar.style.marginRight = '0';
+    avatar.style.marginLeft = '10px';
+    avatar.textContent = '👤';
+  }
+  
+  const content = document.createElement('div');
+  content.style.cssText = 'max-width: 80%;';
+  
+  const bubble = document.createElement('div');
+  bubble.style.cssText = 'background: white; padding: 12px 15px; border-radius: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); font-size: 14px; line-height: 1.4;';
+  if (sender === 'user') {
+    bubble.style.background = 'linear-gradient(135deg, #4F46E5, #7C3AED)';
+    bubble.style.color = 'white';
+  }
+  bubble.textContent = text;
+  
+  const time = document.createElement('div');
+  time.style.cssText = 'font-size: 10px; color: #64748b; margin-top: 4px; text-align: right;';
+  if (sender === 'user') time.style.textAlign = 'left';
+  time.textContent = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+  
+  content.appendChild(bubble);
+  content.appendChild(time);
+  messageDiv.appendChild(avatar);
+  messageDiv.appendChild(content);
+  
+  messagesContainer.appendChild(messageDiv);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+// 事件监听
+document.getElementById('simpleChatbotToggle').addEventListener('click', toggleSimpleChatbot);
+document.getElementById('simpleChatbotClose').addEventListener('click', closeSimpleChatbot);
+
+document.getElementById('simpleChatbotInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendSimpleMessage();
+  }
+});
+
+document.getElementById('simpleChatbotInput').addEventListener('input', function() {
+  const count = this.value.length;
+  document.getElementById('simpleCharCount').textContent = count + '/500';
+});
+
+// 点击外部关闭
+document.addEventListener('click', function(e) {
+  if (simpleChatbotOpen && 
+      !document.getElementById('simpleChatbotWindow').contains(e.target) && 
+      !document.getElementById('simpleChatbotToggle').contains(e.target)) {
+    closeSimpleChatbot();
+  }
+});
+&lt;/script&gt;</code>
+        </div>
+        
+        <!-- 演示区域 -->
+        <div class="demo-section">
+            <h2>🎯 选择你的解决方案</h2>
+            <div class="demo-buttons">
+                <button class="demo-button" onclick="window.open('ai-chat.html', '_blank')">
+                    🧠 测试完整 AI 系统
+                </button>
+                <button class="demo-button" onclick="window.open('inline-chat.html', '_blank')">
+                    ⚡ 测试简单版本
+                </button>
+                <button class="demo-button" onclick="window.open('https://github.com/acutherapy/chatbot', '_blank')">
+                    📚 查看完整源码
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showAISetup() {
+            document.getElementById('aiSetup').style.display = 'block';
+            document.getElementById('aiCode').style.display = 'none';
+            document.getElementById('simpleCode').style.display = 'none';
+        }
+
+        function showAICode() {
+            document.getElementById('aiCode').style.display = 'block';
+            document.getElementById('aiSetup').style.display = 'none';
+            document.getElementById('simpleCode').style.display = 'none';
+        }
+
+        function showSimpleCode() {
+            document.getElementById('simpleCode').style.display = 'block';
+            document.getElementById('aiSetup').style.display = 'none';
+            document.getElementById('aiCode').style.display = 'none';
+        }
+
+        function showSimpleDemo() {
+            window.open('inline-chat.html', '_blank');
+        }
+    </script>
+</body>
+</html>
