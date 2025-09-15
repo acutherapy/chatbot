@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>诊所客服助手</title>
+    <link rel="stylesheet" href="css/chat.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="chat-container">
+        <!-- 聊天头部 -->
+        <div class="chat-header">
+            <div class="header-content">
+                <div class="avatar">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <div class="header-info">
+                    <h3>诊所客服助手</h3>
+                    <span class="status online">在线</span>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-icon" id="clearChat" title="清除对话">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    <button class="btn-icon" id="minimizeChat" title="最小化">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 聊天消息区域 -->
+        <div class="chat-messages" id="chatMessages">
+            <!-- 欢迎消息 -->
+            <div class="message bot-message">
+                <div class="message-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-content">
+                    <div class="message-bubble">
+                        <p>👋 欢迎来到我们的诊所！</p>
+                        <p>我是您的专属客服助手，可以为您提供：</p>
+                        <ul>
+                            <li>📋 服务咨询</li>
+                            <li>📅 预约安排</li>
+                            <li>🏥 诊所信息</li>
+                            <li>💡 健康建议</li>
+                        </ul>
+                        <p>请告诉我您需要什么帮助？</p>
+                    </div>
+                    <div class="message-time">刚刚</div>
+                </div>
+            </div>
+
+            <!-- 快速回复按钮 -->
+            <div class="quick-replies" id="quickReplies">
+                <button class="quick-reply-btn" data-payload="BOOK_APPOINTMENT">
+                    📅 预约服务
+                </button>
+                <button class="quick-reply-btn" data-payload="VIEW_SERVICES">
+                    📋 查看服务
+                </button>
+                <button class="quick-reply-btn" data-payload="CLINIC_INFO">
+                    📍 诊所信息
+                </button>
+                <button class="quick-reply-btn" data-payload="OTHER_INQUIRY">
+                    💬 其他咨询
+                </button>
+            </div>
+        </div>
+
+        <!-- 输入区域 -->
+        <div class="chat-input-container">
+            <div class="input-wrapper">
+                <textarea 
+                    id="messageInput" 
+                    placeholder="请输入您的问题..." 
+                    rows="1"
+                    maxlength="1000"
+                ></textarea>
+                <button id="sendButton" class="send-button" disabled>
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+            <div class="input-footer">
+                <span class="char-count" id="charCount">0/1000</span>
+                <span class="typing-indicator" id="typingIndicator" style="display: none;">
+                    <i class="fas fa-circle"></i>
+                    <i class="fas fa-circle"></i>
+                    <i class="fas fa-circle"></i>
+                    正在输入...
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加载指示器 -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>正在处理您的消息...</p>
+        </div>
+    </div>
+
+    <!-- 错误提示 -->
+    <div class="error-toast" id="errorToast" style="display: none;">
+        <div class="toast-content">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span id="errorMessage">发生错误，请重试</span>
+        </div>
+        <button class="toast-close" onclick="hideError()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <script src="js/chat.js"></script>
+</body>
+</html>
