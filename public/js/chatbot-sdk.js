@@ -74,8 +74,8 @@ class ChatbotSDK {
       position: fixed;
       ${this.position.includes('bottom') ? 'bottom: 90px;' : 'top: 90px;'}
       ${this.position.includes('right') ? 'right: 20px;' : 'left: 20px;'}
-      width: 400px;
-      height: 600px;
+      width: 350px;
+      height: 500px;
       border-radius: 10px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.15);
       display: none;
@@ -111,12 +111,16 @@ class ChatbotSDK {
 
     // 创建 iframe
     const iframe = document.createElement('iframe');
-    iframe.src = this.apiUrl;
+    iframe.src = `${this.apiUrl}/embed.html`;
     iframe.style.cssText = `
       width: 100%;
       height: calc(100% - 60px);
       border: none;
+      background: white;
     `;
+    iframe.setAttribute('scrolling', 'no');
+    iframe.setAttribute('frameborder', '0');
+    iframe.setAttribute('allowtransparency', 'true');
 
     this.chatWindow.appendChild(header);
     this.chatWindow.appendChild(iframe);
