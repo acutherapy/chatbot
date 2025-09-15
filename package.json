@@ -9,7 +9,9 @@
     "dev": "nodemon src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "setup": "node scripts/setup-env.js",
+    "setup-local": "node setup-local-env.js",
     "test-ai": "node scripts/test-ai.js",
+    "test-local": "node local-test.js",
     "deploy": "npx vercel --prod",
     "env:add": "npx vercel env add",
     "env:ls": "npx vercel env ls"
