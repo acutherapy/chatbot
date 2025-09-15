@@ -7,7 +7,12 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "setup": "node scripts/setup-env.js",
+    "test-ai": "node scripts/test-ai.js",
+    "deploy": "npx vercel --prod",
+    "env:add": "npx vercel env add",
+    "env:ls": "npx vercel env ls"
   },
   "keywords": ["chatbot", "messenger", "instagram", "openai", "clinic"],
   "author": "Your Name",
@@ -21,7 +26,8 @@
     "axios": "^1.6.2",
     "winston": "^3.11.0",
     "express-rate-limit": "^7.1.5",
-    "express-validator": "^7.0.1"
+    "express-validator": "^7.0.1",
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
