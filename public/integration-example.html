@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聊天机器人集成示例</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f8fafc;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1e293b;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .method {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+        }
+        .method h2 {
+            color: #4F46E5;
+            margin-top: 0;
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        .code-block code {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 14px;
+        }
+        .demo-button {
+            background: linear-gradient(135deg, #4F46E5, #7C3AED);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: transform 0.2s ease;
+        }
+        .demo-button:hover {
+            transform: translateY(-2px);
+        }
+        .note {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+        .note strong {
+            color: #92400e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 聊天机器人网站集成指南</h1>
+        
+        <div class="method">
+            <h2>方法 1: 使用 JavaScript SDK（推荐）</h2>
+            <p>这是最简单和最灵活的方法，支持自定义配置。</p>
+            
+            <div class="code-block">
+                <code>&lt;!-- 在你的网站 HTML 中添加 --&gt;
+&lt;script src="https://y-dkhr1576t-david-cais-projects-ae09bbdf.vercel.app/js/chatbot-sdk.js"&gt;&lt;/script&gt;
+
+&lt;script&gt;
+// 初始化聊天机器人
+const chatbot = new ChatbotSDK({
+  position: 'bottom-right',  // 位置: bottom-right, bottom-left, top-right, top-left
+  theme: 'default',          // 主题: default, dark, light
+  autoOpen: false,           // 是否自动打开
+  delay: 3000               // 自动打开延迟（毫秒）
+});
+&lt;/script&gt;</code>
+            </div>
+
+            <button class="demo-button" onclick="initChatbot()">初始化聊天机器人</button>
+            <button class="demo-button" onclick="destroyChatbot()">销毁聊天机器人</button>
+        </div>
+
+        <div class="method">
+            <h2>方法 2: 使用 iframe 嵌入</h2>
+            <p>直接嵌入聊天界面，适合需要完全控制样式的场景。</p>
+            
+            <div class="code-block">
+                <code>&lt;!-- 浮动聊天窗口 --&gt;
+&lt;iframe 
+  src="https://y-dkhr1576t-david-cais-projects-ae09bbdf.vercel.app" 
+  width="400" 
+  height="600" 
+  frameborder="0"
+  style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.15);"&gt;
+&lt;/iframe&gt;</code>
+            </div>
+
+            <button class="demo-button" onclick="toggleIframe()">切换 iframe 显示</button>
+        </div>
+
+        <div class="method">
+            <h2>方法 3: 聊天按钮 + 弹窗</h2>
+            <p>创建自定义的聊天按钮和弹窗，完全控制用户体验。</p>
+            
+            <div class="code-block">
+                <code>&lt;!-- 聊天按钮 --&gt;
+&lt;button id="chatToggle" style="
+  position: fixed; bottom: 20px; right: 20px; 
+  width: 60px; height: 60px; border-radius: 50%; 
+  background: #4F46E5; color: white; border: none; 
+  cursor: pointer; z-index: 1000;
+"&gt;💬&lt;/button&gt;
+
+&lt;!-- 聊天窗口 --&gt;
+&lt;div id="chatWindow" style="
+  position: fixed; bottom: 90px; right: 20px; 
+  width: 400px; height: 600px; 
+  border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); 
+  display: none; z-index: 1000;
+"&gt;
+  &lt;iframe 
+    src="https://y-dkhr1576t-david-cais-projects-ae09bbdf.vercel.app" 
+    width="100%" height="100%" frameborder="0"
+    style="border-radius: 10px;"&gt;
+  &lt;/iframe&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+document.getElementById('chatToggle').addEventListener('click', function() {
+  const chatWindow = document.getElementById('chatWindow');
+  chatWindow.style.display = chatWindow.style.display === 'none' ? 'block' : 'none';
+});
+&lt;/script&gt;</code>
+            </div>
+
+            <button class="demo-button" onclick="initCustomChat()">初始化自定义聊天</button>
+        </div>
+
+        <div class="method">
+            <h2>方法 4: 使用配置脚本</h2>
+            <p>通过配置脚本自动初始化，适合需要统一管理的场景。</p>
+            
+            <div class="code-block">
+                <code>&lt;!-- 配置脚本 --&gt;
+&lt;script type="application/json" data-chatbot-config&gt;
+{
+  "position": "bottom-right",
+  "theme": "default",
+  "autoOpen": true,
+  "delay": 5000
+}
+&lt;/script&gt;
+
+&lt;script src="https://y-dkhr1576t-david-cais-projects-ae09bbdf.vercel.app/js/chatbot-sdk.js"&gt;&lt;/script&gt;</code>
+            </div>
+
+            <button class="demo-button" onclick="initWithConfig()">使用配置初始化</button>
+        </div>
+
+        <div class="note">
+            <strong>💡 提示：</strong>
+            <ul>
+                <li>确保你的网站支持 HTTPS（聊天机器人需要安全连接）</li>
+                <li>可以根据需要调整位置、大小和样式</li>
+                <li>建议在移动端使用较小的尺寸</li>
+                <li>可以通过 API 发送消息到聊天机器人</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 隐藏的 iframe 用于演示 -->
+    <iframe id="demoIframe" 
+      src="https://y-dkhr1576t-david-cais-projects-ae09bbdf.vercel.app" 
+      width="400" 
+      height="600" 
+      frameborder="0"
+      style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); display: none;">
+    </iframe>
+
+    <script>
+        let chatbot = null;
+        let customChatInitialized = false;
+
+        // 方法 1: 初始化聊天机器人
+        function initChatbot() {
+            if (chatbot) {
+                chatbot.destroy();
+            }
+            
+            // 动态加载 SDK
+            if (!document.querySelector('script[src*="chatbot-sdk.js"]')) {
+                const script = document.createElement('script');
+                script.src = 'https://y-dkhr1576t-david-cais-projects-ae09bbdf.vercel.app/js/chatbot-sdk.js';
+                script.onload = () => {
+                    chatbot = new ChatbotSDK({
+                        position: 'bottom-right',
+                        autoOpen: true,
+                        delay: 1000
+                    });
+                };
+                document.head.appendChild(script);
+            } else {
+                chatbot = new ChatbotSDK({
+                    position: 'bottom-right',
+                    autoOpen: true,
+                    delay: 1000
+                });
+            }
+        }
+
+        // 销毁聊天机器人
+        function destroyChatbot() {
+            if (chatbot) {
+                chatbot.destroy();
+                chatbot = null;
+            }
+        }
+
+        // 方法 2: 切换 iframe 显示
+        function toggleIframe() {
+            const iframe = document.getElementById('demoIframe');
+            iframe.style.display = iframe.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // 方法 3: 初始化自定义聊天
+        function initCustomChat() {
+            if (customChatInitialized) return;
+            
+            // 创建聊天按钮
+            const chatButton = document.createElement('button');
+            chatButton.innerHTML = '💬';
+            chatButton.style.cssText = `
+                position: fixed; bottom: 20px; left: 20px; 
+                width: 60px; height: 60px; border-radius: 50%; 
+                background: linear-gradient(135deg, #4F46E5, #7C3AED); 
+                color: white; border: none; cursor: pointer; 
+                z-index: 1000; font-size: 24px;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            `;
+
+            // 创建聊天窗口
+            const chatWindow = document.createElement('div');
+            chatWindow.style.cssText = `
+                position: fixed; bottom: 90px; left: 20px; 
+                width: 400px; height: 600px; 
+                border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); 
+                display: none; z-index: 1000; background: white;
+            `;
+
+            const iframe = document.createElement('iframe');
+            iframe.src = 'https://y-dkhr1576t-david-cais-projects-ae09bbdf.vercel.app';
+            iframe.style.cssText = 'width: 100%; height: 100%; border: none; border-radius: 10px;';
+
+            chatWindow.appendChild(iframe);
+            document.body.appendChild(chatButton);
+            document.body.appendChild(chatWindow);
+
+            // 绑定事件
+            chatButton.addEventListener('click', () => {
+                chatWindow.style.display = chatWindow.style.display === 'none' ? 'block' : 'none';
+            });
+
+            customChatInitialized = true;
+        }
+
+        // 方法 4: 使用配置初始化
+        function initWithConfig() {
+            // 创建配置脚本
+            const configScript = document.createElement('script');
+            configScript.type = 'application/json';
+            configScript.setAttribute('data-chatbot-config', '');
+            configScript.textContent = JSON.stringify({
+                position: 'bottom-left',
+                theme: 'default',
+                autoOpen: true,
+                delay: 2000
+            });
+
+            // 动态加载 SDK
+            if (!document.querySelector('script[src*="chatbot-sdk.js"]')) {
+                const script = document.createElement('script');
+                script.src = 'https://y-dkhr1576t-david-cais-projects-ae09bbdf.vercel.app/js/chatbot-sdk.js';
+                document.head.appendChild(script);
+            }
+
+            document.head.appendChild(configScript);
+        }
+    </script>
+</body>
+</html>

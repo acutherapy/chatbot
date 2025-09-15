@@ -18,6 +18,14 @@ app.use(express.urlencoded({ extended: true }));
 // 静态文件服务
 app.use(express.static(join(__dirname, '../public')));
 
+// 允许跨域访问 SDK
+app.use('/js/chatbot-sdk.js', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.sendFile(join(__dirname, '../public/js/chatbot-sdk.js'));
+});
+
 // 基本路由
 app.get('/', (req, res) => {
   res.sendFile(join(__dirname, '../public/index.html'));
