@@ -11,9 +11,19 @@ const __dirname = dirname(__filename);
 const app = express();
 
 // 基本中间件
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  credentials: false
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// 允许 iframe 嵌入
+app.use((req, res, next) => {
+  res.removeHeader('X-Frame-Options');
+  res.setHeader('X-Frame-Options', 'ALLOWALL');
+  next();
+});
 
 // 静态文件服务
 app.use(express.static(join(__dirname, '../public')));
@@ -29,6 +39,20 @@ app.use('/js/chatbot-sdk.js', (req, res) => {
 // 基本路由
 app.get('/', (req, res) => {
   res.sendFile(join(__dirname, '../public/index.html'));
+});
+
+// 嵌入页面路由
+app.get('/embed.html', (req, res) => {
+  res.setHeader('X-Frame-Options', 'ALLOWALL');
+  res.setHeader('Content-Security-Policy', "frame-ancestors *");
+  res.sendFile(join(__dirname, '../public/embed.html'));
+});
+
+// 简单嵌入页面路由
+app.get('/simple-embed.html', (req, res) => {
+  res.setHeader('X-Frame-Options', 'ALLOWALL');
+  res.setHeader('Content-Security-Policy', "frame-ancestors *");
+  res.sendFile(join(__dirname, '../public/simple-embed.html'));
 });
 
 app.get('/health', (req, res) => {
