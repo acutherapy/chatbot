@@ -81,7 +81,9 @@ export const validateConfig = () => {
   const missing = required.filter(key => !process.env[key]);
   
   if (missing.length > 0) {
-    throw new Error(`Missing required environment variables: ${missing.join(', ')}`);
+    console.warn(`⚠️ Missing environment variables: ${missing.join(', ')}`);
+    console.log('🔄 Running in limited mode...');
+    return false;
   }
   
   return true;

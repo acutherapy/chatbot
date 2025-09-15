@@ -20,13 +20,12 @@ import knowledgeService from './services/knowledgeService.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// 验证配置（在 Vercel 环境中跳过严格验证）
-try {
-  validateConfig();
+// 验证配置
+const configValid = validateConfig();
+if (configValid) {
   console.log('✅ Configuration validated successfully');
-} catch (error) {
-  console.warn('⚠️ Configuration validation failed:', error.message);
-  console.log('🔄 Continuing in production mode...');
+} else {
+  console.log('🔄 Running in limited mode - some features may be disabled');
 }
 
 // 创建 Express 应用
@@ -84,23 +83,33 @@ app.get('/health', async (req, res) => {
       uptime: process.uptime(),
       memory: process.memoryUsage(),
       services: {
-        openai: 'connected',
         knowledgeBase: 'loaded',
         messageSender: 'ready'
       }
     };
 
-    // 检查 Meta API 连接
-    try {
-      const isValid = await messageSender.validateAccessToken();
-      health.services.meta = isValid ? 'connected' : 'disconnected';
-    } catch (error) {
-      health.services.meta = 'error';
-    }
-
     // 检查知识库
     const kbStats = knowledgeService.getStats();
     health.services.knowledgeBase = kbStats.totalFAQ > 0 ? 'loaded' : 'empty';
+
+    // 检查 OpenAI 配置
+    if (config.openai.apiKey) {
+      health.services.openai = 'configured';
+    } else {
+      health.services.openai = 'not_configured';
+    }
+
+    // 检查 Meta API 连接（如果有配置）
+    if (config.meta.pageAccessToken) {
+      try {
+        const isValid = await messageSender.validateAccessToken();
+        health.services.meta = isValid ? 'connected' : 'disconnected';
+      } catch (error) {
+        health.services.meta = 'error';
+      }
+    } else {
+      health.services.meta = 'not_configured';
+    }
 
     res.json(health);
   } catch (error) {
