@@ -24,10 +24,6 @@
       "dest": "/src/server.js"
     },
     {
-      "src": "/(.*)",
-      "dest": "/public/$1"
-    },
-    {
       "src": "/",
       "dest": "/src/server.js"
     }
