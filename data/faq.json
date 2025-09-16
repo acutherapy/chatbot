@@ -64,221 +64,6 @@
       "category": "医生信息",
       "priority": 2
     },
-    [
-  {
-    "id": "faq_hurt",
-    "title": "🤔 Does acupuncture hurt?",
-    "payload": "Most people feel little or no pain. You may notice a brief, mild sensation when the sterile, single-use needle is inserted.",
-    "category": "Acupuncture Basics"
-  },
-  {
-    "id": "faq_safe",
-    "title": "🛡️ Is acupuncture safe?",
-    "payload": "Yes — when performed by a licensed practitioner. We use sterile, single-use, disposable needles and follow strict hygiene protocols.",
-    "category": "Acupuncture Basics"
-  },
-  {
-    "id": "faq_sessions",
-    "title": "📆 How many sessions will I need?",
-    "payload": "It depends on your condition, severity, and how your body responds. Some feel relief after one session; others may need a series. Your acupuncturist will create a personalized plan.",
-    "category": "Treatment"
-  },
-  {
-    "id": "faq_before",
-    "title": "📝 What should I do before my appointment?",
-    "payload": "Eat a light meal, wear loose clothing, and arrive a few minutes early so you can relax before treatment.",
-    "category": "Visit Prep"
-  },
-  {
-    "id": "faq_length",
-    "title": "⏱️ How long is a typical session?",
-    "payload": "The first visit usually lasts 45–60 minutes, including consultation and treatment. Follow-up visits are typically 30–45 minutes.",
-    "category": "Treatment"
-  },
-  {
-    "id": "faq_insurance",
-    "title": "💳 Can I use my insurance?",
-    "payload": "Many insurance plans cover acupuncture for certain conditions. We can help verify your coverage and explain your benefits before your first appointment.",
-    "category": "Payment & Insurance"
-  },
-  {
-    "id": "faq_side_effects",
-    "title": "⚠️ Are there any side effects?",
-    "payload": "Minor bruising, light bleeding, or temporary soreness at a needle site can happen but usually resolve quickly.",
-    "category": "Safety"
-  },
-  {
-    "id": "faq_combine",
-    "title": "➕ Can I combine acupuncture with other treatments or medications?",
-    "payload": "Yes — acupuncture is often used alongside conventional medicine, physical therapy, or chiropractic care. Please inform your acupuncturist about any treatments or medications you’re taking.",
-    "category": "Safety"
-  },
-  {
-    "id": "faq_needles",
-    "title": "😌 What if I’m afraid of needles?",
-    "payload": "Our practitioners are gentle and explain each step. Many people who were nervous at first end up finding sessions relaxing.",
-    "category": "Comfort"
-  }
-    
-    {
-      "id": "health_checkup",
-      "question": "健康体检",
-      "answer": "我们提供全面的健康体检服务：\n\n🔍 基础体检：血压、血糖、心电图\n🩸 血液检查：血常规、生化全套\n📷 影像检查：X光、B超、CT\n👁️ 专科检查：眼科、口腔科\n\n💰 体检套餐：从基础到全面，价格优惠\n📅 预约体检：请提前1-2天预约",
-      "keywords": ["体检", "健康检查", "体检套餐", "血液检查", "影像检查"],
-      "category": "体检服务",
-      "priority": 2
-    },
-    {
-      "id": "insurance_coverage",
-      "question": "医保报销",
-      "answer": "医保报销说明：\n\n🏥 我们已接入医保系统\n💳 支持医保卡直接结算\n📋 报销比例：根据医保政策\n📄 需要材料：医保卡、身份证\n\n💡 具体报销比例请咨询收费处或拨打医保咨询热线。",
-      "keywords": ["医保", "报销", "社保", "医保卡", "结算", "比例"],
-      "category": "费用相关",
-      "priority": 2
-    }
-  ],
-  "categories": [
-   {
-  "categories": [
-    {
-      "id": "基本信息",
-      "name": "基本信息",
-      "description": "诊所的基本信息和联系方式",
-      "details": {
-        "brand": "AcuTherapy Clinics",
-        "locations": [
-          {
-            "name": "Honolulu Clinic",
-            "address": "123 Liliha St, Honolulu, HI 96817",
-            "phone": "+1 (808) 555-1234",
-            "hours": "Mon–Fri 9:00–18:00, Sat 9:00–14:00"
-          },
-          {
-            "name": "Aiea Clinic",
-            "address": "456 Aiea Heights Dr, Aiea, HI 96701",
-            "phone": "+1 (808) 555-5678",
-            "hours": "Mon–Fri 9:00–18:00"
-          }
-        ],
-        "email": "info@acutherapy.com",
-        "website": "https://acutherapy.com"
-      }
-    },
-    {
-      "id": "预约服务",
-      "name": "预约服务",
-      "description": "预约相关的服务和流程",
-      "details": {
-        "methods": ["在线预约表单", "电话预约", "前台预约"],
-        "policy": "初诊建议提前 10 分钟到店填写表格，24 小时内可免费改期一次"
-      }
-    },
-    {
-      "id": "服务项目",
-      "name": "服务项目",
-      "description": "诊所提供的医疗服务项目",
-      "details": {
-        "treatments": [
-          "针灸治疗（疼痛管理、内科调理、压力/睡眠问题）",
-          "拔罐与火罐疗法",
-          "中医推拿/医用按摩",
-          "刮痧",
-          "电针与温针",
-          "康复运动指导"
-        ]
-      }
-    },
-    {
-      "id": "费用相关",
-      "name": "费用相关",
-      "description": "收费标准和支付方式",
-      "details": {
-        "pricing": {
-          "initial_visit": "约 $95–$125 / 45–60 分钟",
-          "follow_up": "约 $70–$95 / 30–45 分钟"
-        },
-        "insurance": [
-          "HMSA",
-          "UHA",
-          "HMAA",
-          "TriWest",
-          "Medicare（部分项目）"
-        ],
-        "payments": ["现金", "信用卡", "借记卡", "部分保险直接结算"]
-      }
-    },
-    {
-      "id": "紧急服务",
-      "name": "紧急服务",
-      "description": "紧急情况处理方式",
-      "details": {
-        "note": "针灸诊所不提供急诊服务。如遇胸痛、呼吸困难、突发剧痛或其他危急症状，请立即拨打 911 或前往最近医院急诊。",
-        "after_hours": "非营业时间可留言或发送邮件，我们会在下一个工作日联系您。"
-      }
-    },
-    {
-      "id": "就诊指南",
-      "name": "就诊指南",
-      "description": "就诊流程和注意事项",
-      "details": {
-        "before_visit": "建议就诊前吃少量食物，不要空腹；穿宽松衣物方便针灸。",
-        "during_visit": "初诊包含咨询和治疗，约 45–60 分钟；复诊约 30–45 分钟。",
-        "after_visit": "治疗后可稍作休息，避免剧烈运动或饮酒。"
-      }
-    },
-    {
-      "id": "医生信息",
-      "name": "医生信息",
-      "description": "医生团队和专家介绍",
-      "details": {
-        "lead_practitioner": "Dr. David Cai, L.Ac — 拥有 30+ 年临床经验，擅长疼痛康复与整体调理",
-        "team": [
-          "Dr. Yeo, L.Ac — 专注内科与压力管理",
-          "Dr. Wong, L.Ac — 运动损伤与康复针灸"
-        ]
-      }
-    },
-    {
-      "id": "体检服务",
-      "name": "体检服务",
-      "description": "健康体检相关服务",
-      "details": {
-        "offer": "提供基础健康评估、姿势分析与生活方式指导，帮助制定个性化调理方案。"
-      }
-    }
-  ],
-  "quickReplies": [
-    {
-      "id": "appointment_quick",
-      "title": "📅 预约服务",
-      "payload": "BOOK_APPOINTMENT",
-      "category": "预约服务"
-    },
-    {
-      "id": "services_quick",
-      "title": "📋 查看服务",
-      "payload": "VIEW_SERVICES",
-      "category": "服务项目"
-    },
-    {
-      "id": "location_quick",
-      "title": "📍 诊所信息",
-      "payload": "CLINIC_INFO",
-      "category": "基本信息"
-    },
-    {
-      "id": "emergency_quick",
-      "title": "🚨 紧急联系",
-      "payload": "EMERGENCY_CONTACT",
-      "category": "紧急服务"
-    }
-  ]
-}
-
-  ]
-}
-{
-  "faq": [
     {
       "id": 0,
       "question": "Do acupuncture needles hurt?",
@@ -462,6 +247,212 @@
       "keywords": ["repeat issues", "perspective", "attitude", "problems", "calm", "positive", "mindset", "wellbeing", "change", "habits"],
       "category": "Health",
       "priority": 2
+    },
+    {
+    "id": "faq_hurt",
+    "title": "🤔 Does acupuncture hurt?",
+    "payload": "Most people feel little or no pain. You may notice a brief, mild sensation when the sterile, single-use needle is inserted.",
+    "category": "Acupuncture Basics"
+  },
+  {
+    "id": "faq_safe",
+    "title": "🛡️ Is acupuncture safe?",
+    "payload": "Yes — when performed by a licensed practitioner. We use sterile, single-use, disposable needles and follow strict hygiene protocols.",
+    "category": "Acupuncture Basics"
+  },
+  {
+    "id": "faq_sessions",
+    "title": "📆 How many sessions will I need?",
+    "payload": "It depends on your condition, severity, and how your body responds. Some feel relief after one session; others may need a series. Your acupuncturist will create a personalized plan.",
+    "category": "Treatment"
+  },
+  {
+    "id": "faq_before",
+    "title": "📝 What should I do before my appointment?",
+    "payload": "Eat a light meal, wear loose clothing, and arrive a few minutes early so you can relax before treatment.",
+    "category": "Visit Prep"
+  },
+  {
+    "id": "faq_length",
+    "title": "⏱️ How long is a typical session?",
+    "payload": "The first visit usually lasts 45–60 minutes, including consultation and treatment. Follow-up visits are typically 30–45 minutes.",
+    "category": "Treatment"
+  },
+  {
+    "id": "faq_insurance",
+    "title": "💳 Can I use my insurance?",
+    "payload": "Many insurance plans cover acupuncture for certain conditions. We can help verify your coverage and explain your benefits before your first appointment.",
+    "category": "Payment & Insurance"
+  },
+  {
+    "id": "faq_side_effects",
+    "title": "⚠️ Are there any side effects?",
+    "payload": "Minor bruising, light bleeding, or temporary soreness at a needle site can happen but usually resolve quickly.",
+    "category": "Safety"
+  },
+  {
+    "id": "faq_combine",
+    "title": "➕ Can I combine acupuncture with other treatments or medications?",
+    "payload": "Yes — acupuncture is often used alongside conventional medicine, physical therapy, or chiropractic care. Please inform your acupuncturist about any treatments or medications you’re taking.",
+    "category": "Safety"
+  },
+  {
+    "id": "faq_needles",
+    "title": "😌 What if I’m afraid of needles?",
+    "payload": "Our practitioners are gentle and explain each step. Many people who were nervous at first end up finding sessions relaxing.",
+    "category": "Comfort"
+  },
+    {
+      "id": "health_checkup",
+      "question": "健康体检",
+      "answer": "我们提供全面的健康体检服务：\n\n🔍 基础体检：血压、血糖、心电图\n🩸 血液检查：血常规、生化全套\n📷 影像检查：X光、B超、CT\n👁️ 专科检查：眼科、口腔科\n\n💰 体检套餐：从基础到全面，价格优惠\n📅 预约体检：请提前1-2天预约",
+      "keywords": ["体检", "健康检查", "体检套餐", "血液检查", "影像检查"],
+      "category": "体检服务",
+      "priority": 2
+    },
+    {
+      "id": "insurance_coverage",
+      "question": "医保报销",
+      "answer": "医保报销说明：\n\n🏥 我们已接入医保系统\n💳 支持医保卡直接结算\n📋 报销比例：根据医保政策\n📄 需要材料：医保卡、身份证\n\n💡 具体报销比例请咨询收费处或拨打医保咨询热线。",
+      "keywords": ["医保", "报销", "社保", "医保卡", "结算", "比例"],
+      "category": "费用相关",
+      "priority": 2
     }
+  ],
+ 
+   {
+  "categories": [
+    {
+      "id": "基本信息",
+      "name": "基本信息",
+      "description": "诊所的基本信息和联系方式",
+      "details": {
+        "brand": "AcuTherapy Clinics",
+        "locations": [
+          {
+            "name": "Honolulu Clinic",
+            "address": "123 Liliha St, Honolulu, HI 96817",
+            "phone": "+1 (808) 555-1234",
+            "hours": "Mon–Fri 9:00–18:00, Sat 9:00–14:00"
+          },
+          {
+            "name": "Aiea Clinic",
+            "address": "456 Aiea Heights Dr, Aiea, HI 96701",
+            "phone": "+1 (808) 555-5678",
+            "hours": "Mon–Fri 9:00–18:00"
+          }
+        ],
+        "email": "info@acutherapy.com",
+        "website": "https://acutherapy.com"
+      }
+    },
+    {
+      "id": "预约服务",
+      "name": "预约服务",
+      "description": "预约相关的服务和流程",
+      "details": {
+        "methods": ["在线预约表单", "电话预约", "前台预约"],
+        "policy": "初诊建议提前 10 分钟到店填写表格，24 小时内可免费改期一次"
+      }
+    },
+    {
+      "id": "服务项目",
+      "name": "服务项目",
+      "description": "诊所提供的医疗服务项目",
+      "details": {
+        "treatments": [
+          "针灸治疗（疼痛管理、内科调理、压力/睡眠问题）",
+          "拔罐与火罐疗法",
+          "中医推拿/医用按摩",
+          "刮痧",
+          "电针与温针",
+          "康复运动指导"
+        ]
+      }
+    },
+    {
+      "id": "费用相关",
+      "name": "费用相关",
+      "description": "收费标准和支付方式",
+      "details": {
+        "pricing": {
+          "initial_visit": "约 $95–$125 / 45–60 分钟",
+          "follow_up": "约 $70–$95 / 30–45 分钟"
+        },
+        "insurance": [
+          "HMSA",
+          "UHA",
+          "HMAA",
+          "TriWest",
+          "Medicare（部分项目）"
+        ],
+        "payments": ["现金", "信用卡", "借记卡", "部分保险直接结算"]
+      }
+    },
+    {
+      "id": "紧急服务",
+      "name": "紧急服务",
+      "description": "紧急情况处理方式",
+      "details": {
+        "note": "针灸诊所不提供急诊服务。如遇胸痛、呼吸困难、突发剧痛或其他危急症状，请立即拨打 911 或前往最近医院急诊。",
+        "after_hours": "非营业时间可留言或发送邮件，我们会在下一个工作日联系您。"
+      }
+    },
+    {
+      "id": "就诊指南",
+      "name": "就诊指南",
+      "description": "就诊流程和注意事项",
+      "details": {
+        "before_visit": "建议就诊前吃少量食物，不要空腹；穿宽松衣物方便针灸。",
+        "during_visit": "初诊包含咨询和治疗，约 45–60 分钟；复诊约 30–45 分钟。",
+        "after_visit": "治疗后可稍作休息，避免剧烈运动或饮酒。"
+      }
+    },
+    {
+      "id": "医生信息",
+      "name": "医生信息",
+      "description": "医生团队和专家介绍",
+      "details": {
+        "lead_practitioner": "Dr. David Cai, L.Ac — 拥有 30+ 年临床经验，擅长疼痛康复与整体调理",
+        "team": [
+          "Dr. Yeo, L.Ac — 专注内科与压力管理",
+          "Dr. Wong, L.Ac — 运动损伤与康复针灸"
+        ]
+      }
+    },
+    {
+      "id": "体检服务",
+      "name": "体检服务",
+      "description": "健康体检相关服务",
+      "details": {
+        "offer": "提供基础健康评估、姿势分析与生活方式指导，帮助制定个性化调理方案。"
+      }
+    }
+  ],
+  "quickReplies": [
+    {
+      "id": "appointment_quick",
+      "title": "📅 预约服务",
+      "payload": "BOOK_APPOINTMENT",
+      "category": "预约服务"
+    },
+    {
+      "id": "services_quick",
+      "title": "📋 查看服务",
+      "payload": "VIEW_SERVICES",
+      "category": "服务项目"
+    },
+    {
+      "id": "location_quick",
+      "title": "📍 诊所信息",
+      "payload": "CLINIC_INFO",
+      "category": "基本信息"
+    },
+  ]
+}
+
+  ]
+}
+
   ]
 }
