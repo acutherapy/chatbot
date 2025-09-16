@@ -277,3 +277,191 @@
 
   ]
 }
+{
+  "faq": [
+    {
+      "id": 0,
+      "question": "Do acupuncture needles hurt?",
+      "answer": "Most people hardly feel the needles — maybe a tiny sting like a mosquito bite. Some points are more sensitive, which is normal. If any spot feels too strong, we adjust the needle.",
+      "keywords": ["acupuncture pain", "needles", "hurt", "sting", "mosquito bite", "needle sensation", "comfort", "adjust needle", "poke", "treatment feeling"],
+      "category": "Basics",
+      "priority": 1
+    },
+    {
+      "id": 1,
+      "question": "What should I expect during treatment?",
+      "answer": "It's normal to feel soreness, heaviness, tingling, or warmth when needles go in — this is called De Qi, showing energy is moving. Avoid moving once needles are set. If you feel sharp or burning, tell us so we can adjust.",
+      "keywords": ["treatment sensations", "De Qi", "tingling", "heaviness", "soreness", "needle feeling", "energy moving", "burning", "sharp pain", "adjustment"],
+      "category": "Basics",
+      "priority": 1
+    },
+    {
+      "id": 2,
+      "question": "What should I do after acupuncture?",
+      "answer": "Drink a cup of room-temperature water, rest 10–15 minutes, and take it easy. Wait a few hours before showering. Try to avoid cold food, drinks, or cold water that day — especially for stomach or menstrual issues.",
+      "keywords": ["aftercare", "post treatment", "water", "rest", "shower", "avoid cold", "menstrual", "digestion", "recovery", "self care"],
+      "category": "Aftercare",
+      "priority": 1
+    },
+    {
+      "id": 3,
+      "question": "How can I improve my condition?",
+      "answer": "Follow these in order: find inner peace, get enough sleep, keep regular meals, share love, and move your body with joy.",
+      "keywords": ["self improvement", "health tips", "sleep", "nutrition", "inner peace", "love", "fitness", "routine", "wellbeing", "balance"],
+      "category": "Lifestyle",
+      "priority": 2
+    },
+    {
+      "id": 4,
+      "question": "How can I feel peaceful?",
+      "answer": "We can’t control everything. Letting go brings calm. Meditation or yoga help you stay present, observe life, and make healthy changes.",
+      "keywords": ["peace", "calm", "meditation", "yoga", "mindfulness", "relaxation", "inner peace", "stress relief", "balance", "clarity"],
+      "category": "Lifestyle",
+      "priority": 2
+    },
+    {
+      "id": 5,
+      "question": "How do I start meditating?",
+      "answer": "Try standing meditation once a day, morning is best. Stand relaxed, knees slightly bent, arms raised gently. Notice your breath and any sensations. Start with 30 sec, build to 10 min. Finish by lowering hands and shaking limbs.",
+      "keywords": ["meditation", "standing", "breathing", "relax", "mindfulness", "qi", "energy", "practice", "calm", "focus"],
+      "category": "Lifestyle",
+      "priority": 2
+    },
+    {
+      "id": 6,
+      "question": "What if tests say I'm fine but I still feel unwell?",
+      "answer": "Symptoms show your body wants balance. If you often feel tired, have pain, poor sleep, digestion issues, or low libido, acupuncture and Chinese medicine can help your body reset.",
+      "keywords": ["unwell", "symptoms", "fatigue", "pain", "digestion", "low libido", "imbalance", "acupuncture help", "chinese medicine", "reset"],
+      "category": "Health",
+      "priority": 2
+    },
+    {
+      "id": 7,
+      "question": "What is acupuncture and how does it work?",
+      "answer": "Acupuncture uses thin needles on energy points to unblock or guide energy along meridians linked to organs. This restores balance, eases pain, and supports long-term health.",
+      "keywords": ["acupuncture", "how it works", "meridians", "energy flow", "needles", "balance", "pain relief", "qi", "healing", "treatment"],
+      "category": "Basics",
+      "priority": 1
+    },
+    {
+      "id": 8,
+      "question": "What is the philosophy behind acupuncture?",
+      "answer": "Acupuncture comes from Chinese medicine (Zhong Yi). Zhong means balance; Yi is the medical tools like acupuncture, cupping, herbs. Together they keep Qi flowing at the right time and place so health thrives.",
+      "keywords": ["philosophy", "Zhong Yi", "balance", "qi", "herbal", "cupping", "traditional chinese medicine", "principles", "healing", "flow"],
+      "category": "Basics",
+      "priority": 2
+    },
+    {
+      "id": 9,
+      "question": "How many sessions will I need?",
+      "answer": "Everyone is different, but most feel change after a few visits. Lasting improvement often takes 10–15 sessions.",
+      "keywords": ["sessions", "treatment plan", "frequency", "improvement", "course", "number", "visits", "results", "healing", "duration"],
+      "category": "Treatment",
+      "priority": 1
+    },
+    {
+      "id": 10,
+      "question": "Why do I sometimes feel worse or tired after treatment?",
+      "answer": "Your body may start deep repairs after acupuncture, making you tired or sore. This is part of healing and usually eases with rest.",
+      "keywords": ["tired", "after treatment", "worse", "healing reaction", "repair", "rest", "soreness", "normal", "post session", "recovery"],
+      "category": "Aftercare",
+      "priority": 2
+    },
+    {
+      "id": 11,
+      "question": "What happens at my first visit?",
+      "answer": "You’ll check in, fill forms, and have vitals taken. The doctor will review your history, goals, and may run an energy test. After explaining the plan and payments, you’ll get your first treatment (30–45 min).",
+      "keywords": ["first visit", "intake", "forms", "history", "energy test", "treatment", "appointment", "plan", "payment", "consultation"],
+      "category": "Basics",
+      "priority": 1
+    },
+    {
+      "id": 12,
+      "question": "What if I'm scared of needles?",
+      "answer": "We can talk through each step, use gentle massage or tapping before insertion, or chat during needling to keep you relaxed.",
+      "keywords": ["fear", "needles", "relax", "massage", "tapping", "talking", "anxiety", "comfort", "support", "calm"],
+      "category": "Comfort",
+      "priority": 2
+    },
+    {
+      "id": 13,
+      "question": "How often should I get acupuncture?",
+      "answer": "Think of boiling water — steady heat works best. For many, 2–3 times a week for 6–8 weeks helps gather results, then frequency is adjusted.",
+      "keywords": ["frequency", "course", "boiling water", "plan", "healing", "benefits", "weeks", "schedule", "improvement", "results"],
+      "category": "Treatment",
+      "priority": 2
+    },
+    {
+      "id": 14,
+      "question": "Why does my acupuncturist ask about stress or mood?",
+      "answer": "Emotions affect energy flow and can cause pain. Anger, stress, sadness, or worry can block Qi and show up as neck, back, or stomach problems.",
+      "keywords": ["stress", "mood", "qi", "energy", "pain", "emotions", "neck", "back", "stomach", "questions"],
+      "category": "Health",
+      "priority": 2
+    },
+    {
+      "id": 15,
+      "question": "Why are emotions important for health?",
+      "answer": "In Chinese medicine, organs and emotions connect through the Five Elements. Joy (heart), worry (spleen), grief (lungs), fear (kidneys), anger (liver). Balance keeps body and mind well.",
+      "keywords": ["emotions", "health", "five elements", "joy", "worry", "grief", "fear", "anger", "organs"],
+      "category": "Health",
+      "priority": 2
+    },
+    {
+      "id": 16,
+      "question": "How is acupuncture different from massage or physical therapy?",
+      "answer": "Massage relaxes soft tissues. Physical therapy trains movement and strength. Acupuncture works on both body and energy to unblock and reconnect systems. They complement each other.",
+      "keywords": ["acupuncture", "massage", "physical therapy", "difference", "healing", "soft tissue", "energy", "comparison", "therapy", "benefits"],
+      "category": "Basics",
+      "priority": 2
+    },
+    {
+      "id": 17,
+      "question": "How to choose an acupuncturist?",
+      "answer": "Look for proper training, license, experience, ethics, and calm presence — someone grounded can better support your healing.",
+      "keywords": ["choose", "acupuncturist", "training", "license", "experience", "ethics", "calm", "healing", "practitioner", "qualifications"],
+      "category": "Basics",
+      "priority": 2
+    },
+    {
+      "id": 18,
+      "question": "Why do methods differ between practitioners?",
+      "answer": "Chinese medicine offers many tools — needles, herbs, tuina, acupressure. Different paths can treat the same issue because treatment adapts to your state that day.",
+      "keywords": ["methods", "practitioners", "tools", "herbs", "tuina", "acupressure", "different", "treatment", "approach", "style"],
+      "category": "Treatment",
+      "priority": 2
+    },
+    {
+      "id": 19,
+      "question": "What is Yin-Yang theory?",
+      "answer": "Yin and yang are opposite but connected (day/night, hot/cold). They shift to keep balance. Health comes from harmony between them.",
+      "keywords": ["yin", "yang", "balance", "theory", "health", "opposite", "harmony", "energy", "concept", "equilibrium"],
+      "category": "Basics",
+      "priority": 2
+    },
+    {
+      "id": 20,
+      "question": "Can acupuncture fix me?",
+      "answer": "Healing starts with your willingness to change. Acupuncture supports you, but lasting results need your commitment and lifestyle changes.",
+      "keywords": ["fix", "healing", "change", "commitment", "acupuncture help", "support", "lifestyle", "responsibility", "journey", "improvement"],
+      "category": "Basics",
+      "priority": 2
+    },
+    {
+      "id": 21,
+      "question": "Why don’t I know what’s wrong with me?",
+      "answer": "Busy routines, skipped meals, tech, and stress can numb body signals. Practices like meditation or yoga reconnect body and mind.",
+      "keywords": ["confused", "unknown issue", "body signals", "stress", "yoga", "meditation", "awareness", "mind body", "balance", "routines"],
+      "category": "Health",
+      "priority": 2
+    },
+    {
+      "id": 22,
+      "question": "Why do my issues keep repeating?",
+      "answer": "Perspective matters. Shifting how you see problems — with calm or positive focus — can help old issues lose their hold.",
+      "keywords": ["repeat issues", "perspective", "attitude", "problems", "calm", "positive", "mindset", "wellbeing", "change", "habits"],
+      "category": "Health",
+      "priority": 2
+    }
+  ]
+}
