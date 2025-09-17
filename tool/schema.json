@@ -1,0 +1,94 @@
+[
+  {
+    "name": "kb_search",
+    "description": "在诊所知识库中检索答案",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "query": {"type": "string"},
+        "top_k": {"type": "integer", "default": 6},
+        "filters": {
+          "type": "object",
+          "properties": {
+            "locale": {"type": "string", "enum": ["zh", "en"]},
+            "location": {"type": "string"},
+            "recency_days": {"type": "integer"}
+          }
+        }
+      },
+      "required": ["query"]
+    }
+  },
+  {
+    "name": "booking_list_slots",
+    "description": "查询门店可预约时段",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "location": {"type": "string"},
+        "service": {"type": "string"},
+        "date_range": {
+          "type": "object",
+          "properties": {
+            "from": {"type": "string"},
+            "to": {"type": "string"}
+          },
+          "required": ["from","to"]
+        }
+      },
+      "required": ["location","service","date_range"]
+    }
+  },
+  {
+    "name": "booking_create",
+    "description": "创建预约并返回确认信息",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "name": {"type": "string"},
+        "phone": {"type": "string"},
+        "email": {"type": "string"},
+        "location": {"type": "string"},
+        "service": {"type": "string"},
+        "preferred_time_iso": {"type": "string"},
+        "notes": {"type": "string"}
+      },
+      "required": ["name","phone","location","service"]
+    }
+  },
+  {
+    "name": "crm_upsert_lead",
+    "description": "保存潜在客户线索",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "name": {"type": "string"},
+        "phone": {"type": "string"},
+        "email": {"type": "string"},
+        "topic": {"type": "string"},
+        "channel": {"type": "string"}
+      },
+      "required": ["phone"]
+    }
+  },
+  {
+    "name": "handoff_create",
+    "description": "创建人工处理工单",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "priority": {"type": "string", "enum": ["low","normal","high","urgent"]},
+        "summary": {"type": "string"},
+        "contact": {
+          "type": "object",
+          "properties": {
+            "name": {"type": "string"},
+            "phone": {"type": "string"},
+            "email": {"type": "string"}
+          }
+        }
+      },
+      "required": ["priority","summary"]
+    }
+  }
+]
