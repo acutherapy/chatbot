@@ -26,17 +26,17 @@ class MessageSender {
       const payload = {
         recipient: { id: recipientId },
         message: { text: message },
-        messaging_type: 'RESPONSE',
+        messaging_type: 'RESPONSE'
       };
 
       const response = await axios.post(endpoint, payload, {
         params: {
-          access_token: this.pageAccessToken,
+          access_token: this.pageAccessToken
         },
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        timeout: 10000, // 10 seconds timeout
+        timeout: 10000 // 10 seconds timeout
       });
 
       logInfo('Text message sent successfully', { 
@@ -74,20 +74,20 @@ class MessageSender {
           quick_replies: quickReplies.map((reply, index) => ({
             content_type: 'text',
             title: reply.title,
-            payload: reply.payload || `QUICK_REPLY_${index}`,
-          })),
+            payload: reply.payload || `QUICK_REPLY_${index}`
+          }))
         },
-        messaging_type: 'RESPONSE',
+        messaging_type: 'RESPONSE'
       };
 
       const response = await axios.post(endpoint, payload, {
         params: {
-          access_token: this.pageAccessToken,
+          access_token: this.pageAccessToken
         },
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        timeout: 10000,
+        timeout: 10000
       });
 
       logInfo('Quick reply sent successfully', { recipientId, platform });
@@ -118,20 +118,20 @@ class MessageSender {
         message: {
           attachment: {
             type: 'template',
-            payload: template,
-          },
+            payload: template
+          }
         },
-        messaging_type: 'RESPONSE',
+        messaging_type: 'RESPONSE'
       };
 
       const response = await axios.post(endpoint, payload, {
         params: {
-          access_token: this.pageAccessToken,
+          access_token: this.pageAccessToken
         },
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        timeout: 10000,
+        timeout: 10000
       });
 
       logInfo('Template message sent successfully', { recipientId, platform });
@@ -155,10 +155,10 @@ class MessageSender {
       { title: '📞 电话预约', payload: 'APPOINTMENT_PHONE' },
       { title: '🌐 在线预约', payload: 'APPOINTMENT_ONLINE' },
       { title: '💬 客服咨询', payload: 'APPOINTMENT_SERVICE' },
-      { title: '📋 查看服务', payload: 'VIEW_SERVICES' },
+      { title: '📋 查看服务', payload: 'VIEW_SERVICES' }
     ];
 
-    const message = `感谢您的咨询！请选择您需要的服务：`;
+    const message = '感谢您的咨询！请选择您需要的服务：';
 
     return this.sendQuickReply(recipientId, message, quickReplies, platform);
   }
@@ -181,14 +181,14 @@ class MessageSender {
             {
               type: 'web_url',
               url: 'https://your-clinic-website.com/services',
-              title: '查看详情',
+              title: '查看详情'
             },
             {
               type: 'postback',
               title: '立即预约',
-              payload: 'BOOK_APPOINTMENT',
-            },
-          ],
+              payload: 'BOOK_APPOINTMENT'
+            }
+          ]
         },
         {
           title: '👨‍⚕️ 医生团队',
@@ -198,16 +198,16 @@ class MessageSender {
             {
               type: 'web_url',
               url: 'https://your-clinic-website.com/doctors',
-              title: '了解医生',
+              title: '了解医生'
             },
             {
               type: 'postback',
               title: '预约咨询',
-              payload: 'CONSULT_DOCTOR',
-            },
-          ],
-        },
-      ],
+              payload: 'CONSULT_DOCTOR'
+            }
+          ]
+        }
+      ]
     };
 
     return this.sendTemplate(recipientId, template, platform);
@@ -234,7 +234,7 @@ class MessageSender {
       { title: '📅 预约服务', payload: 'BOOK_APPOINTMENT' },
       { title: '📋 查看服务', payload: 'VIEW_SERVICES' },
       { title: '📍 诊所信息', payload: 'CLINIC_INFO' },
-      { title: '💬 其他咨询', payload: 'OTHER_INQUIRY' },
+      { title: '💬 其他咨询', payload: 'OTHER_INQUIRY' }
     ];
 
     return this.sendQuickReply(recipientId, message, quickReplies, platform);
@@ -250,20 +250,20 @@ class MessageSender {
       const { status, data } = error.response;
       
       switch (status) {
-        case 400:
-          return new Error(`Bad Request: ${data.error?.message || 'Invalid request'}`);
-        case 401:
-          return new Error('Unauthorized: Invalid access token');
-        case 403:
-          return new Error('Forbidden: Insufficient permissions');
-        case 404:
-          return new Error('Not Found: User or page not found');
-        case 429:
-          return new Error('Rate Limited: Too many requests');
-        case 500:
-          return new Error('Internal Server Error: Facebook API error');
-        default:
-          return new Error(`API Error ${status}: ${data.error?.message || 'Unknown error'}`);
+      case 400:
+        return new Error(`Bad Request: ${data.error?.message || 'Invalid request'}`);
+      case 401:
+        return new Error('Unauthorized: Invalid access token');
+      case 403:
+        return new Error('Forbidden: Insufficient permissions');
+      case 404:
+        return new Error('Not Found: User or page not found');
+      case 429:
+        return new Error('Rate Limited: Too many requests');
+      case 500:
+        return new Error('Internal Server Error: Facebook API error');
+      default:
+        return new Error(`API Error ${status}: ${data.error?.message || 'Unknown error'}`);
       }
     }
     
@@ -283,9 +283,9 @@ class MessageSender {
       const response = await axios.get(`${this.graphApiUrl}/me`, {
         params: {
           access_token: this.pageAccessToken,
-          fields: 'id,name',
+          fields: 'id,name'
         },
-        timeout: 5000,
+        timeout: 5000
       });
 
       logInfo('Access token validated successfully', { 
@@ -310,9 +310,9 @@ class MessageSender {
       const response = await axios.get(`${this.graphApiUrl}/me`, {
         params: {
           access_token: this.pageAccessToken,
-          fields: 'id,name,about,phone,website,location',
+          fields: 'id,name,about,phone,website,location'
         },
-        timeout: 5000,
+        timeout: 5000
       });
 
       return response.data;

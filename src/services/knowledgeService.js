@@ -79,12 +79,33 @@ class KnowledgeService {
    * @returns {Array} 关键词数组
    */
   tokenize(text) {
-    return text
-      .toLowerCase()
-      .replace(/[^\u4e00-\u9fa5a-zA-Z0-9\s]/g, ' ')
-      .split(/\s+/)
-      .filter(word => word.length > 1)
-      .map(word => word.trim());
+    const cleanText = text.toLowerCase().replace(/[^\u4e00-\u9fa5a-zA-Z0-9\s]/g, ' ');
+    
+    // 先按空格分割
+    let words = cleanText.split(/\s+/).filter(word => word.length > 0);
+    
+    // 对中文进行更细粒度的分词
+    const result = [];
+    words.forEach(word => {
+      if (word.length > 1) {
+        // 添加完整词
+        result.push(word);
+        
+        // 对中文词进行子串提取（2-4字符的子串）
+        if (/[\u4e00-\u9fa5]/.test(word)) {
+          for (let i = 0; i <= word.length - 2; i++) {
+            for (let j = 2; j <= Math.min(4, word.length - i); j++) {
+              const substring = word.substring(i, i + j);
+              if (substring.length >= 2) {
+                result.push(substring);
+              }
+            }
+          }
+        }
+      }
+    });
+    
+    return [...new Set(result)]; // 去重
   }
 
   /**

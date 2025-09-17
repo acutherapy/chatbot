@@ -3,6 +3,7 @@ import { body, validationResult } from 'express-validator';
 import { config } from '../config/index.js';
 import { logInfo, logError } from '../utils/logger.js';
 import gptService from '../services/gptService.js';
+import knowledgeService from '../services/knowledgeService.js';
 
 const router = express.Router();
 
@@ -22,7 +23,7 @@ router.post('/message', [
   body('sessionId')
     .optional()
     .isLength({ min: 1, max: 100 })
-    .withMessage('会话ID长度必须在 1-100 字符之间'),
+    .withMessage('会话ID长度必须在 1-100 字符之间')
 ], async (req, res) => {
   try {
     // 验证输入
@@ -48,15 +49,39 @@ router.post('/message', [
       ip: req.ip 
     });
 
-    // 生成 AI 回复
-    const aiResponse = await gptService.generateResponse(
-      message, 
-      finalUserId, 
-      'web'
-    );
+    // 首先尝试从固定问答中查找答案
+    const faqResult = knowledgeService.getSmartAnswer(message);
+    let aiResponse;
+    let isAppointment = false;
+    let quickReplies = null;
 
-    // 检查是否为预约查询
-    const isAppointment = gptService.isAppointmentQuery(message);
+    if (faqResult.found && faqResult.answer) {
+      // 使用固定问答的答案
+      aiResponse = faqResult.answer;
+      quickReplies = faqResult.suggestions;
+      logInfo('FAQ answer found', { 
+        userId: finalUserId, 
+        query: message,
+        source: 'knowledge_base'
+      });
+    } else {
+      // 如果没有找到固定答案，使用 AI 生成回复
+      aiResponse = await gptService.generateResponse(
+        message, 
+        finalUserId, 
+        'web'
+      );
+      
+      // 检查是否为预约查询
+      isAppointment = gptService.isAppointmentQuery(message);
+      quickReplies = isAppointment ? getAppointmentQuickReplies() : null;
+      
+      logInfo('AI response generated', { 
+        userId: finalUserId, 
+        query: message,
+        source: 'gpt_service'
+      });
+    }
 
     logInfo('Chat response generated', { 
       userId: finalUserId, 
@@ -74,7 +99,7 @@ router.post('/message', [
         sessionId: finalSessionId,
         timestamp: new Date().toISOString(),
         isAppointment,
-        quickReplies: isAppointment ? getAppointmentQuickReplies() : null
+        quickReplies: quickReplies
       }
     });
 
@@ -211,7 +236,7 @@ function getAppointmentQuickReplies() {
     { title: '📞 电话预约', payload: 'APPOINTMENT_PHONE' },
     { title: '🌐 在线预约', payload: 'APPOINTMENT_ONLINE' },
     { title: '💬 客服咨询', payload: 'APPOINTMENT_SERVICE' },
-    { title: '📋 查看服务', payload: 'VIEW_SERVICES' },
+    { title: '📋 查看服务', payload: 'VIEW_SERVICES' }
   ];
 }
 

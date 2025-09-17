@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 功能测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .response {
+            background: #f5f5f5;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            white-space: pre-wrap;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🤖 AI 功能测试页面</h1>
+    
+    <div class="test-section">
+        <h2>测试 1: 直接 API 调用</h2>
+        <input type="text" id="testMessage" placeholder="输入测试消息..." value="为什么">
+        <button onclick="testAPI()">测试 API</button>
+        <div id="apiResponse" class="response"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>测试 2: 健康检查</h2>
+        <button onclick="testHealth()">检查服务状态</button>
+        <div id="healthResponse" class="response"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>测试 3: 不同消息类型</h2>
+        <button onclick="testAppointment()">测试预约</button>
+        <button onclick="testHealthQuestion()">测试健康问题</button>
+        <button onclick="testGeneral()">测试一般问题</button>
+        <div id="testResponse" class="response"></div>
+    </div>
+
+    <script>
+        async function testAPI() {
+            const message = document.getElementById('testMessage').value;
+            const responseDiv = document.getElementById('apiResponse');
+            
+            try {
+                responseDiv.textContent = '发送中...';
+                
+                const response = await fetch('/chat/message', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        userId: 'test_user_' + Date.now()
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    responseDiv.textContent = `✅ 成功!\n\n消息: ${data.data.message}\n\n是否预约: ${data.data.isAppointment}\n\n快速回复: ${data.data.quickReplies ? JSON.stringify(data.data.quickReplies, null, 2) : '无'}`;
+                } else {
+                    responseDiv.textContent = `❌ 失败: ${data.error}`;
+                }
+            } catch (error) {
+                responseDiv.textContent = `❌ 错误: ${error.message}`;
+            }
+        }
+
+        async function testHealth() {
+            const responseDiv = document.getElementById('healthResponse');
+            
+            try {
+                const response = await fetch('/health');
+                const data = await response.json();
+                
+                responseDiv.textContent = `服务状态: ${data.status}\n\nOpenAI: ${data.services.openai}\n\n知识库: ${data.services.knowledgeBase}\n\n消息发送器: ${data.services.messageSender}`;
+            } catch (error) {
+                responseDiv.textContent = `❌ 错误: ${error.message}`;
+            }
+        }
+
+        async function testAppointment() {
+            await testMessage('我想预约服务', 'testResponse');
+        }
+
+        async function testHealthQuestion() {
+            await testMessage('我最近头痛，应该怎么办？', 'testResponse');
+        }
+
+        async function testGeneral() {
+            await testMessage('你好，你们诊所怎么样？', 'testResponse');
+        }
+
+        async function testMessage(message, responseDivId) {
+            const responseDiv = document.getElementById(responseDivId);
+            
+            try {
+                responseDiv.textContent = '发送中...';
+                
+                const response = await fetch('/chat/message', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        userId: 'test_user_' + Date.now()
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    responseDiv.textContent = `消息: "${message}"\n\n回复: ${data.data.message}\n\n是否预约: ${data.data.isAppointment}`;
+                } else {
+                    responseDiv.textContent = `❌ 失败: ${data.error}`;
+                }
+            } catch (error) {
+                responseDiv.textContent = `❌ 错误: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>

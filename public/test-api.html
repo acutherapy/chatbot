@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API测试页面</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
+        button { padding: 10px 20px; margin: 5px; }
+        .result { margin: 10px 0; padding: 10px; background: #f5f5f5; }
+        .error { background: #ffebee; color: #c62828; }
+        .success { background: #e8f5e8; color: #2e7d32; }
+    </style>
+</head>
+<body>
+    <h1>聊天机器人API测试</h1>
+    
+    <div class="test-section">
+        <h3>测试1: 地址查询</h3>
+        <button onclick="testAPI('地址')">测试"地址"</button>
+        <div id="result1" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>测试2: 营业时间查询</h3>
+        <button onclick="testAPI('几点开门')">测试"几点开门"</button>
+        <div id="result2" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>测试3: 预约查询</h3>
+        <button onclick="testAPI('预约')">测试"预约"</button>
+        <div id="result3" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>自定义测试</h3>
+        <input type="text" id="customMessage" placeholder="输入测试消息" style="width: 300px; padding: 5px;">
+        <button onclick="testCustom()">测试</button>
+        <div id="result4" class="result"></div>
+    </div>
+
+    <script>
+        async function testAPI(message) {
+            const resultId = message === '地址' ? 'result1' : 
+                           message === '几点开门' ? 'result2' : 'result3';
+            const resultDiv = document.getElementById(resultId);
+            
+            resultDiv.innerHTML = '正在测试...';
+            resultDiv.className = 'result';
+            
+            try {
+                const response = await fetch('/chat/message', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        userId: 'test_user_' + Date.now(),
+                        sessionId: 'test_session_' + Date.now()
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    resultDiv.innerHTML = `
+                        <strong>成功!</strong><br>
+                        <strong>消息:</strong> ${data.data.message}<br>
+                        <strong>用户ID:</strong> ${data.data.userId}<br>
+                        <strong>时间:</strong> ${data.data.timestamp}<br>
+                        <strong>快速回复:</strong> ${data.data.quickReplies ? data.data.quickReplies.length + '个' : '无'}
+                    `;
+                    resultDiv.className = 'result success';
+                } else {
+                    resultDiv.innerHTML = `<strong>错误:</strong> ${data.error}`;
+                    resultDiv.className = 'result error';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<strong>请求失败:</strong> ${error.message}`;
+                resultDiv.className = 'result error';
+            }
+        }
+        
+        async function testCustom() {
+            const message = document.getElementById('customMessage').value;
+            if (!message) {
+                alert('请输入测试消息');
+                return;
+            }
+            
+            const resultDiv = document.getElementById('result4');
+            resultDiv.innerHTML = '正在测试...';
+            resultDiv.className = 'result';
+            
+            try {
+                const response = await fetch('/chat/message', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        userId: 'test_user_' + Date.now(),
+                        sessionId: 'test_session_' + Date.now()
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    resultDiv.innerHTML = `
+                        <strong>成功!</strong><br>
+                        <strong>消息:</strong> ${data.data.message}<br>
+                        <strong>用户ID:</strong> ${data.data.userId}<br>
+                        <strong>时间:</strong> ${data.data.timestamp}<br>
+                        <strong>快速回复:</strong> ${data.data.quickReplies ? data.data.quickReplies.length + '个' : '无'}
+                    `;
+                    resultDiv.className = 'result success';
+                } else {
+                    resultDiv.innerHTML = `<strong>错误:</strong> ${data.error}`;
+                    resultDiv.className = 'result error';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<strong>请求失败:</strong> ${error.message}`;
+                resultDiv.className = 'result error';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -66,7 +66,7 @@ async function testAI(baseUrl) {
       const response = await fetch(`${baseUrl}/chat/message`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           message: testCase.message,

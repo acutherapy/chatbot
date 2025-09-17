@@ -289,56 +289,56 @@ async function handlePostback(postback, senderId, platform) {
     logInfo('Received postback', { senderId, platform, payload, title });
 
     switch (payload) {
-      case 'GET_STARTED':
-        await messageSender.sendWelcomeMessage(senderId, platform);
-        break;
+    case 'GET_STARTED':
+      await messageSender.sendWelcomeMessage(senderId, platform);
+      break;
 
-      case 'BOOK_APPOINTMENT':
-        await messageSender.sendAppointmentQuickReply(senderId, platform);
-        break;
+    case 'BOOK_APPOINTMENT':
+      await messageSender.sendAppointmentQuickReply(senderId, platform);
+      break;
 
-      case 'VIEW_SERVICES':
-        await messageSender.sendServicesTemplate(senderId, platform);
-        break;
+    case 'VIEW_SERVICES':
+      await messageSender.sendServicesTemplate(senderId, platform);
+      break;
 
-      case 'APPOINTMENT_PHONE':
-        await messageSender.sendTextMessage(
-          senderId,
-          '📞 电话预约\n\n请拨打我们的客服热线：\n☎️ 400-123-4567\n\n工作时间：周一至周日 9:00-18:00\n\n我们的客服团队会协助您安排最合适的就诊时间。',
-          platform
-        );
-        break;
+    case 'APPOINTMENT_PHONE':
+      await messageSender.sendTextMessage(
+        senderId,
+        '📞 电话预约\n\n请拨打我们的客服热线：\n☎️ 400-123-4567\n\n工作时间：周一至周日 9:00-18:00\n\n我们的客服团队会协助您安排最合适的就诊时间。',
+        platform
+      );
+      break;
 
-      case 'APPOINTMENT_ONLINE':
-        await messageSender.sendTextMessage(
-          senderId,
-          '🌐 在线预约\n\n请访问我们的官网预约系统：\n🔗 https://your-clinic-website.com/booking\n\n您可以在线选择医生、时间和服务类型，系统会自动为您安排。',
-          platform
-        );
-        break;
+    case 'APPOINTMENT_ONLINE':
+      await messageSender.sendTextMessage(
+        senderId,
+        '🌐 在线预约\n\n请访问我们的官网预约系统：\n🔗 https://your-clinic-website.com/booking\n\n您可以在线选择医生、时间和服务类型，系统会自动为您安排。',
+        platform
+      );
+      break;
 
-      case 'APPOINTMENT_SERVICE':
-        await messageSender.sendTextMessage(
-          senderId,
-          '💬 客服咨询\n\n我们的专业客服团队随时为您服务：\n\n• 服务咨询\n• 预约安排\n• 价格查询\n• 就诊指导\n\n请告诉我您需要什么帮助？',
-          platform
-        );
-        break;
+    case 'APPOINTMENT_SERVICE':
+      await messageSender.sendTextMessage(
+        senderId,
+        '💬 客服咨询\n\n我们的专业客服团队随时为您服务：\n\n• 服务咨询\n• 预约安排\n• 价格查询\n• 就诊指导\n\n请告诉我您需要什么帮助？',
+        platform
+      );
+      break;
 
-      case 'CLINIC_INFO':
-        await messageSender.sendTextMessage(
-          senderId,
-          '📍 诊所信息\n\n🏥 诊所名称：XX医疗中心\n📍 地址：XX市XX区XX路123号\n☎️ 电话：400-123-4567\n🕒 营业时间：周一至周日 9:00-18:00\n🚗 停车：免费停车位\n🚇 地铁：XX站A出口步行5分钟',
-          platform
-        );
-        break;
+    case 'CLINIC_INFO':
+      await messageSender.sendTextMessage(
+        senderId,
+        '📍 诊所信息\n\n🏥 诊所名称：XX医疗中心\n📍 地址：XX市XX区XX路123号\n☎️ 电话：400-123-4567\n🕒 营业时间：周一至周日 9:00-18:00\n🚗 停车：免费停车位\n🚇 地铁：XX站A出口步行5分钟',
+        platform
+      );
+      break;
 
-      default:
-        await messageSender.sendTextMessage(
-          senderId,
-          '感谢您的选择！如果您有其他问题，请随时告诉我。',
-          platform
-        );
+    default:
+      await messageSender.sendTextMessage(
+        senderId,
+        '感谢您的选择！如果您有其他问题，请随时告诉我。',
+        platform
+      );
     }
 
   } catch (error) {

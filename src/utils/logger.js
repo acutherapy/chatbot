@@ -39,16 +39,16 @@ const logger = winston.createLogger({
       filename: join(config.paths.logs, 'error.log'),
       level: 'error',
       maxsize: 5242880, // 5MB
-      maxFiles: 5,
+      maxFiles: 5
     }),
     
     // Write all logs to combined.log
     new winston.transports.File({
       filename: join(config.paths.logs, 'combined.log'),
       maxsize: 5242880, // 5MB
-      maxFiles: 5,
-    }),
-  ],
+      maxFiles: 5
+    })
+  ]
 });
 
 // Add request logging middleware
@@ -63,7 +63,7 @@ export const requestLogger = (req, res, next) => {
       status: res.statusCode,
       duration: `${duration}ms`,
       userAgent: req.get('User-Agent'),
-      ip: req.ip,
+      ip: req.ip
     });
   });
   
@@ -77,7 +77,7 @@ export const errorLogger = (err, req, res, next) => {
     stack: err.stack,
     url: req.url,
     method: req.method,
-    ip: req.ip,
+    ip: req.ip
   });
   
   next(err);
@@ -92,7 +92,7 @@ export const logError = (message, error = null, meta = {}) => {
   logger.error(message, {
     ...meta,
     error: error?.message,
-    stack: error?.stack,
+    stack: error?.stack
   });
 };
 

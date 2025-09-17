@@ -7,6 +7,13 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
+    "build": "echo 'No build step required for Vercel'",
+    "build:check": "tsc --noEmit",
+    "lint": "eslint src tests scripts --ext .js,.ts",
+    "lint:fix": "eslint src tests scripts --ext .js,.ts --fix",
+    "format": "prettier --write src tests scripts",
+    "format:check": "prettier --check src tests scripts",
+    "type-check": "tsc --noEmit",
     "test": "vitest",
     "test:unit": "vitest run tests/unit",
     "test:integration": "vitest run tests/integration",
@@ -14,6 +21,7 @@
     "test:performance": "vitest run tests/performance",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
+    "test:all": "npm run lint && npm run type-check && npm run test",
     "setup": "node scripts/setup-env.js",
     "setup-local": "node setup-local-env.js",
     "test-ai": "node scripts/test-ai.js",
@@ -41,7 +49,14 @@
     "nodemon": "^3.0.2",
     "vitest": "^1.0.0",
     "playwright": "^1.40.0",
-    "@vitest/ui": "^1.0.0"
+    "@vitest/ui": "^1.0.0",
+    "eslint": "^8.50.0",
+    "@typescript-eslint/eslint-plugin": "^6.7.0",
+    "@typescript-eslint/parser": "^6.7.0",
+    "typescript": "^5.2.2",
+    "ts-node": "^10.9.1",
+    "@types/node": "^20.8.0",
+    "prettier": "^3.0.3"
   },
   "engines": {
     "node": ">=18.0.0"

@@ -5,12 +5,32 @@
 import { config } from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { beforeAll, afterAll } from 'vitest';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // 加载环境变量
 config({ path: join(__dirname, '../.env') });
+
+// 设置测试环境
+beforeAll(async () => {
+  // 设置测试环境变量
+  process.env.NODE_ENV = 'test';
+  process.env.OPENAI_API_KEY = process.env.OPENAI_API_KEY || 'test-key';
+  process.env.META_APP_ID = process.env.META_APP_ID || 'test-app-id';
+  process.env.META_APP_SECRET = process.env.META_APP_SECRET || 'test-app-secret';
+  process.env.META_ACCESS_TOKEN = process.env.META_ACCESS_TOKEN || 'test-access-token';
+  process.env.LOG_LEVEL = 'error';
+  process.env.MONITORING_ENABLED = 'false';
+});
+
+afterAll(async () => {
+  // 清理测试环境
+  delete process.env.NODE_ENV;
+  delete process.env.LOG_LEVEL;
+  delete process.env.MONITORING_ENABLED;
+});
 
 // 测试配置
 export const TEST_CONFIG = {

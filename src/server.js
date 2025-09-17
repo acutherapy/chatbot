@@ -12,10 +12,12 @@ import { requestLogger, errorLogger } from './utils/logger.js';
 // 导入路由
 import webhookRouter from './routes/webhook.js';
 import chatRouter from './routes/chat.js';
+// import chatEnRouter from './routes/chat-en.js'; // Disabled for Vercel deployment
 
 // 导入服务
 import messageSender from './services/messageSender.js';
 import knowledgeService from './services/knowledgeService.js';
+import knowledgeServiceEn from './services/knowledgeService-en.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -73,6 +75,7 @@ app.use(express.static(join(__dirname, '../public')));
 // API 路由
 app.use('/webhook', webhookRouter);
 app.use('/chat', chatRouter);
+// app.use('/chat', chatEnRouter); // Disabled for Vercel deployment
 
 // 健康检查端点
 app.get('/health', async (req, res) => {

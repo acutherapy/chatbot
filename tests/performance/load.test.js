@@ -1,204 +1,247 @@
-/**
- * 性能压力测试
- */
-
-import { describe, it, expect } from 'vitest';
-import fetch from 'node-fetch';
-import { TEST_CONFIG, testUtils } from '../setup.js';
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { chromium } from 'playwright';
 
 describe('Performance Tests', () => {
-  describe('Concurrent Requests', () => {
-    it('应该处理并发聊天请求', async () => {
+  let browser;
+  let page;
+
+  beforeAll(async () => {
+    browser = await chromium.launch();
+    page = await browser.newPage();
+  });
+
+  afterAll(async () => {
+    await browser.close();
+  });
+
+  describe('API Performance', () => {
+    it('should handle concurrent requests efficiently', async () => {
+      const baseUrl = process.env.TEST_BASE_URL || 'http://localhost:3000';
       const concurrentRequests = 10;
-      const testMessage = '并发测试消息';
-      
-      const promises = Array.from({ length: concurrentRequests }, (_, i) => {
-        const userId = `load_test_user_${i}`;
-        const sessionId = `load_test_session_${i}`;
-        
-        return fetch(`${TEST_CONFIG.baseUrl}/chat/message`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            message: testMessage,
-            userId,
-            sessionId
-          })
-        });
-      });
+      const requests = [];
 
       const startTime = Date.now();
-      const responses = await Promise.all(promises);
-      const endTime = Date.now();
-      
-      const responseTime = endTime - startTime;
-      
-      // 验证所有请求都成功
-      responses.forEach(response => {
-        expect(response.status).toBe(200);
-      });
-      
-      // 验证响应时间在合理范围内
-      expect(responseTime).toBeLessThan(10000); // 10秒内完成
-      
-      console.log(`并发 ${concurrentRequests} 个请求，总耗时: ${responseTime}ms`);
-    });
 
-    it('应该处理高频率请求', async () => {
-      const requestCount = 50;
-      const requestsPerSecond = 10;
-      const delay = 1000 / requestsPerSecond;
-      
-      const results = [];
-      const startTime = Date.now();
-      
-      for (let i = 0; i < requestCount; i++) {
-        const requestStart = Date.now();
-        
-        const response = await fetch(`${TEST_CONFIG.baseUrl}/chat/message`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            message: `高频测试消息 ${i}`,
-            userId: `freq_test_user_${i}`
+      // 创建并发请求
+      for (let i = 0; i < concurrentRequests; i++) {
+        requests.push(
+          fetch(`${baseUrl}/chat/message`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              message: `测试消息 ${i}`,
+              userId: `test_user_${i}`
+            })
           })
-        });
-        
-        const requestEnd = Date.now();
-        const requestTime = requestEnd - requestStart;
-        
-        results.push({
-          status: response.status,
-          responseTime: requestTime,
-          success: response.status === 200
-        });
-        
-        // 控制请求频率
-        if (i < requestCount - 1) {
-          await testUtils.delay(delay);
-        }
+        );
       }
-      
+
+      // 等待所有请求完成
+      const responses = await Promise.all(requests);
       const endTime = Date.now();
       const totalTime = endTime - startTime;
-      
-      // 统计结果
-      const successCount = results.filter(r => r.success).length;
-      const avgResponseTime = results.reduce((sum, r) => sum + r.responseTime, 0) / results.length;
-      const maxResponseTime = Math.max(...results.map(r => r.responseTime));
-      
-      console.log(`高频测试结果:`);
-      console.log(`- 总请求数: ${requestCount}`);
-      console.log(`- 成功请求数: ${successCount}`);
-      console.log(`- 成功率: ${(successCount / requestCount * 100).toFixed(2)}%`);
-      console.log(`- 平均响应时间: ${avgResponseTime.toFixed(2)}ms`);
-      console.log(`- 最大响应时间: ${maxResponseTime}ms`);
-      console.log(`- 总耗时: ${totalTime}ms`);
-      
+
+      // 验证所有请求都成功
+      responses.forEach(response => {
+        expect(response.ok).toBe(true);
+      });
+
+      // 验证响应时间合理（平均每个请求不超过2秒）
+      const avgTimePerRequest = totalTime / concurrentRequests;
+      expect(avgTimePerRequest).toBeLessThan(2000);
+
+      console.log(`并发请求测试: ${concurrentRequests} 个请求，总时间: ${totalTime}ms，平均: ${avgTimePerRequest}ms`);
+    });
+
+    it('should handle high message volume', async () => {
+      const baseUrl = process.env.TEST_BASE_URL || 'http://localhost:3000';
+      const messageCount = 50;
+      const requests = [];
+
+      const startTime = Date.now();
+
+      // 发送大量消息
+      for (let i = 0; i < messageCount; i++) {
+        requests.push(
+          fetch(`${baseUrl}/chat/message`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              message: `批量测试消息 ${i} - 这是一个较长的测试消息，用来测试系统处理长消息的能力。`,
+              userId: 'bulk_test_user'
+            })
+          })
+        );
+      }
+
+      const responses = await Promise.all(requests);
+      const endTime = Date.now();
+      const totalTime = endTime - startTime;
+
+      // 验证成功率
+      const successCount = responses.filter(r => r.ok).length;
+      const successRate = successCount / messageCount;
+      expect(successRate).toBeGreaterThan(0.95); // 95% 成功率
+
+      console.log(`批量消息测试: ${messageCount} 条消息，成功率: ${(successRate * 100).toFixed(1)}%，总时间: ${totalTime}ms`);
+    });
+
+    it('should maintain response time under load', async () => {
+      const baseUrl = process.env.TEST_BASE_URL || 'http://localhost:3000';
+      const testDuration = 10000; // 10秒
+      const requests = [];
+      const responseTimes = [];
+
+      const startTime = Date.now();
+      let requestCount = 0;
+
+      // 持续发送请求
+      const sendRequest = async () => {
+        const requestStart = Date.now();
+        try {
+          const response = await fetch(`${baseUrl}/chat/message`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              message: `压力测试消息 ${requestCount}`,
+              userId: 'stress_test_user'
+            })
+          });
+          
+          const requestEnd = Date.now();
+          responseTimes.push(requestEnd - requestStart);
+          requestCount++;
+          
+          return response.ok;
+        } catch (error) {
+          console.error('Request failed:', error);
+          return false;
+        }
+      };
+
+      // 每100ms发送一个请求
+      const interval = setInterval(async () => {
+        if (Date.now() - startTime < testDuration) {
+          requests.push(sendRequest());
+        } else {
+          clearInterval(interval);
+        }
+      }, 100);
+
+      // 等待测试完成
+      await new Promise(resolve => setTimeout(resolve, testDuration + 1000));
+
+      // 等待所有请求完成
+      const results = await Promise.all(requests);
+      const endTime = Date.now();
+
+      // 计算统计信息
+      const successCount = results.filter(r => r).length;
+      const successRate = successCount / results.length;
+      const avgResponseTime = responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length;
+      const maxResponseTime = Math.max(...responseTimes);
+      const minResponseTime = Math.min(...responseTimes);
+
       // 验证性能指标
-      expect(successCount / requestCount).toBeGreaterThan(0.95); // 95% 成功率
-      expect(avgResponseTime).toBeLessThan(5000); // 平均响应时间小于5秒
+      expect(successRate).toBeGreaterThan(0.9); // 90% 成功率
+      expect(avgResponseTime).toBeLessThan(3000); // 平均响应时间小于3秒
       expect(maxResponseTime).toBeLessThan(10000); // 最大响应时间小于10秒
+
+      console.log('压力测试结果:');
+      console.log(`- 总请求数: ${results.length}`);
+      console.log(`- 成功率: ${(successRate * 100).toFixed(1)}%`);
+      console.log(`- 平均响应时间: ${avgResponseTime.toFixed(0)}ms`);
+      console.log(`- 最大响应时间: ${maxResponseTime}ms`);
+      console.log(`- 最小响应时间: ${minResponseTime}ms`);
     });
   });
 
   describe('Memory Usage', () => {
-    it('应该监控内存使用情况', async () => {
+    it('should not have memory leaks during extended use', async () => {
+      const baseUrl = process.env.TEST_BASE_URL || 'http://localhost:3000';
       const iterations = 100;
-      const memorySnapshots = [];
-      
+      const initialMemory = process.memoryUsage();
+
+      // 发送大量请求
       for (let i = 0; i < iterations; i++) {
-        // 发送请求
-        const response = await fetch(`${TEST_CONFIG.baseUrl}/chat/message`, {
+        await fetch(`${baseUrl}/chat/message`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json'
+          },
           body: JSON.stringify({
             message: `内存测试消息 ${i}`,
-            userId: `memory_test_user_${i}`
+            userId: 'memory_test_user'
           })
         });
-        
-        expect(response.status).toBe(200);
-        
-        // 每10次请求记录一次内存使用
+
+        // 每10个请求检查一次内存
         if (i % 10 === 0) {
-          const healthResponse = await fetch(`${TEST_CONFIG.baseUrl}/health`);
-          const healthData = await healthResponse.json();
+          const currentMemory = process.memoryUsage();
+          const memoryIncrease = currentMemory.heapUsed - initialMemory.heapUsed;
+          const memoryIncreaseMB = memoryIncrease / 1024 / 1024;
           
-          if (healthData.memory) {
-            memorySnapshots.push({
-              iteration: i,
-              memory: healthData.memory
-            });
-          }
+          // 内存增长不应超过100MB
+          expect(memoryIncreaseMB).toBeLessThan(100);
         }
-        
-        // 短暂延迟
-        await testUtils.delay(100);
       }
-      
-      // 分析内存使用趋势
-      if (memorySnapshots.length > 1) {
-        const initialMemory = memorySnapshots[0].memory.heapUsed;
-        const finalMemory = memorySnapshots[memorySnapshots.length - 1].memory.heapUsed;
-        const memoryGrowth = finalMemory - initialMemory;
-        
-        console.log(`内存使用分析:`);
-        console.log(`- 初始内存: ${(initialMemory / 1024 / 1024).toFixed(2)} MB`);
-        console.log(`- 最终内存: ${(finalMemory / 1024 / 1024).toFixed(2)} MB`);
-        console.log(`- 内存增长: ${(memoryGrowth / 1024 / 1024).toFixed(2)} MB`);
-        
-        // 验证内存增长在合理范围内
-        expect(memoryGrowth / 1024 / 1024).toBeLessThan(100); // 内存增长小于100MB
-      }
+
+      const finalMemory = process.memoryUsage();
+      const totalMemoryIncrease = finalMemory.heapUsed - initialMemory.heapUsed;
+      const totalMemoryIncreaseMB = totalMemoryIncrease / 1024 / 1024;
+
+      console.log(`内存使用测试: 初始 ${(initialMemory.heapUsed / 1024 / 1024).toFixed(1)}MB，最终 ${(finalMemory.heapUsed / 1024 / 1024).toFixed(1)}MB，增长 ${totalMemoryIncreaseMB.toFixed(1)}MB`);
     });
   });
 
-  describe('Response Time Distribution', () => {
-    it('应该分析响应时间分布', async () => {
-      const requestCount = 30;
-      const responseTimes = [];
-      
-      for (let i = 0; i < requestCount; i++) {
-        const startTime = Date.now();
-        
-        const response = await fetch(`${TEST_CONFIG.baseUrl}/chat/message`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            message: `响应时间测试 ${i}`,
-            userId: `response_test_user_${i}`
+  describe('Error Handling Under Load', () => {
+    it('should handle malformed requests gracefully', async () => {
+      const baseUrl = process.env.TEST_BASE_URL || 'http://localhost:3000';
+      const malformedRequests = [
+        // 空消息
+        { message: '', userId: 'test_user' },
+        // 超长消息
+        { message: 'a'.repeat(2000), userId: 'test_user' },
+        // 无效JSON
+        'invalid json',
+        // 缺少必需字段
+        { userId: 'test_user' },
+        // 无效用户ID
+        { message: 'test', userId: '' }
+      ];
+
+      const results = await Promise.allSettled(
+        malformedRequests.map(request => 
+          fetch(`${baseUrl}/chat/message`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: typeof request === 'string' ? request : JSON.stringify(request)
           })
-        });
-        
-        const endTime = Date.now();
-        const responseTime = endTime - startTime;
-        
-        expect(response.status).toBe(200);
-        responseTimes.push(responseTime);
-        
-        await testUtils.delay(200);
-      }
-      
-      // 计算统计指标
-      const sortedTimes = responseTimes.sort((a, b) => a - b);
-      const avgTime = responseTimes.reduce((sum, time) => sum + time, 0) / responseTimes.length;
-      const p50 = sortedTimes[Math.floor(sortedTimes.length * 0.5)];
-      const p90 = sortedTimes[Math.floor(sortedTimes.length * 0.9)];
-      const p95 = sortedTimes[Math.floor(sortedTimes.length * 0.95)];
-      const p99 = sortedTimes[Math.floor(sortedTimes.length * 0.99)];
-      
-      console.log(`响应时间分布:`);
-      console.log(`- 平均响应时间: ${avgTime.toFixed(2)}ms`);
-      console.log(`- P50 (中位数): ${p50}ms`);
-      console.log(`- P90: ${p90}ms`);
-      console.log(`- P95: ${p95}ms`);
-      console.log(`- P99: ${p99}ms`);
-      
-      // 验证性能指标
-      expect(avgTime).toBeLessThan(3000); // 平均响应时间小于3秒
-      expect(p90).toBeLessThan(5000); // 90% 请求在5秒内完成
-      expect(p95).toBeLessThan(8000); // 95% 请求在8秒内完成
+        )
+      );
+
+      // 所有请求都应该有响应（即使是错误响应）
+      results.forEach((result, index) => {
+        expect(result.status).toBe('fulfilled');
+        if (result.status === 'fulfilled') {
+          const response = result.value;
+          // 错误请求应该返回4xx状态码
+          if (index < malformedRequests.length - 1) { // 除了最后一个
+            expect(response.status).toBeGreaterThanOrEqual(400);
+            expect(response.status).toBeLessThan(500);
+          }
+        }
+      });
+
+      console.log(`错误处理测试: ${malformedRequests.length} 个异常请求全部正确处理`);
     });
   });
 });

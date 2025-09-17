@@ -1,0 +1,296 @@
+{
+  "faq": [
+    {
+      "id": "clinic_hours",
+      "question": "Clinic Hours",
+      "answer": "Our clinic hours are:\n\n🕒 Monday - Saturday: 9:00AM - 1:00PM\n\n📞 For emergencies, please call: 808-528-7177\n\nWe are here to protect your health year-round.",
+      "keywords": ["hours", "open", "time", "schedule", "when", "operating hours", "business hours"],
+      "category": "Basic Information",
+      "priority": 1
+    },
+    {
+      "id": "clinic_location",
+      "question": "Clinic Location & Directions",
+      "answer": "📍 Main Clinic: 1650 LILIHA ST, SUITE 208 HONOLULU\n📍 Secondary Clinic: 98-211 Pali Momi St Suite 604 AIEA\n\n🚗 Free parking available\n\n🗺️ Search for: acutherapy clinics",
+      "keywords": ["location", "address", "directions", "where", "parking", "map"],
+      "category": "Basic Information",
+      "priority": 1
+    },
+    {
+      "id": "appointment_booking",
+      "question": "How to Book an Appointment",
+      "answer": "Appointment options:\n\n📞 Phone booking: 808-528-7177\n🌐 Online booking: https://acutherapy.janeapp.com/\n💬 Follow our WeChat: Hawaii Ancient Healing\n\nPlease provide when booking:\n• Your name and contact information\n• Preferred appointment time\n• Description of symptoms or concerns",
+      "keywords": ["appointment", "booking", "schedule", "book", "reserve", "online booking", "phone booking"],
+      "category": "Appointment Services",
+      "priority": 1
+    },
+    {
+      "id": "services_general",
+      "question": "Main Services",
+      "answer": "We provide the following medical services:\n\n🏥 Acupuncture, Traditional Chinese Medicine, Massage, Cupping\n💆‍♀️ Pain management and rehabilitation therapy\n🧘‍♂️ Stress management and holistic healing\n\nFor detailed services, please consult with our doctors.",
+      "keywords": ["services", "treatment", "what we treat", "acupuncture", "TCM", "massage", "cupping"],
+      "category": "Services",
+      "priority": 1
+    },
+    {
+      "id": "payment_methods",
+      "question": "Payment Methods",
+      "answer": "We accept multiple payment methods:\n\n💳 Cash payment\n💳 Credit/Debit cards\n📱 WeChat Pay\n📱 Apple Pay\n🏥 Insurance (Workers' Comp, Auto Accident, Veterans, General Medical Insurance)\n\n💡 Tip: Please bring your ID and insurance card for first visit.",
+      "keywords": ["payment", "insurance", "cost", "wechat pay", "cash", "credit card"],
+      "category": "Payment & Insurance",
+      "priority": 2
+    },
+    {
+      "id": "emergency_contact",
+      "question": "Emergency Contact",
+      "answer": "🚨 Emergency procedures:\n\n📞 For serious symptoms, seek immediate medical attention or call: 911\n📞 Clinic phone: 808-528-7177\n\n⚠️ Emergency symptoms include:\n• Chest pain, difficulty breathing\n• Severe trauma\n• Sudden severe pain",
+      "keywords": ["emergency", "urgent", "911", "serious", "chest pain", "breathing"],
+      "category": "Emergency Services",
+      "priority": 1
+    },
+    {
+      "id": "first_visit",
+      "question": "First Visit Information",
+      "answer": "Please bring for your first visit:\n\n📋 Driver's license or ID\n🏥 Insurance card (if applicable)\n📄 Previous medical records\n💰 Cash or credit card\n\n⏰ Please arrive 15 minutes early\n📝 Fill out intake forms\n👨‍⚕️ Doctor will take detailed health history",
+      "keywords": ["first visit", "new patient", "what to bring", "preparation", "ID", "medical records"],
+      "category": "Visit Guidelines",
+      "priority": 2
+    },
+    {
+      "id": "doctor_team",
+      "question": "Our Medical Team",
+      "answer": "Our professional medical team:\n\n👨‍⚕️ Dr. Yang - Chief Internal Medicine Physician, 40 years experience\n👩‍⚕️ Dr. Cai - Beijing TCM Acupuncturist, 30 years experience\n👨‍⚕️ Dr. Long - Beijing TCM Acupuncturist, 20 years experience\n👩‍⚕️ Dr. Cao - Taiwan TCM Acupuncturist, 15 years experience\n\nAll doctors are licensed with extensive clinical experience.",
+      "keywords": ["doctors", "practitioners", "team", "experience", "qualifications", "acupuncturist"],
+      "category": "Doctor Information",
+      "priority": 2
+    },
+    {
+      "id": "acupuncture_faq_hurt",
+      "question": "Does Acupuncture Hurt?",
+      "answer": "🤔 Most people feel little or no pain.\n\nYou may notice a brief, mild sensation when the sterile, single-use needle is inserted. Our skilled practitioners ensure your comfort throughout the treatment.",
+      "keywords": ["pain", "hurt", "does it hurt", "painful", "sensation", "comfort"],
+      "category": "Acupuncture Basics",
+      "priority": 2
+    },
+    {
+      "id": "acupuncture_faq_safe",
+      "question": "Is Acupuncture Safe?",
+      "answer": "🛡️ Yes — when performed by licensed practitioners, acupuncture is very safe.\n\nWe use sterile, single-use, disposable needles and follow strict hygiene protocols.",
+      "keywords": ["safe", "safety", "hygiene", "needles", "sterile"],
+      "category": "Acupuncture Basics",
+      "priority": 2
+    },
+    {
+      "id": "acupuncture_sessions",
+      "question": "How Many Sessions Do I Need?",
+      "answer": "📆 It depends on your condition, severity, and how your body responds.\n\nSome people feel relief after one session; others may need a series of treatments. Your acupuncturist will create a personalized treatment plan.",
+      "keywords": ["sessions", "how many", "treatment plan", "frequency"],
+      "category": "Treatment Related",
+      "priority": 2
+    },
+    {
+      "id": "before_appointment",
+      "question": "Before Your Appointment",
+      "answer": "📝 Preparation for your visit:\n\n🍽️ Eat a light meal, don't come on empty stomach\n👕 Wear loose, comfortable clothing\n⏰ Arrive a few minutes early to relax\n📋 Prepare your health history and symptom description",
+      "keywords": ["preparation", "before visit", "what to do", "empty stomach", "clothing"],
+      "category": "Visit Guidelines",
+      "priority": 2
+    },
+    {
+      "id": "session_length",
+      "question": "How Long is a Treatment Session?",
+      "answer": "⏱️ First visits typically last 45-60 minutes, including consultation and treatment.\n\nFollow-up visits are usually 30-45 minutes.",
+      "keywords": ["duration", "how long", "time", "session length"],
+      "category": "Treatment Related",
+      "priority": 2
+    },
+    {
+      "id": "insurance_question",
+      "question": "Can I Use My Insurance?",
+      "answer": "💳 Many insurance plans cover acupuncture for certain conditions.\n\nWe can help verify your coverage and explain your benefits before your first appointment.\n\nSupported insurance includes: Workers' Compensation, Auto Accident, Veterans Affairs, and General Medical Insurance.",
+      "keywords": ["insurance", "coverage", "benefits", "workers comp", "auto accident"],
+      "category": "Payment & Insurance",
+      "priority": 2
+    },
+    {
+      "id": "side_effects",
+      "question": "Are There Any Side Effects?",
+      "answer": "⚠️ Minor side effects may include:\n\n• Slight bruising at needle sites\n• Minor bleeding\n• Temporary soreness\n\nThese usually resolve quickly. We closely monitor your response to treatment.",
+      "keywords": ["side effects", "bruising", "bleeding", "soreness"],
+      "category": "Treatment Related",
+      "priority": 2
+    },
+    {
+      "id": "combine_treatments",
+      "question": "Can I Combine Acupuncture with Other Treatments?",
+      "answer": "➕ Yes — acupuncture is often used alongside other treatments:\n\n• Conventional medicine\n• Physical therapy\n• Chiropractic care\n\nPlease inform your acupuncturist about any treatments or medications you're taking.",
+      "keywords": ["combine treatments", "other treatments", "medications", "conventional medicine"],
+      "category": "Treatment Related",
+      "priority": 2
+    },
+    {
+      "id": "needle_fear",
+      "question": "What If I'm Afraid of Needles?",
+      "answer": "😌 Our practitioners are gentle and explain each step of the process.\n\nMany people who were initially nervous find the sessions very relaxing. We ensure your comfort and peace of mind.",
+      "keywords": ["afraid", "nervous", "needle fear", "comfort", "anxiety"],
+      "category": "Acupuncture Basics",
+      "priority": 2
+    },
+    {
+      "id": "back_pain_treatment",
+      "question": "Can Acupuncture Help with Back Pain?",
+      "answer": "🎯 Yes! Acupuncture is highly effective for back pain relief.\n\n✅ **We treat:**\n• Lower back pain\n• Upper back pain\n• Chronic back pain\n• Sciatica\n• Muscle tension\n\n📞 **Book your consultation:** 808-528-7177\n🌐 **Online booking:** https://acutherapy.janeapp.com/",
+      "keywords": ["back pain", "lower back", "upper back", "chronic pain", "sciatica", "muscle tension", "spine", "lumbar"],
+      "category": "Treatment Conditions",
+      "priority": 1
+    },
+    {
+      "id": "pain_management",
+      "question": "Pain Management Services",
+      "answer": "💪 **Comprehensive Pain Management**\n\n🎯 **We specialize in treating:**\n• Chronic pain conditions\n• Acute injury pain\n• Arthritis pain\n• Joint pain\n• Muscle pain\n• Nerve pain\n\n✨ **Our approach combines:**\n• Traditional acupuncture\n• Cupping therapy\n• Medical massage\n• Holistic pain relief\n\n📅 **Schedule consultation:** 808-528-7177",
+      "keywords": ["pain management", "chronic pain", "acute pain", "arthritis", "joint pain", "muscle pain", "nerve pain", "pain relief", "pain treatment"],
+      "category": "Treatment Conditions",
+      "priority": 1
+    },
+    {
+      "id": "what_conditions_treat",
+      "question": "What Conditions Do You Treat?",
+      "answer": "🏥 **We treat a wide range of conditions:**\n\n**Pain Management:**\n• Back pain, neck pain\n• Arthritis, joint pain\n• Headaches, migraines\n• Sports injuries\n\n**Internal Medicine:**\n• Digestive issues\n• Sleep disorders\n• Stress, anxiety\n• Fatigue\n\n**Women's Health:**\n• Menstrual issues\n• Fertility support\n• Pregnancy care\n\n📞 **Consultation:** 808-528-7177",
+      "keywords": ["conditions", "treat", "what do you treat", "services", "specialties", "disorders", "health issues"],
+      "category": "Treatment Conditions",
+      "priority": 1
+    }
+  ],
+  "categories": [
+    {
+      "id": "Basic Information",
+      "name": "Basic Information",
+      "description": "Basic clinic information and contact details",
+      "details": {
+        "brand": "AcuTherapy Clinics",
+        "locations": [
+          {
+            "name": "Honolulu Clinic",
+            "address": "1650 LILIHA ST, SUITE 208 HONOLULU, HI",
+            "phone": "808-528-7177",
+            "hours": "Mon–Sat 9:00AM–1:00PM"
+          },
+          {
+            "name": "Aiea Clinic",
+            "address": "98-211 Pali Momi St Suite 604 AIEA, HI",
+            "phone": "808-528-7177",
+            "hours": "Mon–Sat 9:00AM–1:00PM"
+          }
+        ],
+        "website": "https://acutherapy.janeapp.com/"
+      }
+    },
+    {
+      "id": "Appointment Services",
+      "name": "Appointment Services",
+      "description": "Appointment booking and scheduling services",
+      "details": {
+        "methods": ["Online booking", "Phone booking", "WeChat consultation"],
+        "policy": "New patients should arrive 15 minutes early to fill out forms"
+      }
+    },
+    {
+      "id": "Services",
+      "name": "Services",
+      "description": "Medical services provided by the clinic",
+      "details": {
+        "treatments": [
+          "Acupuncture therapy (pain management, internal medicine, stress/sleep issues)",
+          "Cupping and fire cupping therapy",
+          "Traditional Chinese massage/medical massage",
+          "Holistic healing and rehabilitation guidance"
+        ]
+      }
+    },
+    {
+      "id": "Payment & Insurance",
+      "name": "Payment & Insurance",
+      "description": "Payment methods and insurance coverage",
+      "details": {
+        "insurance": [
+          "Workers' Compensation",
+          "Auto Accident Insurance",
+          "Veterans Affairs",
+          "General Medical Insurance"
+        ],
+        "payments": ["Cash", "Credit Cards", "WeChat Pay", "Apple Pay", "Direct insurance billing"]
+      }
+    },
+    {
+      "id": "Emergency Services",
+      "name": "Emergency Services",
+      "description": "Emergency contact and procedures",
+      "details": {
+        "note": "Acupuncture clinics do not provide emergency services. For chest pain, difficulty breathing, sudden severe pain, or other critical symptoms, please call 911 immediately or go to the nearest hospital emergency room."
+      }
+    },
+    {
+      "id": "Visit Guidelines",
+      "name": "Visit Guidelines",
+      "description": "Visit procedures and preparation guidelines",
+      "details": {
+        "before_visit": "Eat a light meal before treatment, don't come on empty stomach; wear loose clothing for easy acupuncture access.",
+        "during_visit": "Initial consultation includes assessment and treatment, about 45-60 minutes; follow-up visits about 30-45 minutes."
+      }
+    },
+    {
+      "id": "Doctor Information",
+      "name": "Doctor Information",
+      "description": "Medical team and practitioner information",
+      "details": {
+        "team": [
+          "Dr. Yang - Chief Internal Medicine Physician, 40 years experience",
+          "Dr. Cai - Beijing TCM Acupuncturist, 30 years experience",
+          "Dr. Long - Beijing TCM Acupuncturist, 20 years experience",
+          "Dr. Cao - Taiwan TCM Acupuncturist, 15 years experience"
+        ]
+      }
+    },
+    {
+      "id": "Acupuncture Basics",
+      "name": "Acupuncture Basics",
+      "description": "Basic knowledge and common questions about acupuncture treatment"
+    },
+    {
+      "id": "Treatment Related",
+      "name": "Treatment Related",
+      "description": "Treatment process and session-related information"
+    },
+    {
+      "id": "Treatment Conditions",
+      "name": "Treatment Conditions", 
+      "description": "Specific conditions and pain management services we provide"
+    }
+  ],
+  "quickReplies": [
+    {
+      "id": "appointment_quick",
+      "title": "📅 Book Appointment",
+      "payload": "BOOK_APPOINTMENT",
+      "category": "Appointment Services"
+    },
+    {
+      "id": "services_quick",
+      "title": "📋 View Services",
+      "payload": "VIEW_SERVICES",
+      "category": "Services"
+    },
+    {
+      "id": "location_quick",
+      "title": "📍 Clinic Info",
+      "payload": "CLINIC_INFO",
+      "category": "Basic Information"
+    },
+    {
+      "id": "emergency_quick",
+      "title": "🚨 Emergency Contact",
+      "payload": "EMERGENCY_CONTACT",
+      "category": "Emergency Services"
+    }
+  ]
+}

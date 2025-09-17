@@ -15,7 +15,7 @@
         
         .chat-container {
             width: 250px;
-            height: 300px;
+            height: 500px;
             margin: 0 auto;
             background: white;
             border-radius: 15px;
@@ -116,16 +116,15 @@
             flex-wrap: wrap;
             gap: 4px;
             margin-top: 6px;
-        }
-        
+        } 
         .quick-reply-btn {
             background: #667eea;
             color: white;
             border: none;
-            padding: 4px 8px;
-            border-radius: 12px;
+            padding: 3px 6px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 9px;
+            font-size: 7px;
             transition: background 0.3s;
             flex: 1;
             min-width: 0;
@@ -451,7 +450,7 @@
                 const button = document.createElement('button');
                 button.className = 'quick-reply-btn';
                 button.textContent = reply.title;
-                button.onclick = () => sendQuickReply(reply.title.replace(/[📅📋📍🕒]/g, '').trim());
+                button.onclick = () => sendQuickReply(reply.payload);
                 quickRepliesDiv.appendChild(button);
             });
             
@@ -492,9 +491,9 @@
         function showDefaultQuickReplies() {
             const quickRepliesDiv = document.getElementById('quickReplies');
             quickRepliesDiv.innerHTML = `
-                <button class="quick-reply-btn" onclick="sendQuickReply('appointment')">📅 Book</button>
-                <button class="quick-reply-btn" onclick="sendQuickReply('services')">📋 Services</button>
-                <button class="quick-reply-btn" onclick="sendQuickReply('location')">📍 Location</button>
+                <button class="quick-reply-btn" onclick="sendQuickReply('clinic hours')">🕒 Clinic Hours</button>
+                <button class="quick-reply-btn" onclick="sendQuickReply('book appointment')">📅 Book Appointment</button>
+                <button class="quick-reply-btn" onclick="sendQuickReply('clinic location')">📍 Location</button>
             `;
             quickRepliesDiv.style.display = 'flex';
         }
@@ -511,6 +510,14 @@
         document.getElementById('messageInput').addEventListener('input', function() {
             const sendBtn = document.getElementById('sendBtn');
             sendBtn.disabled = !this.value.trim() || isTyping;
+        });
+
+        // Initialize with default quick replies when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show default quick replies immediately
+            setTimeout(() => {
+                showDefaultQuickReplies();
+            }, 300);
         });
     </script>
 </body>

@@ -314,18 +314,30 @@
             
             hideQuickReplies();
             
-            // 模拟回复
-            setTimeout(() => {
-                const responses = [
-                    '感谢您的消息！我们的客服团队会尽快回复您。',
-                    '您好！我是诊所客服助手，有什么可以帮助您的吗？',
-                    '请稍等，我正在为您查询相关信息...',
-                    '感谢您的咨询，我们会为您提供专业的医疗服务。',
-                    '我已经收到您的消息，请稍等片刻...'
-                ];
-                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-                addMessage(randomResponse, 'bot');
-            }, 1000);
+            // 调用真正的API
+            fetch('/chat/message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: message,
+                    userId: 'embed_user_' + Date.now(),
+                    sessionId: 'embed_session_' + Date.now()
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    addMessage(data.data.message, 'bot');
+                } else {
+                    addMessage('抱歉，我暂时无法回复您的消息。请稍后再试。', 'bot');
+                }
+            })
+            .catch(error => {
+                console.error('API调用失败:', error);
+                addMessage('抱歉，我暂时无法回复您的消息。请稍后再试。', 'bot');
+            });
         }
 
         // 快速回复

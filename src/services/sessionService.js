@@ -10,7 +10,7 @@ class SessionService {
     this.config = {
       maxSessionAge: 24 * 60 * 60 * 1000, // 24小时
       maxSessionsPerUser: 5, // 每个用户最多5个会话
-      cleanupInterval: 60 * 60 * 1000, // 1小时清理一次
+      cleanupInterval: 60 * 60 * 1000 // 1小时清理一次
     };
     
     // 启动定期清理
@@ -46,7 +46,7 @@ class SessionService {
           currentTopic: null,
           userPreferences: {},
           conversationHistory: [],
-          quickReplies: [],
+          quickReplies: []
         }
       };
 
