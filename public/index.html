@@ -357,8 +357,10 @@
             
             messagesDiv.appendChild(messageDiv);
             
-            // Hide quick replies temporarily
-            document.getElementById('quickReplies').style.display = 'none';
+            // Only hide quick replies when user sends a message, not when bot responds
+if (sender === 'user') {
+    document.getElementById('quickReplies').style.display = 'none';
+}
             
             // Scroll to bottom
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
