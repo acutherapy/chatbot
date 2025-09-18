@@ -506,7 +506,10 @@
                 sendMessage();
             }
         });
-        
+        // 页面加载完成后初始化快速回复
+document.addEventListener('DOMContentLoaded', function() {
+    showDefaultQuickReplies();
+});
         // Update send button state
         document.getElementById('messageInput').addEventListener('input', function() {
             const sendBtn = document.getElementById('sendBtn');
@@ -515,3 +518,4 @@
     </script>
 </body>
 </html>
+
