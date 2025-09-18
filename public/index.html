@@ -507,13 +507,15 @@
             }
         });
         // 页面加载完成后初始化快速回复
-document.addEventListener('DOMContentLoaded', function() {
-    showDefaultQuickReplies();
+            document.addEventListener('DOMContentLoaded', function() {
+            showDefaultQuickReplies();
 });
         // Update send button state
         document.getElementById('messageInput').addEventListener('input', function() {
             const sendBtn = document.getElementById('sendBtn');
             sendBtn.disabled = !this.value.trim() || isTyping;
+        // 让 sendQuickReply 变为全局可用
+            window.sendQuickReply = sendQuickReply;
         });
     </script>
 </body>
