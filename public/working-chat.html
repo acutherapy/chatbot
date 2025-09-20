@@ -211,150 +211,139 @@
     </div>
 
     <script>
-        let isTyping = false;
-        
-        function addMessage(content, sender) {
-            const messagesDiv = document.getElementById('chatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${sender}-message`;
-            
-            const bubbleDiv = document.createElement('div');
-            bubbleDiv.className = 'message-bubble';
-            bubbleDiv.innerHTML = content.replace(/\n/g, '<br>');
-            
-            messageDiv.appendChild(bubbleDiv);
-            messagesDiv.appendChild(messageDiv);
-            
-            // 隐藏快速回复
-            document.getElementById('quickReplies').style.display = 'none';
-            
-            // 滚动到底部
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
-        
-        function showLoading() {
-            const messagesDiv = document.getElementById('chatMessages');
-            const loadingDiv = document.createElement('div');
-            loadingDiv.className = 'message bot-message';
-            loadingDiv.id = 'loadingMessage';
-            loadingDiv.innerHTML = '<div class="message-bubble loading">正在思考中...</div>';
-            messagesDiv.appendChild(loadingDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
-        
-        function hideLoading() {
-            const loadingDiv = document.getElementById('loadingMessage');
-            if (loadingDiv) {
-                loadingDiv.remove();
-            }
-        }
-        
-        async function sendMessage() {
-            const input = document.getElementById('messageInput');
-            const message = input.value.trim();
-            
-            if (!message || isTyping) return;
-            
-            // 添加用户消息
-            addMessage(message, 'user');
-            input.value = '';
-            
-            // 显示加载状态
-            showLoading();
-            isTyping = true;
-            
-            try {
-                const response = await fetch('/chat/message', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        message: message,
-                        userId: 'web_user_' + Date.now(),
-                        sessionId: 'session_' + Date.now()
-                    })
-                });
-                
-                if (!response.ok) {
-                    throw new Error('请求失败');
-                }
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    // 添加机器人回复
-                    addMessage(data.data.message, 'bot');
-                    
-                    // 显示快速回复
-                    if (data.data.quickReplies && data.data.quickReplies.length > 0) {
-                        showQuickReplies(data.data.quickReplies);
-                    } else {
-                        showDefaultQuickReplies();
-                    }
-                } else {
-                    addMessage('抱歉，我暂时无法回复您的消息。请稍后再试。', 'bot');
-                }
-            } catch (error) {
-                console.error('发送消息失败:', error);
-                addMessage('抱歉，网络连接出现问题。请检查网络后重试。', 'bot');
-            } finally {
-                hideLoading();
-                isTyping = false;
-            }
-        }
-        
-        function sendQuickReply(message) {
-            document.getElementById('messageInput').value = message;
-            sendMessage();
-        }
-        
-        function showQuickReplies(replies) {
-            const quickRepliesDiv = document.getElementById('quickReplies');
-            quickRepliesDiv.innerHTML = '';
-            
-            replies.forEach(reply => {
-                const button = document.createElement('button');
-                button.className = 'quick-reply-btn';
-                button.textContent = reply.title;
-                button.onclick = () => sendQuickReply(reply.payload);
-                quickRepliesDiv.appendChild(button);
-            });
-            
-            quickRepliesDiv.style.display = 'flex';
-        }
-        
-        function showDefaultQuickReplies() {
-            const quickRepliesDiv = document.getElementById('quickReplies');
-            quickRepliesDiv.innerHTML = `
-                <button class="quick-reply-btn" onclick="sendQuickReply('营业时间')">🕒 营业时间</button>
-                <button class="quick-reply-btn" onclick="sendQuickReply('预约服务')">📅 预约服务</button>
-                <button class="quick-reply-btn" onclick="sendQuickReply('诊所地址')">📍 诊所地址</button>
-            `;
-            quickRepliesDiv.style.display = 'flex';
-        }
-        
-        // 回车发送消息
-        document.getElementById('messageInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
-        });
-        
-        // 输入框变化时更新发送按钮状态
-        document.getElementById('messageInput').addEventListener('input', function() {
-            const sendBtn = document.getElementById('sendBtn');
-            sendBtn.disabled = !this.value.trim() || isTyping;
-        });
+let isTyping = false;
 
-        // 页面加载时显示默认快速回复
-        document.addEventListener('DOMContentLoaded', function() {
-            // 延迟显示默认快速回复
-            setTimeout(() => {
-                showDefaultQuickReplies();
-            }, 300);
-        });
-    </script>
+function addMessage(content, sender) {
+  const messagesDiv = document.getElementById('chatMessages');
+  const messageDiv = document.createElement('div');
+  messageDiv.className = `message ${sender}-message`;
+
+  const bubbleDiv = document.createElement('div');
+  bubbleDiv.className = 'message-bubble';
+  bubbleDiv.innerHTML = content.replace(/\n/g, '<br>');
+
+  messageDiv.appendChild(bubbleDiv);
+  messagesDiv.appendChild(messageDiv);
+
+  // 只有用户发消息时隐藏默认快捷键
+  if (sender === 'user') {
+    document.getElementById('quickReplies').style.display = 'none';
+  }
+
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+function showLoading() {
+  const messagesDiv = document.getElementById('chatMessages');
+  const loadingDiv = document.createElement('div');
+  loadingDiv.className = 'message bot-message';
+  loadingDiv.id = 'loadingMessage';
+  loadingDiv.innerHTML = '<div class="message-bubble loading">正在思考中...</div>';
+  messagesDiv.appendChild(loadingDiv);
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+function hideLoading() {
+  const loadingDiv = document.getElementById('loadingMessage');
+  if (loadingDiv) loadingDiv.remove();
+}
+
+async function sendMessage() {
+  const input = document.getElementById('messageInput');
+  const message = input.value.trim();
+  if (!message || isTyping) return;
+
+  addMessage(message, 'user');
+  input.value = '';
+  showLoading();
+  isTyping = true;
+
+  try {
+    const res = await fetch('/chat/message', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message,
+        userId: 'web_cn_' + Date.now(),
+        sessionId: 'session_cn_' + Date.now()
+      })
+    });
+    if (!res.ok) throw new Error('请求失败');
+    const data = await res.json();
+    if (data.success) {
+      addMessage(data.data.message, 'bot');
+      if (data.data.quickReplies && data.data.quickReplies.length > 0) {
+        showQuickReplies(data.data.quickReplies);
+      } else {
+        showDefaultQuickReplies();
+      }
+    } else {
+      addMessage('抱歉，我暂时无法回复，请稍后再试。', 'bot');
+    }
+  } catch (err) {
+    console.error('发送消息失败', err);
+    addMessage('网络错误，请稍后再试。', 'bot');
+  } finally {
+    hideLoading();
+    isTyping = false;
+  }
+}
+
+// -------- 关键：函数定义后立即挂到 window，避免第一次找不到 --------
+function sendQuickReply(msg) {
+  document.getElementById('messageInput').value = msg;
+  sendMessage();
+}
+window.sendQuickReply = sendQuickReply;
+
+function showQuickReplies(replies) {
+  const wrap = document.getElementById('quickReplies');
+  wrap.innerHTML = '';
+  replies.forEach(r => {
+    const btn = document.createElement('button');
+    btn.className = 'quick-reply-btn';
+    btn.textContent = r.title;
+    btn.onclick = () => sendQuickReply(r.payload || r.title);
+    wrap.appendChild(btn);
+  });
+  wrap.style.display = 'flex';
+}
+
+function showDefaultQuickReplies() {
+  const wrap = document.getElementById('quickReplies');
+  wrap.innerHTML = `
+    <button class="quick-reply-btn" onclick="sendQuickReply('营业时间')">🕒 营业时间</button>
+    <button class="quick-reply-btn" onclick="sendQuickReply('预约服务')">📅 预约服务</button>
+    <button class="quick-reply-btn" onclick="sendQuickReply('诊所地址')">📍 诊所地址</button>
+  `;
+  wrap.style.display = 'flex';
+}
+
+// === 页面加载后初始化 ===
+document.addEventListener('DOMContentLoaded', () => {
+  showDefaultQuickReplies();
+  // 事件委托，确保动态生成的按钮也能点击
+  document.getElementById('quickReplies').addEventListener('click', e => {
+    if (e.target.classList.contains('quick-reply-btn') && typeof sendQuickReply === 'function') {
+      const txt = e.target.textContent.replace(/[📅📋📍🕒]/g, '').trim();
+      sendQuickReply(txt);
+    }
+  });
+});
+
+// 回车发送
+document.getElementById('messageInput').addEventListener('keypress', e => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+});
+
+// 输入框状态控制按钮
+document.getElementById('messageInput').addEventListener('input', function () {
+  document.getElementById('sendBtn').disabled = !this.value.trim() || isTyping;
+});
+</script>
+
 </body>
 </html>
