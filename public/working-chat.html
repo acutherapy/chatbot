@@ -1,199 +1,44 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>诊所客服助手 - 工作版本</title>
-    <style>
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            margin: 0;
-            padding: 10px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
-
-        .chat-container {
-            width: 250px;
-            height: 500px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .chat-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 8px;
-            text-align: center;
-            flex-shrink: 0;
-        }
-
-        /* 🔹 统一语言切换按钮样式 */
-        .language-switch {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: 1px solid rgba(255,255,255,0.3);
-            padding: 2px 6px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-size: 8px;
-            transition: background 0.3s;
-        }
-        .language-switch:hover {
-            background: rgba(255,255,255,0.3);
-        }
-
-        .chat-header h1 {
-            margin: 2px 0;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        .chat-header p {
-            margin: 2px 0;
-            font-size: 9px;
-        }
-
-        .chat-messages {
-            height: 380px;
-            overflow-y: auto;
-            padding: 8px;
-            background: #f8f9fa;
-            flex: 1;
-        }
-
-        .message {
-            display: flex;
-            margin-bottom: 6px;
-            align-items: flex-start;
-        }
-
-        .user-message { justify-content: flex-end; }
-        .bot-message { justify-content: flex-start; }
-
-        .message-bubble {
-            max-width: 80%;
-            padding: 6px 8px;
-            border-radius: 10px;
-            word-wrap: break-word;
-            font-size: 9px;
-            line-height: 1.2;
-        }
-        .user-message .message-bubble { background: #667eea; color: white; }
-        .bot-message .message-bubble { background: white; color: #333; border: 1px solid #e1e5e9; }
-
-        .quick-replies {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 3px;
-            margin-top: 4px;
-        }
-        .quick-reply-btn {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 3px 6px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 7px;
-            transition: background 0.3s;
-        }
-        .quick-reply-btn:hover { background: #5a6fd8; }
-
-        .chat-input {
-            padding: 8px;
-            background: white;
-            border-top: 1px solid #e1e5e9;
-            flex-shrink: 0;
-        }
-
-        .input-wrapper { display: flex; gap: 4px; }
-        .message-input {
-            flex: 1;
-            padding: 6px 8px;
-            border: 1px solid #e1e5e9;
-            border-radius: 12px;
-            font-size: 9px;
-            outline: none;
-        }
-        .message-input:focus { border-color: #667eea; }
-
-        .send-btn {
-            background: #667eea;
-            color: white;
-            border: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 8px;
-        }
-        .send-btn:hover { background: #5a6fd8; }
-        .send-btn:disabled { background: #ccc; cursor: not-allowed; }
-
-        .loading {
-            text-align: center;
-            color: #666;
-            font-style: italic;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>诊所客服助手 - 工作版本</title>
+  <style>
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;margin:0;padding:10px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;}
+    .chat-container{width:250px;height:500px;margin:0 auto;background:#fff;border-radius:15px;box-shadow:0 10px 25px rgba(0,0,0,.15);overflow:hidden;display:flex;flex-direction:column;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);}
+    .chat-header{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;padding:8px;text-align:center;flex-shrink:0;}
+    .language-switch{position:absolute;top:5px;right:5px;background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3);padding:2px 6px;border-radius:10px;text-decoration:none;font-size:8px;transition:background .3s;}
+    .language-switch:hover{background:rgba(255,255,255,.3);}
+    .chat-header h1{margin:2px 0;font-size:12px;font-weight:600;}
+    .chat-header p{margin:2px 0;font-size:9px;}
+    .chat-messages{height:380px;overflow-y:auto;padding:8px;background:#f8f9fa;flex:1;}
+    .message{display:flex;margin-bottom:6px;align-items:flex-start;}
+    .user-message{justify-content:flex-end;}
+    .bot-message{justify-content:flex-start;}
+    .message-bubble{max-width:80%;padding:6px 8px;border-radius:10px;word-wrap:break-word;font-size:9px;line-height:1.2;}
+    .user-message .message-bubble{background:#667eea;color:#fff;}
+    .bot-message .message-bubble{background:#fff;color:#333;border:1px solid #e1e5e9;}
+    .quick-replies{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px;}
+    .quick-reply-btn{background:#667eea;color:#fff;border:none;padding:3px 6px;border-radius:8px;cursor:pointer;font-size:7px;transition:background .3s;}
+    .quick-reply-btn:hover{background:#5a6fd8;}
+    .chat-input{padding:8px;background:#fff;border-top:1px solid #e1e5e9;flex-shrink:0;}
+    .input-wrapper{display:flex;gap:4px;}
+    .message-input{flex:1;padding:6px 8px;border:1px solid #e1e5e9;border-radius:12px;font-size:9px;outline:none;}
+    .message-input:focus{border-color:#667eea;}
+    .send-btn{background:#667eea;color:#fff;border:none;width:24px;height:24px;border-radius:50%;cursor:pointer;font-size:8px;}
+    .send-btn:hover{background:#5a6fd8;}
+    .send-btn:disabled{background:#ccc;cursor:not-allowed;}
+    .loading{text-align:center;color:#666;font-style:italic;}
+  </style>
 </head>
 <body>
 <div class="chat-container">
-    <div class="chat-header">
-        <!-- 🔹 去掉行内 style，只保留 class -->
-        <a href="/chat-en.html" class="language-switch">英语 English</a>
+  <div class="chat-header">
+    <!-- 英文链接回首页 -->
+    <a href="/index.html" class="language-switch">English</a>
+    <div class="bot-avatar">
 
-        <div class="bot-avatar">
-            <img src="https://cdn-icons-png.flaticon.com/512/2785/2785482.png"
-                 alt="针灸助手"
-                 style="width:60px;height:60px;border-radius:50%;margin-bottom:10px;">
-        </div>
-        <h1>🌿 灸宝宝 - 您的健康向导</h1>
-        <p>在线服务 | 智能问答</p>
-    </div>
-
-    <div class="chat-messages" id="chatMessages">
-        <div class="message bot-message">
-            <div class="message-bubble">
-                <p>👋 欢迎来到我们的诊所！</p>
-                <p>我是针灸助手，您的专属健康向导，可以为您提供：</p>
-                <ul>
-                    <li>📋 服务咨询</li>
-                    <li>📅 预约安排</li>
-                    <li>🏥 诊所信息</li>
-                    <li>💡 健康建议</li>
-                </ul>
-                <p>请告诉我您需要什么帮助？</p>
-            </div>
-        </div>
-
-        <div class="quick-replies" id="quickReplies">
-            <button class="quick-reply-btn" onclick="sendQuickReply('预约')">📅 预约服务</button>
-            <button class="quick-reply-btn" onclick="sendQuickReply('服务')">📋 查看服务</button>
-            <button class="quick-reply-btn" onclick="sendQuickReply('地址')">📍 诊所信息</button>
-            <button class="quick-reply-btn" onclick="sendQuickReply('营业时间')">🕒 营业时间</button>
-        </div>
-    </div>
-
-    <div class="chat-input">
-        <div class="input-wrapper">
-            <input type="text" id="messageInput" class="message-input" placeholder="请输入您的问题..." maxlength="1000">
-            <button id="sendBtn" class="send-btn" onclick="sendMessage()">📤</button>
-        </div>
-    </div>
-</div>
 
 <!-- 下面 JS 保持不变 -->
 <script>
