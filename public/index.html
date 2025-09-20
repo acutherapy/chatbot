@@ -324,202 +324,186 @@
     </div>
 
     <script>
-        let isTyping = false;
-        
-        function addMessage(content, sender) {
-            const messagesDiv = document.getElementById('chatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${sender}-message`;
-            
-            // Add avatar
-            const avatar = document.createElement('img');
-            avatar.className = 'message-avatar';
-            if (sender === 'bot') {
-                avatar.src = 'https://cdn-icons-png.flaticon.com/512/4712/4712139.png';
-                avatar.alt = 'AcuBot';
+    let isTyping = false;
+
+    function addMessage(content, sender) {
+        const messagesDiv = document.getElementById('chatMessages');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${sender}-message`;
+
+        // 头像
+        const avatar = document.createElement('img');
+        avatar.className = 'message-avatar';
+        if (sender === 'bot') {
+            avatar.src = 'https://cdn-icons-png.flaticon.com/512/4712/4712139.png';
+            avatar.alt = 'AcuBot';
+        } else {
+            avatar.src = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
+            avatar.alt = 'User';
+            avatar.classList.add('user-avatar');
+        }
+
+        const bubbleDiv = document.createElement('div');
+        bubbleDiv.className = 'message-bubble';
+        bubbleDiv.innerHTML = content.replace(/\n/g, '<br>');
+
+        if (sender === 'user') {
+            messageDiv.appendChild(bubbleDiv);
+            messageDiv.appendChild(avatar);
+        } else {
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(bubbleDiv);
+        }
+
+        messagesDiv.appendChild(messageDiv);
+
+        // 只有用户发消息时才隐藏默认快捷键
+        if (sender === 'user') {
+            document.getElementById('quickReplies').style.display = 'none';
+        }
+
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+        // 机器人回话后 0.5s 显示新快捷键
+        if (sender === 'bot') {
+            setTimeout(showAutoQuickReplies, 500);
+        }
+    }
+
+    function showLoading() {
+        const messagesDiv = document.getElementById('chatMessages');
+        const loadingDiv = document.createElement('div');
+        loadingDiv.className = 'message bot-message';
+        loadingDiv.id = 'loadingMessage';
+        loadingDiv.innerHTML = '<div class="message-bubble loading">Thinking...</div>';
+        messagesDiv.appendChild(loadingDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    function hideLoading() {
+        const loadingDiv = document.getElementById('loadingMessage');
+        if (loadingDiv) loadingDiv.remove();
+    }
+
+    async function sendMessage() {
+        const input = document.getElementById('messageInput');
+        const message = input.value.trim();
+        if (!message || isTyping) return;
+
+        addMessage(message, 'user');
+        input.value = '';
+
+        showLoading();
+        isTyping = true;
+
+        try {
+            const response = await fetch('/chat/message-en', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    message,
+                    userId: 'web_user_en_' + Date.now(),
+                    sessionId: 'session_en_' + Date.now()
+                })
+            });
+
+            if (!response.ok) throw new Error('Request failed');
+            const data = await response.json();
+
+            if (data.success) {
+                addMessage(data.data.message, 'bot');
             } else {
-                avatar.src = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
-                avatar.alt = 'User';
-                avatar.className += ' user-avatar';
+                addMessage('Sorry, I am temporarily unable to respond. Please try again later.', 'bot');
             }
-            
-            const bubbleDiv = document.createElement('div');
-            bubbleDiv.className = 'message-bubble';
-            bubbleDiv.innerHTML = content.replace(/\n/g, '<br>');
-            
-            if (sender === 'user') {
-                messageDiv.appendChild(bubbleDiv);
-                messageDiv.appendChild(avatar);
-            } else {
-                messageDiv.appendChild(avatar);
-                messageDiv.appendChild(bubbleDiv);
-            }
-            
-            messagesDiv.appendChild(messageDiv);
-            
-            // Only hide quick replies when user sends a message, not when bot responds
-if (sender === 'user') {
-    document.getElementById('quickReplies').style.display = 'none';
-}
-            
-            // Scroll to bottom
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-            
-            // Auto-show quick replies after bot message
-            if (sender === 'bot') {
-                setTimeout(() => {
-                    showAutoQuickReplies();
-                }, 500);
-            }
+        } catch (err) {
+            console.error('send error:', err);
+            addMessage('Network error, please retry later.', 'bot');
+        } finally {
+            hideLoading();
+            isTyping = false;
         }
-        
-        function showLoading() {
-            const messagesDiv = document.getElementById('chatMessages');
-            const loadingDiv = document.createElement('div');
-            loadingDiv.className = 'message bot-message';
-            loadingDiv.id = 'loadingMessage';
-            loadingDiv.innerHTML = '<div class="message-bubble loading">Thinking...</div>';
-            messagesDiv.appendChild(loadingDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
-        
-        function hideLoading() {
-            const loadingDiv = document.getElementById('loadingMessage');
-            if (loadingDiv) {
-                loadingDiv.remove();
+    }
+
+    // === 关键修复：sendQuickReply 提前挂到 window，避免第一次 undefined ===
+    function sendQuickReply(message) {
+        document.getElementById('messageInput').value = message;
+        sendMessage();
+    }
+    window.sendQuickReply = sendQuickReply;
+
+    function showQuickReplies(replies) {
+        const wrap = document.getElementById('quickReplies');
+        wrap.innerHTML = '';
+        replies.forEach(r => {
+            const btn = document.createElement('button');
+            btn.className = 'quick-reply-btn';
+            btn.textContent = r.title;
+            btn.onclick = () => sendQuickReply(r.title.replace(/[📅📋📍🕒]/g, '').trim());
+            wrap.appendChild(btn);
+        });
+        wrap.style.display = 'flex';
+    }
+
+    function showAutoQuickReplies() {
+        const wrap = document.getElementById('quickReplies');
+        const all = [
+            { text: '📅 Book', query: 'appointment' },
+            { text: '📋 Services', query: 'services' },
+            { text: '📍 Location', query: 'location' },
+            { text: '🕒 Hours', query: 'hours' },
+            { text: '💊 Pain Help', query: 'back pain' },
+            { text: '🤔 Does it hurt?', query: 'does acupuncture hurt' },
+            { text: '💰 Insurance', query: 'insurance' },
+            { text: '👨‍⚕️ Doctors', query: 'doctor team' }
+        ];
+        const selected = all.sort(() => 0.5 - Math.random()).slice(0, 3);
+        wrap.innerHTML = '';
+        selected.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'quick-reply-btn';
+            btn.textContent = opt.text;
+            btn.onclick = () => sendQuickReply(opt.query);
+            wrap.appendChild(btn);
+        });
+        wrap.style.display = 'flex';
+    }
+
+    function showDefaultQuickReplies() {
+        const wrap = document.getElementById('quickReplies');
+        wrap.innerHTML = `
+            <button class="quick-reply-btn" onclick="sendQuickReply('appointment_booking')">📅 Appointment</button>
+            <button class="quick-reply-btn" onclick="sendQuickReply('clinic hours')">🕒 Hours</button>
+            <button class="quick-reply-btn" onclick="sendQuickReply('clinic location')">📍 Location</button>
+        `;
+        wrap.style.display = 'flex';
+    }
+
+    // === 页面加载后初始化 ===
+    document.addEventListener('DOMContentLoaded', () => {
+        showDefaultQuickReplies();
+        // 用事件委托处理后面动态生成的按钮
+        document.getElementById('quickReplies').addEventListener('click', e => {
+            if (e.target.classList.contains('quick-reply-btn') && typeof sendQuickReply === 'function') {
+                const txt = e.target.textContent.replace(/[📅📋📍🕒]/g, '').trim();
+                sendQuickReply(txt);
             }
-        }
-        
-        async function sendMessage() {
-            const input = document.getElementById('messageInput');
-            const message = input.value.trim();
-            
-            if (!message || isTyping) return;
-            
-            // Add user message
-            addMessage(message, 'user');
-            input.value = '';
-            
-            // Show loading state
-            showLoading();
-            isTyping = true;
-            
-            try {
-                const response = await fetch('/chat/message-en', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        message: message,
-                        userId: 'web_user_en_' + Date.now(),
-                        sessionId: 'session_en_' + Date.now()
-                    })
-                });
-                
-                if (!response.ok) {
-                    throw new Error('Request failed');
-                }
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    // Add bot reply
-                    addMessage(data.data.message, 'bot');
-                    
-                    // Quick replies will be shown automatically by addMessage function
-                } else {
-                    addMessage('Sorry, I am temporarily unable to respond to your message. Please try again later.', 'bot');
-                }
-            } catch (error) {
-                console.error('Failed to send message:', error);
-                addMessage('Sorry, there was a network connection issue. Please check your connection and try again.', 'bot');
-            } finally {
-                hideLoading();
-                isTyping = false;
-            }
-        }
-        
-        function sendQuickReply(message) {
-            document.getElementById('messageInput').value = message;
+        });
+    });
+
+    // 回车发送
+    document.getElementById('messageInput').addEventListener('keypress', e => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
             sendMessage();
         }
-        
-        function showQuickReplies(replies) {
-            const quickRepliesDiv = document.getElementById('quickReplies');
-            quickRepliesDiv.innerHTML = '';
-            
-            replies.forEach(reply => {
-                const button = document.createElement('button');
-                button.className = 'quick-reply-btn';
-                button.textContent = reply.title;
-                button.onclick = () => sendQuickReply(reply.title.replace(/[📅📋📍🕒]/g, '').trim());
-                quickRepliesDiv.appendChild(button);
-            });
-            
-            quickRepliesDiv.style.display = 'flex';
-        }
-        
-        function showAutoQuickReplies() {
-            const quickRepliesDiv = document.getElementById('quickReplies');
-            
-            // Get random 3 options from available options
-            const allOptions = [
-                { text: '📅 Book', query: 'appointment' },
-                { text: '📋 Services', query: 'services' },
-                { text: '📍 Location', query: 'location' },
-                { text: '🕒 Hours', query: 'hours' },
-                { text: '💊 Pain Help', query: 'back pain' },
-                { text: '🤔 Does it hurt?', query: 'does acupuncture hurt' },
-                { text: '💰 Insurance', query: 'insurance' },
-                { text: '👨‍⚕️ Doctors', query: 'doctor team' }
-            ];
-            
-            // Shuffle and pick 3 options
-            const shuffled = allOptions.sort(() => 0.5 - Math.random());
-            const selected = shuffled.slice(0, 3);
-            
-            quickRepliesDiv.innerHTML = '';
-            selected.forEach(option => {
-                const button = document.createElement('button');
-                button.className = 'quick-reply-btn';
-                button.textContent = option.text;
-                button.onclick = () => sendQuickReply(option.query);
-                quickRepliesDiv.appendChild(button);
-            });
-            
-            quickRepliesDiv.style.display = 'flex';
-        }
-        
-        function showDefaultQuickReplies() {
-            const quickRepliesDiv = document.getElementById('quickReplies');
-            quickRepliesDiv.innerHTML = `
-                <button class="quick-reply-btn" onclick="sendQuickReply('appointment_booking')">📅 Appointment</button>
-                <button class="quick-reply-btn" onclick="sendQuickReply('clinic hours')">🕒 Hours</button>
-                <button class="quick-reply-btn" onclick="sendQuickReply('clinic location')">📍 Location</button>
-            `;
-            quickRepliesDiv.style.display = 'flex';
-        }
-        
-        // Send message on Enter
-        document.getElementById('messageInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
-        });
-        // 页面加载完成后初始化快速回复
-            document.addEventListener('DOMContentLoaded', function() {
-            showDefaultQuickReplies();
-});
-        // Update send button state
-        document.getElementById('messageInput').addEventListener('input', function() {
-            const sendBtn = document.getElementById('sendBtn');
-            sendBtn.disabled = !this.value.trim() || isTyping;
-        // 让 sendQuickReply 变为全局可用
-            window.sendQuickReply = sendQuickReply;
-        });
-    </script>
+    });
+
+    // 输入状态控制发送按钮
+    document.getElementById('messageInput').addEventListener('input', function () {
+        document.getElementById('sendBtn').disabled = !this.value.trim() || isTyping;
+    });
+</script>
+
 </body>
 </html>
 
