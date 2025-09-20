@@ -1,272 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AcuTherapy Clinic Assistant</title>
-    <style>
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            margin: 0;
-            padding: 10px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
-        .chat-container {
-            width: 250px; height: 500px; margin: 0 auto; background: white; border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15); overflow: hidden; display: flex; flex-direction: column;
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-        }
-        .chat-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white; padding: 8px; text-align: center; flex-shrink: 0;
-        }
-        .chat-header h1 { margin: 2px 0; font-size: 12px; font-weight: 600; }
-        .chat-header p { margin: 2px 0; font-size: 9px; }
-        .chat-header img { width: 25px; height: 25px; border-radius: 50%; margin-bottom: 4px; }
-
-        .chat-messages { flex: 1; overflow-y: auto; padding: 8px; background: #f8f9fa; min-height: 0; font-size: 11px; }
-        .message { display: flex; margin-bottom: 8px; align-items: flex-start; }
-        .message-avatar { width: 20px; height: 20px; border-radius: 50%; margin-right: 6px; flex-shrink: 0; }
-        .user-avatar { margin-right: 0; margin-left: 6px; }
-        .user-message { justify-content: flex-end; }
-        .bot-message { justify-content: flex-start; }
-        .message-bubble {
-            max-width: 80%; padding: 6px 8px; border-radius: 10px; word-wrap: break-word; font-size: 10px; line-height: 1.3;
-        }
-        .user-message .message-bubble { background: #667eea; color: white; }
-        .bot-message .message-bubble { background: white; color: #333; border: 1px solid #e1e5e9; }
-
-        .quick-replies { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
-        .quick-reply-btn {
-            background: #667eea; color: white; border: none; padding: 4px 8px; border-radius: 12px; cursor: pointer;
-            font-size: 9px; transition: background 0.3s; flex: 1; min-width: 0;
-        }
-        .quick-reply-btn:hover { background: #5a6fd8; }
-
-        .chat-input { padding: 6px; background: white; border-top: 1px solid #e1e5e9; flex-shrink: 0; }
-        .input-wrapper { display: flex; gap: 4px; }
-        .message-input {
-            flex: 1; padding: 6px 8px; border: 1px solid #e1e5e9; border-radius: 15px; font-size: 10px; outline: none;
-        }
-        .message-input:focus { border-color: #667eea; }
-        .send-btn { background: #667eea; color: white; border: none; width: 25px; height: 25px; border-radius: 50%; cursor: pointer; font-size: 10px; }
-        .send-btn:hover { background: #5a6fd8; }
-        .send-btn:disabled { background: #ccc; cursor: not-allowed; }
-        .loading { text-align: center; color: #666; font-style: italic; }
-
-        .language-switch {
-            position: absolute; top: 5px; right: 5px; background: rgba(255,255,255,0.2); color: white;
-            border: 1px solid rgba(255,255,255,0.3); padding: 2px 6px; border-radius: 10px; text-decoration: none; font-size: 8px; transition: background 0.3s;
-        }
-        .language-switch:hover { background: rgba(255,255,255,0.3); color: white; text-decoration: none; }
-
-        @media (max-width: 768px) {
-            body { padding: 5px; }
-            .chat-container { height: calc(100vh - 10px); border-radius: 15px; }
-            .chat-header { padding: 10px; }
-            .chat-header h1 { font-size: 18px; }
-            .chat-header p { font-size: 12px; }
-            .chat-messages { padding: 10px; }
-            .message-bubble { max-width: 85%; padding: 10px 12px; font-size: 14px; }
-            .chat-input { padding: 10px; }
-            .message-input { padding: 10px 14px; font-size: 16px; }
-            .language-switch { font-size: 12px; padding: 6px 12px; }
-            .quick-reply-btn { padding: 8px 12px; font-size: 13px; }
-        }
-        @media (max-width: 480px) {
-            .chat-header h1 { font-size: 16px; }
-            .message-bubble { max-width: 90%; padding: 8px 10px; font-size: 13px; }
-            .quick-replies { gap: 8px; }
-            .quick-reply-btn { padding: 6px 10px; font-size: 12px; }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AcuTherapy Clinic Assistant</title>
+  <style>
+    /* —— 你的样式保持不变 —— */
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;margin:0;padding:10px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;}
+    .chat-container{width:250px;height:500px;margin:0 auto;background:#fff;border-radius:15px;box-shadow:0 10px 25px rgba(0,0,0,.15);overflow:hidden;display:flex;flex-direction:column;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);}
+    .chat-header{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;padding:8px;text-align:center;flex-shrink:0;}
+    .chat-header h1{margin:2px 0;font-size:12px;font-weight:600;}
+    .chat-header p{margin:2px 0;font-size:9px;}
+    .chat-header img{width:25px;height:25px;border-radius:50%;margin-bottom:4px;}
+    .chat-messages{flex:1;overflow-y:auto;padding:8px;background:#f8f9fa;min-height:0;font-size:11px;}
+    .message{display:flex;margin-bottom:8px;align-items:flex-start;}
+    .message-avatar{width:20px;height:20px;border-radius:50%;margin-right:6px;flex-shrink:0;}
+    .user-avatar{margin-right:0;margin-left:6px;}
+    .user-message{justify-content:flex-end;}
+    .bot-message{justify-content:flex-start;}
+    .message-bubble{max-width:80%;padding:6px 8px;border-radius:10px;word-wrap:break-word;font-size:10px;line-height:1.3;}
+    .user-message .message-bubble{background:#667eea;color:#fff;}
+    .bot-message .message-bubble{background:#fff;color:#333;border:1px solid #e1e5e9;}
+    .quick-replies{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;}
+    .quick-reply-btn{background:#667eea;color:#fff;border:none;padding:4px 8px;border-radius:12px;cursor:pointer;font-size:9px;transition:background .3s;flex:1;min-width:0;}
+    .quick-reply-btn:hover{background:#5a6fd8;}
+    .chat-input{padding:6px;background:#fff;border-top:1px solid #e1e5e9;flex-shrink:0;}
+    .input-wrapper{display:flex;gap:4px;}
+    .message-input{flex:1;padding:6px 8px;border:1px solid #e1e5e9;border-radius:15px;font-size:10px;outline:none;}
+    .message-input:focus{border-color:#667eea;}
+    .send-btn{background:#667eea;color:#fff;border:none;width:25px;height:25px;border-radius:50%;cursor:pointer;font-size:10px;}
+    .send-btn:hover{background:#5a6fd8;}
+    .send-btn:disabled{background:#ccc;cursor:not-allowed;}
+    .loading{text-align:center;color:#666;font-style:italic;}
+    .language-switch{position:absolute;top:5px;right:5px;background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3);padding:2px 6px;border-radius:10px;text-decoration:none;font-size:8px;transition:background .3s;}
+    .language-switch:hover{background:rgba(255,255,255,.3);color:#fff;text-decoration:none;}
+    @media (max-width:768px){body{padding:5px}.chat-container{height:calc(100vh - 10px);border-radius:15px}.chat-header{padding:10px}.chat-header h1{font-size:18px}.chat-header p{font-size:12px}.chat-messages{padding:10px}.message-bubble{max-width:85%;padding:10px 12px;font-size:14px}.chat-input{padding:10px}.message-input{padding:10px 14px;font-size:16px}.language-switch{font-size:12px;padding:6px 12px}.quick-reply-btn{padding:8px 12px;font-size:13px}}
+    @media (max-width:480px){.chat-header h1{font-size:16px}.message-bubble{max-width:90%;padding:8px 10px;font-size:13px}.quick-replies{gap:8px}.quick-reply-btn{padding:6px 10px;font-size:12px}}
+  </style>
 </head>
 <body>
-    <div class="chat-container">
-        <div class="chat-header">
-            <a href="/working-chat.html" class="language-switch">中文 Chinese</a>
-            <div class="bot-avatar">
-                <img src="https://cdn-icons-png.flaticon.com/512/2785/2785482.png" alt="AcuBot" style="width: 60px; height: 60px; border-radius: 50%; margin-bottom: 10px;">
-            </div>
-            <h1>🌿 AcuBot - Your Wellness Guide</h1>
-            <p>Online Service | Smart Q&A</p>
-        </div>
-        
-        <div class="chat-messages" id="chatMessages">
-            <div class="message bot-message">
-                <img src="https://cdn-icons-png.flaticon.com/512/4712/4712139.png" alt="AcuBot" class="message-avatar">
-                <div class="message-bubble">
-                    <p>👋 Welcome! I'm AcuBot.</p>
-                    <p>How can I help you today?</p>
-                </div>
-            </div>
-            <!-- 顶部首屏快捷键（只用一次） -->
-            <div class="quick-replies" id="quickReplies">
-                <button class="quick-reply-btn" onclick="sendQuickReply('appointment_booking')">📅 Book Appointment</button>
-                <button class="quick-reply-btn" onclick="sendQuickReply('clinic hours')">🕒 Hours</button>
-                <button class="quick-reply-btn" onclick="sendQuickReply('clinic location')">📍 Location</button>
-            </div>
-        </div>
-        
-        <div class="chat-input">
-            <div class="input-wrapper">
-                <input type="text" id="messageInput" class="message-input" placeholder="Type your question..." maxlength="1000">
-                <button id="sendBtn" class="send-btn" onclick="sendMessage()">📤</button>
-            </div>
-        </div>
+  <div class="chat-container">
+    <div class="chat-header">
+      <a href="/working-chat.html" class="language-switch">中文 Chinese</a>
+      <div class="bot-avatar">
+        <img src="https://cdn-icons-png.flaticon.com/512/2785/2785482.png" alt="AcuBot" style="width:60px;height:60px;border-radius:50%;margin-bottom:10px;">
+      </div>
+      <h1>🌿 AcuBot - Your Wellness Guide</h1>
+      <p>Online Service | Smart Q&A</p>
     </div>
 
-   <script>
+    <div class="chat-messages" id="chatMessages">
+      <div class="message bot-message">
+        <img src="https://cdn-icons-png.flaticon.com/512/4712/4712139.png" alt="AcuBot" class="message-avatar">
+        <div class="message-bubble">
+          <p>👋 Welcome! I'm AcuBot.</p>
+          <p>How can I help you today?</p>
+        </div>
+      </div>
+
+      <!-- 首屏快捷键：去掉 inline onclick，改用 data-query -->
+      <div class="quick-replies" id="quickReplies">
+        <button class="quick-reply-btn" data-query="appointment_booking">📅 Book Appointment</button>
+        <button class="quick-reply-btn" data-query="clinic hours">🕒 Hours</button>
+        <button class="quick-reply-btn" data-query="clinic location">📍 Location</button>
+      </div>
+    </div>
+
+    <div class="chat-input">
+      <div class="input-wrapper">
+        <input type="text" id="messageInput" class="message-input" placeholder="Type your question..." maxlength="1000">
+        <button id="sendBtn" class="send-btn" onclick="sendMessage()">📤</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
     let isTyping = false;
 
-    function getRandomQuickReplies() {
-        const all = [
-            { text: '📅 Book', query: 'appointment' },
-            { text: '📋 Services', query: 'services' },
-            { text: '📍 Location', query: 'location' },
-            { text: '🕒 Hours', query: 'hours' },
-            { text: '💊 Pain Help', query: 'back pain' },
-            { text: '🤔 Does it hurt?', query: 'does acupuncture hurt' },
-            { text: '💰 Insurance', query: 'insurance' },
-            { text: '👨‍⚕️ Doctors', query: 'doctor team' }
-        ];
-        return all.sort(() => 0.5 - Math.random()).slice(0, 3);
+    function getRandomQuickReplies(){
+      const all = [
+        { text: '📅 Book', query: 'appointment' },
+        { text: '📋 Services', query: 'services' },
+        { text: '📍 Location', query: 'location' },
+        { text: '🕒 Hours', query: 'hours' },
+        { text: '💊 Pain Help', query: 'back pain' },
+        { text: '🤔 Does it hurt?', query: 'does acupuncture hurt' },
+        { text: '💰 Insurance', query: 'insurance' },
+        { text: '👨‍⚕️ Doctors', query: 'doctor team' }
+      ];
+      return all.sort(()=>0.5-Math.random()).slice(0,3);
     }
 
-    function addMessage(content, sender, quickRepliesAfter = []) {
-        const messagesDiv = document.getElementById('chatMessages');
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `message ${sender}-message`;
+    function addMessage(content, sender, quickRepliesAfter = []){
+      const messagesDiv = document.getElementById('chatMessages');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${sender}-message`;
 
-        const avatar = document.createElement('img');
-        avatar.className = 'message-avatar';
-        if (sender === 'bot') {
-            avatar.src = 'https://cdn-icons-png.flaticon.com/512/4712/4712139.png';
-            avatar.alt = 'AcuBot';
+      const avatar = document.createElement('img');
+      avatar.className = 'message-avatar';
+      if (sender === 'bot') {
+        avatar.src = 'https://cdn-icons-png.flaticon.com/512/4712/4712139.png';
+        avatar.alt = 'AcuBot';
+      } else {
+        avatar.src = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
+        avatar.alt = 'User';
+        avatar.classList.add('user-avatar');
+      }
+
+      const bubbleDiv = document.createElement('div');
+      bubbleDiv.className = 'message-bubble';
+      bubbleDiv.innerHTML = content.replace(/\n/g,'<br>');
+
+      if (sender === 'user') { messageDiv.appendChild(bubbleDiv); messageDiv.appendChild(avatar); }
+      else { messageDiv.appendChild(avatar); messageDiv.appendChild(bubbleDiv); }
+
+      messagesDiv.appendChild(messageDiv);
+
+      // 用户发消息 -> 隐藏首屏按钮
+      if (sender === 'user') {
+        const firstQR = document.getElementById('quickReplies');
+        if (firstQR) firstQR.style.display = 'none';
+      }
+
+      // bot 回复 -> 在答案下方插入新快捷键
+      if (sender === 'bot' && quickRepliesAfter.length){
+        const wrap = document.createElement('div');
+        wrap.className = 'quick-replies';
+        quickRepliesAfter.forEach(opt=>{
+          const btn = document.createElement('button');
+          btn.className = 'quick-reply-btn';
+          btn.textContent = opt.text;
+          btn.addEventListener('click', ()=> sendQuickReply(opt.query));
+          wrap.appendChild(btn);
+        });
+        messagesDiv.appendChild(wrap);
+      }
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    function showLoading(){
+      const messagesDiv = document.getElementById('chatMessages');
+      const loadingDiv = document.createElement('div');
+      loadingDiv.className = 'message bot-message';
+      loadingDiv.id = 'loadingMessage';
+      loadingDiv.innerHTML = '<div class="message-bubble loading">Thinking...</div>';
+      messagesDiv.appendChild(loadingDiv);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+    function hideLoading(){
+      const loadingDiv = document.getElementById('loadingMessage');
+      if (loadingDiv) loadingDiv.remove();
+    }
+
+    async function sendMessage(){
+      const input = document.getElementById('messageInput');
+      const message = input.value.trim();
+      if (!message || isTyping) return;
+
+      addMessage(message,'user');
+      input.value = '';
+      showLoading();
+      isTyping = true;
+
+      try{
+        const res = await fetch('/chat/message-en',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({
+            message,
+            userId:'web_user_en_'+Date.now(),
+            sessionId:'session_en_'+Date.now()
+          })
+        });
+        const data = await res.json();
+        const nextQR = getRandomQuickReplies();
+        if (data && data.success){
+          addMessage(data.data.message,'bot',nextQR);
         } else {
-            avatar.src = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
-            avatar.alt = 'User';
-            avatar.classList.add('user-avatar');
+          addMessage('Sorry, I am temporarily unable to respond to your message. Please try again later.','bot',nextQR);
         }
-
-        const bubbleDiv = document.createElement('div');
-        bubbleDiv.className = 'message-bubble';
-        bubbleDiv.innerHTML = content.replace(/\n/g, '<br>');
-
-        if (sender === 'user') {
-            messageDiv.appendChild(bubbleDiv);
-            messageDiv.appendChild(avatar);
-        } else {
-            messageDiv.appendChild(avatar);
-            messageDiv.appendChild(bubbleDiv);
-        }
-        messagesDiv.appendChild(messageDiv);
-
-        if (sender === 'user') {
-            const firstQR = document.getElementById('quickReplies');
-            if (firstQR) firstQR.style.display = 'none';
-        }
-
-        if (sender === 'bot' && quickRepliesAfter.length) {
-            const qrWrap = document.createElement('div');
-            qrWrap.className = 'quick-replies';
-            quickRepliesAfter.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = 'quick-reply-btn';
-                btn.textContent = opt.text;
-                btn.onclick = () => sendQuickReply(opt.query);
-                qrWrap.appendChild(btn);
-            });
-            messagesDiv.appendChild(qrWrap);
-        }
-
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      }catch(err){
+        console.error('send error',err);
+        addMessage('Sorry, there was a network connection issue. Please check your connection and try again.','bot',getRandomQuickReplies());
+      }finally{
+        hideLoading();
+        isTyping = false;
+      }
     }
 
-    function showLoading() {
-        const messagesDiv = document.getElementById('chatMessages');
-        const loadingDiv = document.createElement('div');
-        loadingDiv.className = 'message bot-message';
-        loadingDiv.id = 'loadingMessage';
-        loadingDiv.innerHTML = '<div class="message-bubble loading">Thinking...</div>';
-        messagesDiv.appendChild(loadingDiv);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    function sendQuickReply(text){
+      const input = document.getElementById('messageInput');
+      input.value = text;
+      sendMessage();
     }
+    // 提前挂到全局，避免找不到
+    window.sendQuickReply = sendQuickReply;
 
-    function hideLoading() {
-        const loadingDiv = document.getElementById('loadingMessage');
-        if (loadingDiv) loadingDiv.remove();
-    }
-
-    async function sendMessage() {
-        const input = document.getElementById('messageInput');
-        const message = input.value.trim();
-        if (!message || isTyping) return;
-
-        addMessage(message, 'user');
-        input.value = '';
-
-        showLoading();
-        isTyping = true;
-
-        try {
-            const res = await fetch('/chat/message-en', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    message,
-                    userId: 'web_user_en_' + Date.now(),
-                    sessionId: 'session_en_' + Date.now()
-                })
-            });
-            const data = await res.json();
-            const nextQR = getRandomQuickReplies();
-            if (data.success) {
-                addMessage(data.data.message, 'bot', nextQR);
-            } else {
-                addMessage('Sorry, I cannot respond right now.', 'bot', nextQR);
-            }
-        } catch {
-            addMessage('Network error, please try later.', 'bot', getRandomQuickReplies());
-        } finally {
-            hideLoading();
-            isTyping = false;
-        }
-    }
-
-    function sendQuickReply(msg) {
-        document.getElementById('messageInput').value = msg;
-        sendMessage();
-    }
-
-    function showDefaultQuickReplies() {
-        const qr = document.getElementById('quickReplies');
-        if (!qr) return;
-        qr.innerHTML = `
-            <button class="quick-reply-btn" onclick="sendQuickReply('appointment_booking')">📅 Appointment</button>
-            <button class="quick-reply-btn" onclick="sendQuickReply('clinic hours')">🕒 Hours</button>
-            <button class="quick-reply-btn" onclick="sendQuickReply('clinic location')">📍 Location</button>
-        `;
-        qr.style.display = 'flex';
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        window.sendQuickReply = sendQuickReply; // 首次挂到全局
-        showDefaultQuickReplies();
+    // ✅ 首屏按钮用事件委托（不依赖 inline onclick，也不受 CSP 影响）
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const qr = document.getElementById('quickReplies');
+      if (qr){
+        qr.addEventListener('click',(e)=>{
+          const btn = e.target.closest('.quick-reply-btn');
+          if (!btn) return;
+          const q = btn.dataset.query || btn.textContent.trim();
+          sendQuickReply(q);
+        });
+      }
     });
 
-    document.getElementById('messageInput').addEventListener('keypress', e => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            sendMessage();
-        }
+    // 发送快捷键/回车发送
+    document.getElementById('messageInput').addEventListener('keypress', (e)=>{
+      if (e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendMessage(); }
     });
-
-    document.getElementById('messageInput').addEventListener('input', function () {
-        document.getElementById('sendBtn').disabled = !this.value.trim() || isTyping;
+    document.getElementById('messageInput').addEventListener('input', function(){
+      document.getElementById('sendBtn').disabled = !this.value.trim() || isTyping;
     });
-</script>
-
+  </script>
 </body>
 </html>
