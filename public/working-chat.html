@@ -38,150 +38,120 @@
     <!-- 英文链接回首页 -->
     <a href="/index.html" class="language-switch">English</a>
     <div class="bot-avatar">
+      <img src="https://cdn-icons-png.flaticon.com/512/2785/2785482.png"
+           alt="针灸助手"
+           style="width:60px;height:60px;border-radius:50%;margin-bottom:10px;">
+    </div>
+    <h1>🌿 灸宝宝 - 您的健康向导</h1>
+    <p>在线服务 | 智能问答</p>
+  </div>
 
+  <div class="chat-messages" id="chatMessages">
+    <div class="message bot-message">
+      <div class="message-bubble">
+        <p>👋 欢迎来到我们的诊所！</p>
+        <p>我是针灸助手，您的专属健康向导，可以为您提供：</p>
+        <ul>
+          <li>📋 服务咨询</li>
+          <li>📅 预约安排</li>
+          <li>🏥 诊所信息</li>
+          <li>💡 健康建议</li>
+        </ul>
+        <p>请告诉我您需要什么帮助？</p>
+      </div>
+    </div>
 
-<!-- 下面 JS 保持不变 -->
+    <!-- 首页快捷键 -->
+    <div class="quick-replies" id="quickReplies">
+      <button class="quick-reply-btn" data-query="预约服务">📅 预约服务</button>
+      <button class="quick-reply-btn" data-query="查看服务">📋 查看服务</button>
+      <button class="quick-reply-btn" data-query="诊所地址">📍 诊所信息</button>
+      <button class="quick-reply-btn" data-query="营业时间">🕒 营业时间</button>
+    </div>
+  </div>
+
+  <div class="chat-input">
+    <div class="input-wrapper">
+      <input type="text" id="messageInput" class="message-input" placeholder="请输入您的问题..." maxlength="1000">
+      <button id="sendBtn" class="send-btn" onclick="sendMessage()">📤</button>
+    </div>
+  </div>
+</div>
+
 <script>
-    /* 你的 JS 逻辑这里省略，保持原有代码 */
-</script>
-</body>
-</html>
+let isTyping=false;
 
-
-    <script>
-let isTyping = false;
-
-function addMessage(content, sender) {
-  const messagesDiv = document.getElementById('chatMessages');
-  const messageDiv = document.createElement('div');
-  messageDiv.className = `message ${sender}-message`;
-
-  const bubbleDiv = document.createElement('div');
-  bubbleDiv.className = 'message-bubble';
-  bubbleDiv.innerHTML = content.replace(/\n/g, '<br>');
-
-  messageDiv.appendChild(bubbleDiv);
-  messagesDiv.appendChild(messageDiv);
-
-  // 只有用户发消息时隐藏默认快捷键
-  if (sender === 'user') {
-    document.getElementById('quickReplies').style.display = 'none';
-  }
-
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+function addMessage(content,sender){
+  const box=document.createElement('div');
+  box.className=`message ${sender}-message`;
+  const bubble=document.createElement('div');
+  bubble.className='message-bubble';
+  bubble.innerHTML=content.replace(/\n/g,'<br>');
+  box.appendChild(bubble);
+  document.getElementById('chatMessages').appendChild(box);
+  if(sender==='user'){document.getElementById('quickReplies').style.display='none';}
+  document.getElementById('chatMessages').scrollTop=document.getElementById('chatMessages').scrollHeight;
 }
 
-function showLoading() {
-  const messagesDiv = document.getElementById('chatMessages');
-  const loadingDiv = document.createElement('div');
-  loadingDiv.className = 'message bot-message';
-  loadingDiv.id = 'loadingMessage';
-  loadingDiv.innerHTML = '<div class="message-bubble loading">正在思考中...</div>';
-  messagesDiv.appendChild(loadingDiv);
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+function showLoading(){
+  const ld=document.createElement('div');
+  ld.className='message bot-message';
+  ld.id='loadingMessage';
+  ld.innerHTML='<div class="message-bubble loading">正在思考中...</div>';
+  document.getElementById('chatMessages').appendChild(ld);
+}
+function hideLoading(){const l=document.getElementById('loadingMessage');if(l)l.remove();}
+
+async function sendMessage(){
+  const input=document.getElementById('messageInput');
+  const msg=input.value.trim();
+  if(!msg||isTyping)return;
+  addMessage(msg,'user');input.value='';showLoading();isTyping=true;
+  try{
+    const res=await fetch('/chat/message',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg,userId:'web_cn_'+Date.now(),sessionId:'session_cn_'+Date.now()})});
+    const data=await res.json();
+    if(data.success){addMessage(data.data.message,'bot');if(data.data.quickReplies)renderQuickReplies(data.data.quickReplies);else renderDefaultQR();}
+    else addMessage('抱歉，我暂时无法回复，请稍后再试。','bot');
+  }catch(e){console.error(e);addMessage('网络错误，请稍后再试。','bot');}
+  finally{hideLoading();isTyping=false;}
 }
 
-function hideLoading() {
-  const loadingDiv = document.getElementById('loadingMessage');
-  if (loadingDiv) loadingDiv.remove();
-}
+function sendQuickReply(text){document.getElementById('messageInput').value=text;sendMessage();}
+window.sendQuickReply=sendQuickReply;
 
-async function sendMessage() {
-  const input = document.getElementById('messageInput');
-  const message = input.value.trim();
-  if (!message || isTyping) return;
-
-  addMessage(message, 'user');
-  input.value = '';
-  showLoading();
-  isTyping = true;
-
-  try {
-    const res = await fetch('/chat/message', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message,
-        userId: 'web_cn_' + Date.now(),
-        sessionId: 'session_cn_' + Date.now()
-      })
-    });
-    if (!res.ok) throw new Error('请求失败');
-    const data = await res.json();
-    if (data.success) {
-      addMessage(data.data.message, 'bot');
-      if (data.data.quickReplies && data.data.quickReplies.length > 0) {
-        showQuickReplies(data.data.quickReplies);
-      } else {
-        showDefaultQuickReplies();
-      }
-    } else {
-      addMessage('抱歉，我暂时无法回复，请稍后再试。', 'bot');
-    }
-  } catch (err) {
-    console.error('发送消息失败', err);
-    addMessage('网络错误，请稍后再试。', 'bot');
-  } finally {
-    hideLoading();
-    isTyping = false;
-  }
-}
-
-// -------- 关键：函数定义后立即挂到 window，避免第一次找不到 --------
-function sendQuickReply(msg) {
-  document.getElementById('messageInput').value = msg;
-  sendMessage();
-}
-window.sendQuickReply = sendQuickReply;
-
-function showQuickReplies(replies) {
-  const wrap = document.getElementById('quickReplies');
-  wrap.innerHTML = '';
-  replies.forEach(r => {
-    const btn = document.createElement('button');
-    btn.className = 'quick-reply-btn';
-    btn.textContent = r.title;
-    btn.onclick = () => sendQuickReply(r.payload || r.title);
+function renderQuickReplies(list){
+  const wrap=document.getElementById('quickReplies');
+  wrap.innerHTML='';
+  list.forEach(item=>{
+    const btn=document.createElement('button');
+    btn.className='quick-reply-btn';
+    btn.textContent=item.title||item;
+    btn.addEventListener('click',()=>sendQuickReply(item.payload||item.title||item));
     wrap.appendChild(btn);
   });
-  wrap.style.display = 'flex';
+  wrap.style.display='flex';
+}
+function renderDefaultQR(){
+  const wrap=document.getElementById('quickReplies');
+  wrap.innerHTML=`<button class="quick-reply-btn" data-query="营业时间">🕒 营业时间</button>
+                  <button class="quick-reply-btn" data-query="预约服务">📅 预约服务</button>
+                  <button class="quick-reply-btn" data-query="诊所地址">📍 诊所地址</button>`;
+  wrap.style.display='flex';
 }
 
-function showDefaultQuickReplies() {
-  const wrap = document.getElementById('quickReplies');
-  wrap.innerHTML = `
-    <button class="quick-reply-btn" onclick="sendQuickReply('营业时间')">🕒 营业时间</button>
-    <button class="quick-reply-btn" onclick="sendQuickReply('预约服务')">📅 预约服务</button>
-    <button class="quick-reply-btn" onclick="sendQuickReply('诊所地址')">📍 诊所地址</button>
-  `;
-  wrap.style.display = 'flex';
-}
-
-// === 页面加载后初始化 ===
-document.addEventListener('DOMContentLoaded', () => {
-  showDefaultQuickReplies();
-  // 事件委托，确保动态生成的按钮也能点击
-  document.getElementById('quickReplies').addEventListener('click', e => {
-    if (e.target.classList.contains('quick-reply-btn') && typeof sendQuickReply === 'function') {
-      const txt = e.target.textContent.replace(/[📅📋📍🕒]/g, '').trim();
-      sendQuickReply(txt);
-    }
+document.addEventListener('DOMContentLoaded',()=>{
+  renderDefaultQR();
+  document.getElementById('quickReplies').addEventListener('click',e=>{
+    const btn=e.target.closest('.quick-reply-btn');
+    if(btn)sendQuickReply(btn.dataset.query||btn.textContent.replace(/[📅📋📍🕒]/g,'').trim());
   });
 });
-
-// 回车发送
-document.getElementById('messageInput').addEventListener('keypress', e => {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    sendMessage();
-  }
+document.getElementById('messageInput').addEventListener('keypress',e=>{
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}
 });
-
-// 输入框状态控制按钮
-document.getElementById('messageInput').addEventListener('input', function () {
-  document.getElementById('sendBtn').disabled = !this.value.trim() || isTyping;
+document.getElementById('messageInput').addEventListener('input',function(){
+  document.getElementById('sendBtn').disabled=!this.value.trim()||isTyping;
 });
 </script>
-
 </body>
 </html>
