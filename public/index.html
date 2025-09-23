@@ -5,24 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>AcuTherapy Clinic Assistant</title>
   <style>
-    /* —— 你的样式保持不变 —— */
-    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;margin:0;padding:10px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;}
+    body{font-family:'Inter',sans-serif;margin:0;padding:10px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;}
     .chat-container{width:250px;height:500px;margin:0 auto;background:#fff;border-radius:15px;box-shadow:0 10px 25px rgba(0,0,0,.15);overflow:hidden;display:flex;flex-direction:column;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);}
     .chat-header{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;padding:8px;text-align:center;flex-shrink:0;}
     .chat-header h1{margin:2px 0;font-size:12px;font-weight:600;}
     .chat-header p{margin:2px 0;font-size:9px;}
-    .chat-header img{width:25px;height:25px;border-radius:50%;margin-bottom:4px;}
     .chat-messages{flex:1;overflow-y:auto;padding:8px;background:#f8f9fa;min-height:0;font-size:11px;}
     .message{display:flex;margin-bottom:8px;align-items:flex-start;}
     .message-avatar{width:20px;height:20px;border-radius:50%;margin-right:6px;flex-shrink:0;}
-    .user-avatar{margin-right:0;margin-left:6px;}
+    .user-avatar{margin-left:6px;}
     .user-message{justify-content:flex-end;}
     .bot-message{justify-content:flex-start;}
     .message-bubble{max-width:80%;padding:6px 8px;border-radius:10px;word-wrap:break-word;font-size:10px;line-height:1.3;}
     .user-message .message-bubble{background:#667eea;color:#fff;}
     .bot-message .message-bubble{background:#fff;color:#333;border:1px solid #e1e5e9;}
     .quick-replies{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;}
-    .quick-reply-btn{background:#667eea;color:#fff;border:none;padding:4px 8px;border-radius:12px;cursor:pointer;font-size:9px;transition:background .3s;flex:1;min-width:0;}
+    .quick-reply-btn{background:#667eea;color:#fff;border:none;padding:4px 8px;border-radius:12px;cursor:pointer;font-size:9px;transition:background .3s;}
     .quick-reply-btn:hover{background:#5a6fd8;}
     .chat-input{padding:6px;background:#fff;border-top:1px solid #e1e5e9;flex-shrink:0;}
     .input-wrapper{display:flex;gap:4px;}
@@ -31,34 +29,22 @@
     .send-btn{background:#667eea;color:#fff;border:none;width:25px;height:25px;border-radius:50%;cursor:pointer;font-size:10px;}
     .send-btn:hover{background:#5a6fd8;}
     .send-btn:disabled{background:#ccc;cursor:not-allowed;}
-    .loading{text-align:center;color:#666;font-style:italic;}
-    .language-switch{position:absolute;top:5px;right:5px;background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3);padding:2px 6px;border-radius:10px;text-decoration:none;font-size:8px;transition:background .3s;}
-    .language-switch:hover{background:rgba(255,255,255,.3);color:#fff;text-decoration:none;}
-    @media (max-width:768px){body{padding:5px}.chat-container{height:calc(100vh - 10px);border-radius:15px}.chat-header{padding:10px}.chat-header h1{font-size:18px}.chat-header p{font-size:12px}.chat-messages{padding:10px}.message-bubble{max-width:85%;padding:10px 12px;font-size:14px}.chat-input{padding:10px}.message-input{padding:10px 14px;font-size:16px}.language-switch{font-size:12px;padding:6px 12px}.quick-reply-btn{padding:8px 12px;font-size:13px}}
-    @media (max-width:480px){.chat-header h1{font-size:16px}.message-bubble{max-width:90%;padding:8px 10px;font-size:13px}.quick-replies{gap:8px}.quick-reply-btn{padding:6px 10px;font-size:12px}}
   </style>
 </head>
 <body>
   <div class="chat-container">
     <div class="chat-header">
-      <a href="/working-chat.html" class="language-switch">中文 Chinese</a>
-      <div class="bot-avatar">
-        <img src="https://cdn-icons-png.flaticon.com/512/2785/2785482.png" alt="AcuBot" style="width:60px;height:60px;border-radius:50%;margin-bottom:10px;">
-      </div>
       <h1>🌿 AcuBot - Your Wellness Guide</h1>
       <p>Online Service | Smart Q&A</p>
     </div>
 
     <div class="chat-messages" id="chatMessages">
       <div class="message bot-message">
-        <img src="https://cdn-icons-png.flaticon.com/512/4712/4712139.png" alt="AcuBot" class="message-avatar">
+        <img src="https://cdn-icons-png.flaticon.com/512/4712/4712139.png" class="message-avatar" alt="AcuBot">
         <div class="message-bubble">
-          <p>👋 Welcome! I'm AcuBot.</p>
-          <p>How can I help you today?</p>
+          👋 Welcome! I'm AcuBot. How can I help you today?
         </div>
       </div>
-
-      <!-- 首屏快捷键：去掉 inline onclick，改用 data-query -->
       <div class="quick-replies" id="quickReplies">
         <button class="quick-reply-btn" data-query="appointment">📅 Book</button>
         <button class="quick-reply-btn" data-query="hours">🕒 Hours</button>
@@ -69,193 +55,14 @@
     <div class="chat-input">
       <div class="input-wrapper">
         <input type="text" id="messageInput" class="message-input" placeholder="Type your question..." maxlength="1000">
-        <button id="sendBtn" class="send-btn" onclick="sendMessage()">📤</button>
+        <button id="sendBtn" class="send-btn">📤</button>
       </div>
     </div>
   </div>
 
-  <script>
-    let isTyping = false;
-
-    function getRandomQuickReplies(){
-      const all = [
-        { text: '💵 Pricing', query: 'pricing' },
-        { text: '🚗 Parking', query: 'parking' },
-        { text: '📅 Book', query: 'appointment' },
-        { text: '📋 Services', query: 'services' },
-        { text: '📍 Location', query: 'location' },
-        { text: '🕒 Hours', query: 'hours' },
-        { text: '💊 Pain Relief', query: 'back pain' },
-        { text: '🤔 Does it hurt?', query: 'does acupuncture hurt' },
-        { text: '💰 Insurance', query: 'insurance' },
-        { text: '👨‍⚕️ Doctors', query: 'doctors' }
-      ];
-      return all.sort(()=>0.5-Math.random()).slice(0,3);
-    }
-
-    function addMessage(content, sender, quickRepliesAfter = []){
-      const messagesDiv = document.getElementById('chatMessages');
-      const messageDiv = document.createElement('div');
-      messageDiv.className = `message ${sender}-message`;
-
-      const avatar = document.createElement('img');
-      avatar.className = 'message-avatar';
-      if (sender === 'bot') {
-        avatar.src = 'https://cdn-icons-png.flaticon.com/512/4712/4712139.png';
-        avatar.alt = 'AcuBot';
-      } else {
-        avatar.src = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
-        avatar.alt = 'User';
-        avatar.classList.add('user-avatar');
-      }
-
-      const bubbleDiv = document.createElement('div');
-      bubbleDiv.className = 'message-bubble';
-      bubbleDiv.innerHTML = content.replace(/\n/g,'<br>');
-
-      if (sender === 'user') { messageDiv.appendChild(bubbleDiv); messageDiv.appendChild(avatar); }
-      else { messageDiv.appendChild(avatar); messageDiv.appendChild(bubbleDiv); }
-
-      messagesDiv.appendChild(messageDiv);
-
-      // 用户发消息 -> 隐藏首屏按钮
-      if (sender === 'user') {
-        const firstQR = document.getElementById('quickReplies');
-        if (firstQR) firstQR.style.display = 'none';
-      }
-
-      // bot 回复 -> 在答案下方插入新快捷键
-      if (sender === 'bot' && quickRepliesAfter.length){
-        const wrap = document.createElement('div');
-        wrap.className = 'quick-replies';
-        quickRepliesAfter.forEach(opt=>{
-          const btn = document.createElement('button');
-          btn.className = 'quick-reply-btn';
-          btn.textContent = opt.text;
-          btn.addEventListener('click', ()=> sendQuickReply(opt.query));
-          wrap.appendChild(btn);
-        });
-        messagesDiv.appendChild(wrap);
-      }
-      messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    }
-
-    function showLoading(){
-      const messagesDiv = document.getElementById('chatMessages');
-      const loadingDiv = document.createElement('div');
-      loadingDiv.className = 'message bot-message';
-      loadingDiv.id = 'loadingMessage';
-      loadingDiv.innerHTML = '<div class="message-bubble loading">Thinking...</div>';
-      messagesDiv.appendChild(loadingDiv);
-      messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    }
-    function hideLoading(){
-      const loadingDiv = document.getElementById('loadingMessage');
-      if (loadingDiv) loadingDiv.remove();
-    }
-
-    async function sendMessage(){
-      const input = document.getElementById('messageInput');
-      const message = input.value.trim();
-      if (!message || isTyping) return;
-
-      addMessage(message,'user');
-      input.value = '';
-      showLoading();
-      isTyping = true;
-
-      try{
-        const res = await fetch('/chat/message-en',{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({
-            message,
-            userId:'web_user_en_'+Date.now(),
-            sessionId:'session_en_'+Date.now()
-          })
-        });
-        const data = await res.json();
-        const nextQR = getRandomQuickReplies();
-        if (data && data.success){
-          addMessage(data.data.message,'bot',nextQR);
-        } else {
-          addMessage('Sorry, I am temporarily unable to respond to your message. Please try again later.','bot',nextQR);
-        }
-      }catch(err){
-        console.error('send error',err);
-        addMessage('Sorry, there was a network connection issue. Please check your connection and try again.','bot',getRandomQuickReplies());
-      }finally{
-        hideLoading();
-        isTyping = false;
-      }
-    }
-
-    function sendQuickReply(text){
-      const input = document.getElementById('messageInput');
-      input.value = text;
-      sendMessage();
-    }
-    // 提前挂到全局，避免找不到
-    window.sendQuickReply = sendQuickReply;
-
-    // ✅ 首屏按钮用事件委托（不依赖 inline onclick，也不受 CSP 影响）
-    document.addEventListener('DOMContentLoaded', ()=>{
-      const qr = document.getElementById('quickReplies');
-      if (qr){
-        qr.addEventListener('click',(e)=>{
-          const btn = e.target.closest('.quick-reply-btn');
-          if (!btn) return;
-          const q = btn.dataset.query || btn.textContent.trim();
-          sendQuickReply(q);
-        });
-      }
-    });
-
-    // 发送快捷键/回车发送
-    document.getElementById('messageInput').addEventListener('keypress', (e)=>{
-      if (e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendMessage(); }
-    });
-    document.getElementById('messageInput').addEventListener('input', function(){
-      document.getElementById('sendBtn').disabled = !this.value.trim() || isTyping;
-    });
-  
-  // 🔹 Q&A 字典：快捷键 query => 标准答案
-  // Q&A dictionary
-const QA_DICTIONARY = {
-  "appointment": "📅 You can book an appointment online here: https://acutherapy.janeapp.com or call us at (808) 528-7177.",
-  "hours": "🕒 Our clinic hours are: Monday–Saturday 9:00 AM – 1:00 PM.",
-  "location": "📍 Main clinic: 1650 Liliha St, Suite 208, Honolulu. Free parking available.",
-  "pricing": "💵 Most sessions range between $85–$180 depending on insurance.",
-  "parking": "🚗 Free parking at both clinics. Liliha = private lot. Aiea = plaza parking.",
-  "services": "📋 We offer acupuncture, cupping, massage, and holistic rehab.",
-  "back pain": "💊 We treat lower/upper back pain, chronic pain, sciatica, and tension. Call (808) 528-7177.",
-  "does acupuncture hurt": "🤔 Most patients feel only a tiny pinch. Many find it relaxing.",
-  "insurance": "💰 We accept Auto, Workers Comp, HMSA, Kaiser, UHA, VA, TriWest. Call us to confirm.",
-  "doctors": "👨‍⚕️ Our licensed acupuncturists have 30+ years of experience."
-};
-
-// Only one sendQuickReply
-function sendQuickReply(query) {
-  const answer = QA_DICTIONARY[query.toLowerCase()];
-  if (answer) {
-    addMessage(answer, "bot", getRandomQuickReplies());
-  } else {
-    // fallback to AI
-    document.getElementById('messageInput').value = query;
-    sendMessage();
-  }
-}
-window.sendQuickReply = sendQuickReply;
-// ✅ Ensure send button works
-document.addEventListener('DOMContentLoaded', () => {
-  const sendBtn = document.getElementById('sendBtn');
-  if (sendBtn) {
-    sendBtn.addEventListener('click', () => {
-      sendMessage();
-    });
-  }
-});
+<script>
 let FAQ_DATA = [];
+let isTyping = false;
 
 // 加载 FAQ JSON
 async function loadFAQ() {
@@ -263,33 +70,87 @@ async function loadFAQ() {
     const res = await fetch('/data/faq.json');
     const json = await res.json();
     FAQ_DATA = json.faq || [];
-    console.log("FAQ loaded", FAQ_DATA.length);
+    console.log("FAQ loaded:", FAQ_DATA.length);
   } catch (err) {
-    console.error('Failed to load FAQ:', err);
+    console.error("FAQ load failed:", err);
   }
 }
 
-// 匹配函数
+// 匹配 FAQ
 function findFAQAnswer(query) {
   const lower = query.toLowerCase();
-
   for (let item of FAQ_DATA) {
     if (item.id.toLowerCase() === lower) return item.answer;
     if (item.keywords && item.keywords.some(k => lower.includes(k.toLowerCase()))) {
       return item.answer;
     }
   }
-  return null; // 没命中 → fallback AI
+  return null;
 }
 
-// 修改 sendMessage：先查 FAQ
+// 生成随机快捷键
+function getRandomQuickReplies() {
+  const all = [
+    { text: '💵 Pricing', query: 'pricing' },
+    { text: '🚗 Parking', query: 'parking' },
+    { text: '📋 Services', query: 'services' },
+    { text: '💊 Pain Relief', query: 'back pain' },
+    { text: '💰 Insurance', query: 'insurance' },
+    { text: '👨‍⚕️ Doctors', query: 'doctors' }
+  ];
+  return all.sort(()=>0.5-Math.random()).slice(0,3);
+}
+
+// 添加消息
+function addMessage(content, sender, quickRepliesAfter=[]) {
+  const messagesDiv = document.getElementById("chatMessages");
+  const messageDiv = document.createElement("div");
+  messageDiv.className = `message ${sender}-message`;
+
+  const avatar = document.createElement("img");
+  avatar.className = "message-avatar";
+  avatar.src = sender === "bot"
+    ? "https://cdn-icons-png.flaticon.com/512/4712/4712139.png"
+    : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png";
+
+  const bubbleDiv = document.createElement("div");
+  bubbleDiv.className = "message-bubble";
+  bubbleDiv.innerHTML = content;
+
+  if (sender === "bot") {
+    messageDiv.appendChild(avatar);
+    messageDiv.appendChild(bubbleDiv);
+  } else {
+    messageDiv.appendChild(bubbleDiv);
+    messageDiv.appendChild(avatar);
+  }
+
+  messagesDiv.appendChild(messageDiv);
+
+  if (sender === "bot" && quickRepliesAfter.length) {
+    const wrap = document.createElement("div");
+    wrap.className = "quick-replies";
+    quickRepliesAfter.forEach(opt => {
+      const btn = document.createElement("button");
+      btn.className = "quick-reply-btn";
+      btn.textContent = opt.text;
+      btn.addEventListener("click", ()=> sendQuickReply(opt.query));
+      wrap.appendChild(btn);
+    });
+    messagesDiv.appendChild(wrap);
+  }
+
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+// 发送消息
 async function sendMessage() {
-  const input = document.getElementById('messageInput');
+  const input = document.getElementById("messageInput");
   const message = input.value.trim();
   if (!message || isTyping) return;
 
-  addMessage(message, 'user');
-  input.value = '';
+  addMessage(message, "user");
+  input.value = "";
 
   const faqAnswer = findFAQAnswer(message);
   if (faqAnswer) {
@@ -298,7 +159,6 @@ async function sendMessage() {
   }
 
   // fallback AI
-  showLoading();
   isTyping = true;
   try {
     const res = await fetch('/chat/message-en', {
@@ -307,24 +167,45 @@ async function sendMessage() {
       body: JSON.stringify({ message, userId:'web_user_en_'+Date.now(), sessionId:'session_en_'+Date.now() })
     });
     const data = await res.json();
-    if (data && data.success) {
-      addMessage(data.data.message, 'bot', getRandomQuickReplies());
+    if (data.success) {
+      addMessage(data.data.message, "bot", getRandomQuickReplies());
     } else {
-      addMessage('Sorry, I am temporarily unable to respond.', 'bot', getRandomQuickReplies());
+      addMessage("Sorry, I am temporarily unable to respond.", "bot", getRandomQuickReplies());
     }
   } catch (err) {
     console.error(err);
-    addMessage('Network error, please try again later.', 'bot', getRandomQuickReplies());
+    addMessage("Network error, please try again later.", "bot", getRandomQuickReplies());
   } finally {
-    hideLoading();
     isTyping = false;
   }
 }
 
-// 初始化加载
-document.addEventListener('DOMContentLoaded', loadFAQ);
+// 发送快捷键
+function sendQuickReply(query) {
+  const faqAnswer = findFAQAnswer(query);
+  if (faqAnswer) {
+    addMessage(faqAnswer, "bot", getRandomQuickReplies());
+  } else {
+    document.getElementById("messageInput").value = query;
+    sendMessage();
+  }
+}
 
+// 事件绑定
+document.addEventListener("DOMContentLoaded", () => {
+  loadFAQ();
+  document.getElementById("sendBtn").addEventListener("click", sendMessage);
+  document.getElementById("quickReplies").addEventListener("click", e => {
+    const btn = e.target.closest(".quick-reply-btn");
+    if (btn) sendQuickReply(btn.dataset.query);
+  });
+  document.getElementById("messageInput").addEventListener("keypress", e => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+});
 </script>
-
 </body>
 </html>
