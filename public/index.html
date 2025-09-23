@@ -220,29 +220,33 @@
     });
   
   // 🔹 Q&A 字典：快捷键 query => 标准答案
-  const QA_DICTIONARY = {
-    "appointment": "📅 You can book an appointment online here: [Book Now](https://acutherapy.janeapp.com) or call us at (808) 528-7177.”,
-    "hours": "🕒 Our clinic hours are: Monday–Saturday 9:00 AM – 1:00 PM.",
-    "location": "📍 We have two clinics: \n- Liliha: 1650 Liliha St, Honolulu \n- Aiea: 98-211 Pali Momi St, Aiea.",
-    "pricing": "💵 Pricing depends on the service and insurance coverage. Most sessions range between $85–$180. Please call us for details.",
-    "parking": "🚗 Free parking is available at both clinics. Liliha has a private lot, Aiea has shared plaza parking.",
-    "services": "📋 We offer acupuncture, cupping, medical massage, and holistic pain management programs.",
-    "pain relief”: "💊 Many patients experience pain relief from acupuncture, but results vary. Please schedule a consultation for a personalized plan.",
-    "does acupuncture hurt": "🤔 Most patients feel only a tiny pinch, if any. Many even find it relaxing!",
-    "insurance": "💰 We accept most insurance providers including Auto injury, wWorkers comp,HMSA, Kaiser, UHA, and Veterans Choice. Please bring your insurance info.”,
-    "doctor": "👨‍⚕️ Our team includes licensed acupuncturists with over 30 years of clinical experience in pain management and holistic wellness."
-  };
+  // Q&A dictionary
+const QA_DICTIONARY = {
+  "appointment": "📅 You can book an appointment online here: https://acutherapy.janeapp.com or call us at (808) 528-7177.",
+  "hours": "🕒 Our clinic hours are: Monday–Saturday 9:00 AM – 1:00 PM.",
+  "location": "📍 Main clinic: 1650 Liliha St, Suite 208, Honolulu. Free parking available.",
+  "pricing": "💵 Most sessions range between $85–$180 depending on insurance.",
+  "parking": "🚗 Free parking at both clinics. Liliha = private lot. Aiea = plaza parking.",
+  "services": "📋 We offer acupuncture, cupping, massage, and holistic rehab.",
+  "back pain": "💊 We treat lower/upper back pain, chronic pain, sciatica, and tension. Call (808) 528-7177.",
+  "does acupuncture hurt": "🤔 Most patients feel only a tiny pinch. Many find it relaxing.",
+  "insurance": "💰 We accept Auto, Workers Comp, HMSA, Kaiser, UHA, VA, TriWest. Call us to confirm.",
+  "doctor team": "👨‍⚕️ Our licensed acupuncturists have 30+ years of experience."
+};
 
-  // 🔹 修改 sendQuickReply：先查字典，找不到再走 sendMessage()
-  function sendQuickReply(query) {
-    if (QA_DICTIONARY[query]) {
-      addMessage(QA_DICTIONARY[query], "bot");
-      setTimeout(showAutoQuickReplies, 500); // 回答后刷新快捷键
-    } else {
-      document.getElementById('messageInput').value = query;
-      sendMessage(); // fallback → AI
-    }
+// Only one sendQuickReply
+function sendQuickReply(query) {
+  const answer = QA_DICTIONARY[query.toLowerCase()];
+  if (answer) {
+    addMessage(answer, "bot", getRandomQuickReplies());
+  } else {
+    // fallback to AI
+    document.getElementById('messageInput').value = query;
+    sendMessage();
   }
+}
+window.sendQuickReply = sendQuickReply;
+
 </script>
 
 </body>
