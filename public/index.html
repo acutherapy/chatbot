@@ -246,6 +246,15 @@ function sendQuickReply(query) {
   }
 }
 window.sendQuickReply = sendQuickReply;
+// ✅ Ensure send button works
+document.addEventListener('DOMContentLoaded', () => {
+  const sendBtn = document.getElementById('sendBtn');
+  if (sendBtn) {
+    sendBtn.addEventListener('click', () => {
+      sendMessage();
+    });
+  }
+});
 
 </script>
 
