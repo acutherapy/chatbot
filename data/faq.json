@@ -1,14 +1,359 @@
+
+
 {
   "faq": [
-    { "id": "appointment", "keywords": ["book", "schedule", "appointment"], "answer": "📅 You can book an appointment online here: https://acutherapy.janeapp.com or call us at (808) 528-7177." },
-    { "id": "hours", "keywords": ["open", "close", "hours", "time"], "answer": "🕒 Our clinic hours are: Monday–Saturday 9:00 AM – 1:00 PM." },
-    { "id": "location", "keywords": ["address", "location", "where"], "answer": "📍 Main clinic: 1650 Liliha St, Suite 208, Honolulu. Free parking available." },
-    { "id": "pricing", "keywords": ["price", "cost", "fee"], "answer": "💵 Most sessions range between $85–$180 depending on insurance." },
-    { "id": "parking", "keywords": ["park", "car", "lot"], "answer": "🚗 Free parking at both clinics. Liliha = private lot. Aiea = plaza parking." },
-    { "id": "services", "keywords": ["service", "offer", "treatment"], "answer": "📋 We offer acupuncture, cupping, massage, and holistic rehab." },
-    { "id": "back pain", "keywords": ["back", "spine", "sciatica"], "answer": "💊 We treat lower/upper back pain, chronic pain, sciatica, and tension. Call (808) 528-7177." },
-    { "id": "does acupuncture hurt", "keywords": ["hurt", "painful", "needle"], "answer": "🤔 Most patients feel only a tiny pinch. Many find it relaxing." },
-    { "id": "insurance", "keywords": ["insurance", "coverage", "HMSA", "Kaiser"], "answer": "💰 We accept Auto, Workers Comp, HMSA, Kaiser, UHA, VA, TriWest. Call us to confirm." },
-    { "id": "doctors", "keywords": ["doctor", "acupuncturist", "who"], "answer": "👨‍⚕️ Our licensed acupuncturists have 30+ years of experience." }
+    {
+      "id": "appointment",
+      "keywords": ["book", "reservation", "schedule"],
+      "answer": "📅 You can book online here: https://acutherapy.janeapp.com or call (808) 528-7177."
+    },
+    {
+      "id": "hours",
+      "keywords": ["open", "close", "time"],
+      "answer": "🕒 Our clinic hours are: Monday–Saturday 9:00 AM – 1:00 PM."
+    }
+     {
+      "id": "appointment",
+      "question": "How to book an appointment?",
+      "answer": "📅 You can book an appointment online here: https://acutherapy.janeapp.com or call us at (808) 528-7177.",
+      "keywords": ["appointment", "book", "booking", "reserve", "schedule"],
+      "category": "service",
+      "priority": 1
+    },
+    {
+      "id": "hours",
+      "question": "Clinic hours",
+      "answer": "🕒 Our clinic hours are: Monday–Saturday 9:00 AM – 1:00 PM.",
+      "keywords": ["hours", "time", "open", "close", "when are you open", "营业时间"],
+      "category": "basic_info",
+      "priority": 1
+    },
+    {
+      "id": "location",
+      "question": "Clinic location",
+      "answer": "📍 Main clinic: 1650 Liliha St, Suite 208, Honolulu. Free parking available.",
+      "keywords": ["location", "address", "where", "clinic address", "地图"],
+      "category": "basic_info",
+      "priority": 1
+    },
+    {
+      "id": "pricing",
+      "question": "Pricing information",
+      "answer": "💵 Most sessions range between $85–$180 depending on insurance.",
+      "keywords": ["price", "pricing", "cost", "fee", "charge", "多少钱"],
+      "category": "service",
+      "priority": 2
+    },
+    {
+      "id": "parking",
+      "question": "Parking information",
+      "answer": "🚗 Free parking at both clinics. Liliha = private lot. Aiea = plaza parking.",
+      "keywords": ["parking", "car", "停", "where to park"],
+      "category": "basic_info",
+      "priority": 2
+    },
+    {
+      "id": "services",
+      "question": "Available services",
+      "answer": "📋 We offer acupuncture, cupping, massage, and holistic rehab.",
+      "keywords": ["services", "what do you offer", "治疗项目", "项目"],
+      "category": "service",
+      "priority": 1
+    },
+    {
+      "id": "back_pain",
+      "question": "Do you treat back pain?",
+      "answer": "💊 We treat lower/upper back pain, chronic pain, sciatica, and tension. Call (808) 528-7177.",
+      "keywords": ["back pain", "腰痛", "pain relief", "sciatica", "治疗背痛"],
+      "category": "condition",
+      "priority": 2
+    },
+    {
+      "id": "does_hurt",
+      "question": "Does acupuncture hurt?",
+      "answer": "🤔 Most patients feel only a tiny pinch. Many find it relaxing.",
+      "keywords": ["hurt", "painful", "does it hurt", "针灸疼吗"],
+      "category": "condition",
+      "priority": 2
+    },
+    {
+      "id": "insurance",
+      "question": "Accepted insurance",
+      "answer": "💰 We accept Auto, Workers Comp, HMSA, Kaiser, UHA, VA, TriWest. Call us to confirm.",
+      "keywords": ["insurance", "coverage", "医保", "accept insurance", "insurance plan"],
+      "category": "payment",
+      "priority": 1
+    },
+    {
+      "id": "doctors",
+      "question": "Who are the doctors?",
+      "answer": "👨‍⚕️ Our licensed acupuncturists have 30+ years of experience.",
+      "keywords": ["doctor", "acupuncturist", "team", "staff", "who treats"],
+      "category": "staff",
+      "priority": 1
+    }
+    {
+      "id": "clinic_hours",
+      "question": "诊所营业时间",
+      "answer": "我们的营业时间是：\n\n🕒 周一至周六：9:00AM - 1:00PM\n\n📞 咨询热线请拨打：808-528-7177\n\n我们全年无休，为您的健康保驾护航。",
+      "keywords": ["营业时间", "开放时间", "几点开门", "几点关门", "工作时间", "什么时候开门", "开门时间", "几点营业", "营业", "开门"],
+      "category": "基本信息",
+      "priority": 1
+    },
+    {
+      "id": "clinic_location",
+      "question": "诊所地址和交通",
+      "answer": "📍 主诊所地址：1650 LILIHA ST, SUITE 208 HONOLULU\n📍 辅诊所地址：98-211 Pali Momi St Suite 604 AIEA\n\n🚗 免费停车位",
+      "keywords": ["地址", "位置", "怎么去", "交通", "地铁", "公交", "停车"],
+      "category": "基本信息",
+      "priority": 1
+    },
+    {
+      "id": "appointment_booking",
+      "question": "如何预约",
+      "answer": "预约方式：\n\n📞 电话预约：808-528-7177\n🌐 在线预约：https://acutherapy.janeapp.com/\n💬 关注我们的公众号：夏威夷古法疗愈\n\n预约时请提供：\n• 姓名和联系方式\n• 希望就诊的时间\n• 症状或需求描述",
+      "keywords": ["预约", "挂号", "怎么预约", "预约方式", "在线预约", "电话预约", "看病", "就诊", "看医生", "挂号", "预约医生"],
+      "category": "预约服务",
+      "priority": 1
+    },
+    {
+      "id": "services_general",
+      "question": "主要服务项目",
+      "answer": "我们提供以下医疗服务：\n\n🏥 针灸、中医、按摩、拔火罐\n💆‍♀️ 疼痛管理和康复治疗\n🧘‍♂️ 压力管理和整体调理\n\n详细服务请咨询我们的医生。",
+      "keywords": ["服务", "科室", "看什么病", "治疗项目", "医疗服务", "针灸", "中医", "按摩", "拔火罐"],
+      "category": "服务项目",
+      "priority": 1
+    },
+    {
+      "id": "payment_methods",
+      "question": "支付方式",
+      "answer": "我们支持多种支付方式：\n\n💳 现金支付\n💳 银行卡刷卡\n📱 微信支付\n📱 Apple Pay\n🏥 医疗保险（工伤、车祸、退伍军人和普通医疗保险）\n\n💡 建议：首次就诊请携带身份证和保险卡。",
+      "keywords": ["支付", "收费", "医保", "微信支付", "现金", "保险"],
+      "category": "费用相关",
+      "priority": 2
+    },
+    {
+      "id": "emergency_contact",
+      "question": "紧急情况联系",
+      "answer": "🚨 紧急情况处理：\n\n📞 如遇严重症状，请立即就医或拨打急救电话：911\n📞 诊所电话：808-528-7177\n\n⚠️ 紧急症状包括：\n• 胸痛、呼吸困难\n• 严重外伤\n• 突发剧痛",
+      "keywords": ["紧急", "急诊", "急救", "24小时", "突发", "严重", "911"],
+      "category": "紧急服务",
+      "priority": 1
+    },
+    {
+      "id": "first_visit",
+      "question": "首次就诊须知",
+      "answer": "首次就诊请准备：\n\n📋 驾照或身份证件\n🏥 医疗保险卡（如有）\n📄 既往病历资料\n💰 现金或银行卡\n\n⏰ 建议提前15分钟到达\n📝 填写基本信息表\n👨‍⚕️ 医生会详细询问病史",
+      "keywords": ["首次", "第一次", "需要带什么", "准备", "证件", "病历"],
+      "category": "就诊指南",
+      "priority": 2
+    },
+    {
+      "id": "doctor_team",
+      "question": "医生团队",
+      "answer": "我们的专业医生团队：\n\n👨‍⚕️ 杨医生 - 内科主任医师，40年经验\n👩‍⚕️ 蔡医生 - 北京中医针灸医师，30年经验\n👨‍⚕️ 龙医生 - 北京中医针灸医师，20年经验\n👩‍⚕️ 曹医生 - 台湾中医针灸医师，15年经验\n\n所有医生均具有相关资质和丰富临床经验。",
+      "keywords": ["医生", "专家", "主任", "团队", "资质", "经验", "针灸医师"],
+      "category": "医生信息",
+      "priority": 2
+    },
+    {
+      "id": "acupuncture_faq_hurt",
+      "question": "针灸会疼吗？",
+      "answer": "🤔 大多数人感觉很少或没有疼痛。\n\n您可能会在插入无菌一次性针头时注意到短暂而轻微的感觉。我们的医生技术娴熟，会确保您的舒适度。",
+      "keywords": ["疼痛", "疼", "针灸疼吗", "会痛吗", "感觉"],
+      "category": "针灸常识",
+      "priority": 2
+    },
+    {
+      "id": "acupuncture_faq_safe",
+      "question": "针灸安全吗？",
+      "answer": "🛡️ 是的——当由执业医师执行时非常安全。\n\n我们使用无菌、一次性、可丢弃的针头，并遵循严格的卫生协议。",
+      "keywords": ["安全", "卫生", "针头", "安全性"],
+      "category": "针灸常识",
+      "priority": 2
+    },
+    {
+      "id": "acupuncture_sessions",
+      "question": "需要多少次治疗？",
+      "answer": "📆 这取决于您的病情、严重程度以及您身体的反应。\n\n有些人一次治疗后就感到缓解；其他人可能需要一系列治疗。您的针灸师会制定个性化计划。",
+      "keywords": ["治疗次数", "几次", "疗程", "多久"],
+      "category": "治疗相关",
+      "priority": 2
+    },
+    {
+      "id": "before_appointment",
+      "question": "就诊前准备",
+      "answer": "📝 就诊前的准备：\n\n🍽️ 吃少量食物，不要空腹\n👕 穿宽松舒适的衣服\n⏰ 提前几分钟到达以便放松\n📋 准备好病史和症状描述",
+      "keywords": ["准备", "就诊前", "注意事项", "空腹", "衣服"],
+      "category": "就诊指南",
+      "priority": 2
+    },
+    {
+      "id": "session_length",
+      "question": "治疗时间多长？",
+      "answer": "⏱️ 首次就诊通常持续45-60分钟，包括咨询和治疗。\n\n后续就诊通常为30-45分钟。",
+      "keywords": ["时间", "多长时间", "多久", "治疗时间"],
+      "category": "治疗相关",
+      "priority": 2
+    },
+    {
+      "id": "insurance_question",
+      "question": "可以使用保险吗？",
+      "answer": "💳 许多保险计划涵盖针灸治疗。\n\n我们可以帮助验证您的保险覆盖范围，并在首次预约前解释您的福利。\n\n支持的保险包括：工伤、车祸、退伍军人和普通医疗保险。",
+      "keywords": ["保险", "医疗保险", "coverage", "福利"],
+      "category": "费用相关",
+      "priority": 2
+    },
+    {
+      "id": "side_effects",
+      "question": "有副作用吗？",
+      "answer": "⚠️ 轻微的副作用可能包括：\n\n• 针刺部位轻微瘀血\n• 轻微出血\n• 暂时性酸痛\n\n这些通常很快就会消失。我们会密切监控您的反应。",
+      "keywords": ["副作用", "瘀血", "出血", "酸痛"],
+      "category": "治疗相关",
+      "priority": 2
+    },
+    {
+      "id": "combine_treatments",
+      "question": "可以结合其他治疗吗？",
+      "answer": "➕ 可以——针灸经常与其他治疗结合使用：\n\n• 传统医学\n• 物理治疗\n• 脊椎按摩疗法\n\n请告知您的针灸师您正在接受的任何治疗或服用的药物。",
+      "keywords": ["结合治疗", "其他治疗", "药物", "传统医学"],
+      "category": "治疗相关",
+      "priority": 2
+    },
+    {
+      "id": "needle_fear",
+      "question": "害怕针头怎么办？",
+      "answer": "😌 我们的医生非常温和，会解释每个步骤。\n\n许多起初紧张的人最终发现治疗过程很放松。我们会确保您的舒适和安心。",
+      "keywords": ["害怕", "紧张", "针头恐惧", "舒适"],
+      "category": "针灸常识",
+      "priority": 2
+    }
+  ],
+  "categories": [
+    {
+      "id": "基本信息",
+      "name": "基本信息",
+      "description": "诊所的基本信息和联系方式",
+      "details": {
+        "brand": "AcuTherapy Clinics",
+        "locations": [
+          {
+            "name": "Honolulu Clinic",
+            "address": "1650 LILIHA ST, SUITE 208 HONOLULU, HI",
+            "phone": "808-528-7177",
+            "hours": "Mon–Sat 9:00AM–1:00PM"
+          },
+          {
+            "name": "Aiea Clinic",
+            "address": "98-211 Pali Momi St Suite 604 AIEA, HI",
+            "phone": "808-528-7177",
+            "hours": "Mon–Sat 9:00AM–1:00PM"
+          }
+        ],
+        "website": "https://acutherapy.janeapp.com/"
+      }
+    },
+    {
+      "id": "预约服务",
+      "name": "预约服务",
+      "description": "预约相关的服务和流程",
+      "details": {
+        "methods": ["在线预约", "电话预约", "公众号预约"],
+        "policy": "初诊建议提前15分钟到店填写表格"
+      }
+    },
+    {
+      "id": "服务项目",
+      "name": "服务项目",
+      "description": "诊所提供的医疗服务项目",
+      "details": {
+        "treatments": [
+          "针灸治疗（疼痛管理、内科调理、压力/睡眠问题）",
+          "拔罐与火罐疗法",
+          "中医推拿/医用按摩",
+          "整体调理与康复指导"
+        ]
+      }
+    },
+    {
+      "id": "费用相关",
+      "name": "费用相关",
+      "description": "收费标准和支付方式",
+      "details": {
+        "insurance": [
+          "工伤保险",
+          "车祸保险",
+          "退伍军人保险",
+          "普通医疗保险"
+        ],
+        "payments": ["现金", "银行卡", "微信支付", "Apple Pay", "保险直接结算"]
+      }
+    },
+    {
+      "id": "紧急服务",
+      "name": "紧急服务",
+      "description": "紧急情况处理方式",
+      "details": {
+        "note": "针灸诊所不提供急诊服务。如遇胸痛、呼吸困难、突发剧痛或其他危急症状，请立即拨打911或前往最近医院急诊。"
+      }
+    },
+    {
+      "id": "就诊指南",
+      "name": "就诊指南",
+      "description": "就诊流程和注意事项",
+      "details": {
+        "before_visit": "建议就诊前吃少量食物，不要空腹；穿宽松衣物方便针灸。",
+        "during_visit": "初诊包含咨询和治疗，约45-60分钟；复诊约30-45分钟。"
+      }
+    },
+    {
+      "id": "医生信息",
+      "name": "医生信息",
+      "description": "医生团队和专家介绍",
+      "details": {
+        "team": [
+          "杨医生 - 内科主任医师，40年经验",
+          "蔡医生 - 北京中医针灸医师，30年经验",
+          "龙医生 - 北京中医针灸医师，20年经验",
+          "曹医生 - 台湾中医针灸医师，15年经验"
+        ]
+      }
+    },
+    {
+      "id": "针灸常识",
+      "name": "针灸常识",
+      "description": "针灸治疗的基本知识和常见问题"
+    },
+    {
+      "id": "治疗相关",
+      "name": "治疗相关",
+      "description": "治疗过程和疗程相关信息"
+    }
+  ],
+  "quickReplies": [
+    {
+      "id": "appointment_quick",
+      "title": "📅 预约服务",
+      "payload": "BOOK_APPOINTMENT",
+      "category": "预约服务"
+    },
+    {
+      "id": "services_quick",
+      "title": "📋 查看服务",
+      "payload": "VIEW_SERVICES",
+      "category": "服务项目"
+    },
+    {
+      "id": "location_quick",
+      "title": "📍 诊所信息",
+      "payload": "CLINIC_INFO",
+      "category": "基本信息"
+    },
+    {
+      "id": "emergency_quick",
+      "title": "🚨 紧急联系",
+      "payload": "EMERGENCY_CONTACT",
+      "category": "紧急服务"
+    }
   ]
 }
