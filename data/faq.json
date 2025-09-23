@@ -1,6 +1,16 @@
-   {
+{
   "faq": [
     {
+      "id": "appointment",
+      "keywords": ["book", "reservation", "schedule"],
+      "answer": "📅 You can book online here: https://acutherapy.janeapp.com or call (808) 528-7177."
+    },
+    {
+      "id": "hours",
+      "keywords": ["open", "close", "time"],
+      "answer": "🕒 Our clinic hours are: Monday–Saturday 9:00 AM – 1:00 PM."
+    }
+     {
       "id": "appointment",
       "question": "How to book an appointment?",
       "answer": "📅 You can book an appointment online here: https://acutherapy.janeapp.com or call us at (808) 528-7177.",
