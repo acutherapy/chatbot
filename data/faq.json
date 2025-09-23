@@ -101,7 +101,7 @@
     {
       "id": "clinic_location",
       "question": "诊所地址和交通",
-      "answer": "📍 主诊所地址：1650 LILIHA ST, SUITE 208 HONOLULU\n📍 辅诊所地址：98-211 Pali Momi St Suite 604 AIEA\n\n🚗 免费停车位\n\n🗺️ 导航搜索：acutherapy clinics",
+      "answer": "📍 主诊所地址：1650 LILIHA ST, SUITE 208 HONOLULU\n📍 辅诊所地址：98-211 Pali Momi St Suite 604 AIEA\n\n🚗 免费停车位",
       "keywords": ["地址", "位置", "怎么去", "交通", "地铁", "公交", "停车"],
       "category": "基本信息",
       "priority": 1
