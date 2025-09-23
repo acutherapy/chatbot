@@ -60,9 +60,9 @@
 
       <!-- 首屏快捷键：去掉 inline onclick，改用 data-query -->
       <div class="quick-replies" id="quickReplies">
-        <button class="quick-reply-btn" data-query="appointment_booking">📅 Book Appointment</button>
-        <button class="quick-reply-btn" data-query="clinic hours">🕒 Hours</button>
-        <button class="quick-reply-btn" data-query="clinic location">📍 Location</button>
+        <button class="quick-reply-btn" data-query="appointment">📅 Book</button>
+        <button class="quick-reply-btn" data-query="hours">🕒 Hours</button>
+        <button class="quick-reply-btn" data-query="location">📍 Location</button>
       </div>
     </div>
 
@@ -79,11 +79,13 @@
 
     function getRandomQuickReplies(){
       const all = [
+        { text: '💵 Pricing', query: 'pricing' },
+        { text: '🚗 Parking', query: 'parking' },
         { text: '📅 Book', query: 'appointment' },
         { text: '📋 Services', query: 'services' },
         { text: '📍 Location', query: 'location' },
         { text: '🕒 Hours', query: 'hours' },
-        { text: '💊 Pain Help', query: 'back pain' },
+        { text: '💊 Pain Relief', query: 'back pain' },
         { text: '🤔 Does it hurt?', query: 'does acupuncture hurt' },
         { text: '💰 Insurance', query: 'insurance' },
         { text: '👨‍⚕️ Doctors', query: 'doctor team' }
