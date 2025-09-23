@@ -3,7 +3,7 @@
     {
       "id": "clinic_hours",
       "question": "Clinic Hours",
-      "answer": "Our clinic hours are:\n\n🕒 Monday - Saturday: 9:00AM - 1:00PM\n\n📞 For emergencies, please call: 808-528-7177\n\nWe are here to protect your health year-round.",
+      "answer": "Our clinic hours are:\n\n🕒 Monday - Saturday: 9:00AM - 1:00PM\n\n📞 For more info, please call: 808-528-7177\n\nWe are here to protect your health year-round.",
       "keywords": ["hours", "open", "time", "schedule", "when", "operating hours", "business hours"],
       "category": "Basic Information",
       "priority": 1
