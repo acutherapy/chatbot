@@ -1,5 +1,85 @@
-{
+   {
   "faq": [
+    {
+      "id": "appointment",
+      "question": "How to book an appointment?",
+      "answer": "📅 You can book an appointment online here: https://acutherapy.janeapp.com or call us at (808) 528-7177.",
+      "keywords": ["appointment", "book", "booking", "reserve", "schedule"],
+      "category": "service",
+      "priority": 1
+    },
+    {
+      "id": "hours",
+      "question": "Clinic hours",
+      "answer": "🕒 Our clinic hours are: Monday–Saturday 9:00 AM – 1:00 PM.",
+      "keywords": ["hours", "time", "open", "close", "when are you open", "营业时间"],
+      "category": "basic_info",
+      "priority": 1
+    },
+    {
+      "id": "location",
+      "question": "Clinic location",
+      "answer": "📍 Main clinic: 1650 Liliha St, Suite 208, Honolulu. Free parking available.",
+      "keywords": ["location", "address", "where", "clinic address", "地图"],
+      "category": "basic_info",
+      "priority": 1
+    },
+    {
+      "id": "pricing",
+      "question": "Pricing information",
+      "answer": "💵 Most sessions range between $85–$180 depending on insurance.",
+      "keywords": ["price", "pricing", "cost", "fee", "charge", "多少钱"],
+      "category": "service",
+      "priority": 2
+    },
+    {
+      "id": "parking",
+      "question": "Parking information",
+      "answer": "🚗 Free parking at both clinics. Liliha = private lot. Aiea = plaza parking.",
+      "keywords": ["parking", "car", "停", "where to park"],
+      "category": "basic_info",
+      "priority": 2
+    },
+    {
+      "id": "services",
+      "question": "Available services",
+      "answer": "📋 We offer acupuncture, cupping, massage, and holistic rehab.",
+      "keywords": ["services", "what do you offer", "治疗项目", "项目"],
+      "category": "service",
+      "priority": 1
+    },
+    {
+      "id": "back_pain",
+      "question": "Do you treat back pain?",
+      "answer": "💊 We treat lower/upper back pain, chronic pain, sciatica, and tension. Call (808) 528-7177.",
+      "keywords": ["back pain", "腰痛", "pain relief", "sciatica", "治疗背痛"],
+      "category": "condition",
+      "priority": 2
+    },
+    {
+      "id": "does_hurt",
+      "question": "Does acupuncture hurt?",
+      "answer": "🤔 Most patients feel only a tiny pinch. Many find it relaxing.",
+      "keywords": ["hurt", "painful", "does it hurt", "针灸疼吗"],
+      "category": "condition",
+      "priority": 2
+    },
+    {
+      "id": "insurance",
+      "question": "Accepted insurance",
+      "answer": "💰 We accept Auto, Workers Comp, HMSA, Kaiser, UHA, VA, TriWest. Call us to confirm.",
+      "keywords": ["insurance", "coverage", "医保", "accept insurance", "insurance plan"],
+      "category": "payment",
+      "priority": 1
+    },
+    {
+      "id": "doctors",
+      "question": "Who are the doctors?",
+      "answer": "👨‍⚕️ Our licensed acupuncturists have 30+ years of experience.",
+      "keywords": ["doctor", "acupuncturist", "team", "staff", "who treats"],
+      "category": "staff",
+      "priority": 1
+    }
     {
       "id": "clinic_hours",
       "question": "诊所营业时间",
