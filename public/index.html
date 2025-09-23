@@ -255,6 +255,74 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+let FAQ_DATA = [];
+
+// 加载 FAQ JSON
+async function loadFAQ() {
+  try {
+    const res = await fetch('/data/faq.json');
+    const json = await res.json();
+    FAQ_DATA = json.faq || [];
+    console.log("FAQ loaded", FAQ_DATA.length);
+  } catch (err) {
+    console.error('Failed to load FAQ:', err);
+  }
+}
+
+// 匹配函数
+function findFAQAnswer(query) {
+  const lower = query.toLowerCase();
+
+  for (let item of FAQ_DATA) {
+    if (item.id.toLowerCase() === lower) return item.answer;
+    if (item.keywords && item.keywords.some(k => lower.includes(k.toLowerCase()))) {
+      return item.answer;
+    }
+  }
+  return null; // 没命中 → fallback AI
+}
+
+// 修改 sendMessage：先查 FAQ
+async function sendMessage() {
+  const input = document.getElementById('messageInput');
+  const message = input.value.trim();
+  if (!message || isTyping) return;
+
+  addMessage(message, 'user');
+  input.value = '';
+
+  const faqAnswer = findFAQAnswer(message);
+  if (faqAnswer) {
+    addMessage(faqAnswer, "bot", getRandomQuickReplies());
+    return;
+  }
+
+  // fallback AI
+  showLoading();
+  isTyping = true;
+  try {
+    const res = await fetch('/chat/message-en', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message, userId:'web_user_en_'+Date.now(), sessionId:'session_en_'+Date.now() })
+    });
+    const data = await res.json();
+    if (data && data.success) {
+      addMessage(data.data.message, 'bot', getRandomQuickReplies());
+    } else {
+      addMessage('Sorry, I am temporarily unable to respond.', 'bot', getRandomQuickReplies());
+    }
+  } catch (err) {
+    console.error(err);
+    addMessage('Network error, please try again later.', 'bot', getRandomQuickReplies());
+  } finally {
+    hideLoading();
+    isTyping = false;
+  }
+}
+
+// 初始化加载
+document.addEventListener('DOMContentLoaded', loadFAQ);
 
 </script>
 
