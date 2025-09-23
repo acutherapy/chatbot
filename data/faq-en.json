@@ -11,7 +11,7 @@
     {
       "id": "clinic_location",
       "question": "Clinic Location & Directions",
-      "answer": "📍 Main Clinic: 1650 LILIHA ST, SUITE 208 HONOLULU\n📍 Secondary Clinic: 98-211 Pali Momi St Suite 604 AIEA\n\n🚗 Free parking available\n\n🗺️ Search for: acutherapy clinics",
+      "answer": "📍 Main Clinic: 1650 LILIHA ST, SUITE 208 HONOLULU\n📍 Secondary Clinic: 98-211 Pali Momi St Suite 604 AIEA\n\n🚗 Free parking available.",
       "keywords": ["location", "address", "directions", "where", "parking", "map"],
       "category": "Basic Information",
       "priority": 1
