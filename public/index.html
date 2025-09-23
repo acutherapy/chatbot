@@ -88,7 +88,7 @@
         { text: '💊 Pain Relief', query: 'back pain' },
         { text: '🤔 Does it hurt?', query: 'does acupuncture hurt' },
         { text: '💰 Insurance', query: 'insurance' },
-        { text: '👨‍⚕️ Doctors', query: 'doctor team' }
+        { text: '👨‍⚕️ Doctors', query: 'doctor' }
       ];
       return all.sort(()=>0.5-Math.random()).slice(0,3);
     }
@@ -231,7 +231,7 @@
     "pain relief”: "💊 Many patients experience pain relief from acupuncture, but results vary. Please schedule a consultation for a personalized plan.",
     "does acupuncture hurt": "🤔 Most patients feel only a tiny pinch, if any. Many even find it relaxing!",
     "insurance": "💰 We accept most insurance providers including Auto injury, wWorkers comp,HMSA, Kaiser, UHA, and Veterans Choice. Please bring your insurance info.”,
-    "doctor team": "👨‍⚕️ Our team includes licensed acupuncturists with over 30 years of clinical experience in pain management and holistic wellness."
+    "doctor": "👨‍⚕️ Our team includes licensed acupuncturists with over 30 years of clinical experience in pain management and holistic wellness."
   };
 
   // 🔹 修改 sendQuickReply：先查字典，找不到再走 sendMessage()
